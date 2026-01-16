@@ -22,6 +22,6 @@ services:
       - key: SESSION_PATH
         value: /app/src/auth_sessions
       - key: NODE_OPTIONS
-        value: "--max-old-space-size=400 --optimize-for-size"
+        value: "--max-old-space-size=400"
       - key: SUPPRESS_NO_CONFIG_WARNING
         value: true
