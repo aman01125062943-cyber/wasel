@@ -5953,9 +5953,12 @@
             const sidebar = document.querySelector('.admin-sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             if (sidebar) {
-                sidebar.classList.toggle('open');
+                const isOpen = sidebar.classList.toggle('open');
                 if (overlay) {
-                    overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+                    overlay.style.display = isOpen ? 'block' : 'none';
+                    setTimeout(() => {
+                        overlay.style.opacity = isOpen ? '1' : '0';
+                    }, 10);
                 }
             }
         }
@@ -6016,25 +6019,25 @@
             if (window.location.pathname === '/dashboard/islamic-reminders') {
                 toggleSubmenu('user-systems-submenu');
             }
-            // Prevent double-tap zoom on mobile menu buttons
-            document.addEventListener('touchstart', function (e) {
-                if (e.target.closest('#mobile-menu-toggle') || e.target.closest('.admin-nav-item')) {
-                    e.preventDefault();
-                }
-            }, { passive: false });
 
             // Close sidebar when clicking nav items on mobile
-            document.querySelectorAll('.admin-nav-item').forEach(item => {
-                item.addEventListener('click', function () {
-                    if (window.innerWidth <= 1024) {
-                        const sidebar = document.querySelector('.admin-sidebar');
-                        const overlay = document.getElementById('sidebar-overlay');
-                        if (sidebar && sidebar.classList.contains('open')) {
+            // Use event delegation or re-attach after dynamic load
+            document.addEventListener('click', function (e) {
+                const navItem = e.target.closest('.admin-nav-item');
+                if (navItem && window.innerWidth <= 1024) {
+                    const sidebar = document.querySelector('.admin-sidebar');
+                    const overlay = document.getElementById('sidebar-overlay');
+                    if (sidebar && sidebar.classList.contains('open')) {
+                        // Small delay to allow the tab switch logic to start
+                        setTimeout(() => {
                             sidebar.classList.remove('open');
-                            if (overlay) overlay.style.display = 'none';
-                        }
+                            if (overlay) {
+                                overlay.style.opacity = '0';
+                                setTimeout(() => overlay.style.display = 'none', 300);
+                            }
+                        }, 150);
                     }
-                });
+                }
             });
         });
     </script>
