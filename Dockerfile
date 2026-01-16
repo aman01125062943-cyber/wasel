@@ -42,12 +42,5 @@ USER node
 # Expose port
 EXPOSE 3001
 
-# Use multi-stage health check script
-COPY --chown=node:node health-check.js .
-
-# Enhanced health check with proper endpoint
-HEALTHCHECK --interval=30s --timeout=15s --start-period=60s --retries=3 \
-  CMD node health-check.js
-
 # Start server directly (Avoiding npm wrap for better signal handling and path reliability)
 CMD ["node", "server.js"]

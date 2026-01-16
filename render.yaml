@@ -16,11 +16,11 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: DATABASE_PATH
-        value: ./data/app.db
+        value: /app/data/app.db
       - key: UPLOAD_PATH
-        value: ./uploads
+        value: /app/uploads
       - key: SESSION_PATH
-        value: ./auth_sessions
+        value: /app/src/auth_sessions
       - key: NODE_OPTIONS
         value: "--max-old-space-size=400 --optimize-for-size"
       - key: SUPPRESS_NO_CONFIG_WARNING
