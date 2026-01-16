@@ -15,12 +15,23 @@ class SessionManager {
         this.removedSessions = new Set(); // Track explicitly removed sessions to stop reconnection loops
         this.reconnectTimers = new Map();
         this.corruptionState = new Map();
-        this.authDir = path.join(__dirname, '../../auth_sessions');
+        // For cloud environments, try to use a persistent volume or fallback
+        this.authDir = process.env.SESSION_PATH || path.join(__dirname, '../../auth_sessions');
 
         // Create auth directory if it doesn't exist
         if (!fs.existsSync(this.authDir)) {
-            fs.mkdirSync(this.authDir, { recursive: true });
+            try {
+                fs.mkdirSync(this.authDir, { recursive: true });
+            } catch (e) {
+                console.warn(`⚠️ Failed to create directory for ${this.authDir}:`, e.message);
+                // Fallback to local if custom path fails
+                this.authDir = path.join(__dirname, '../../auth_sessions');
+                if (!fs.existsSync(this.authDir)) {
+                    fs.mkdirSync(this.authDir, { recursive: true });
+                }
+            }
         }
+        console.log(`📂 Using session storage path: ${this.authDir}`);
     }
 
     /**

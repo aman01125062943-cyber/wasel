@@ -18,9 +18,9 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: DATABASE_PATH
-        value: /app/data/app.db
+        value: /var/data/app.db
       - key: UPLOAD_PATH
-        value: /app/uploads
+        value: /var/data/uploads
       - key: MAX_CONCURRENT_SESSIONS
         value: 50
       - key: ENABLE_LOGGING
@@ -47,3 +47,9 @@ services:
         value: true
       - key: NODE_OPTIONS
         value: "--max-old-space-size=450 --optimize-for-size"
+      - key: SESSION_PATH
+        value: /var/data/sessions
+    disk:
+      name: wasel-data
+      mountPath: /var/data
+      sizeGB: 1
