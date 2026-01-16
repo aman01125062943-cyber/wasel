@@ -1116,6 +1116,10 @@
                     <i class="fab fa-whatsapp"></i>
                     <span>جلساتي</span>
                 </div>
+                <div class="admin-nav-item" onclick="window.location.href='/dashboard/islamic-reminders'" data-tooltip="التذكيرات الإسلامية">
+                    <i class="fas fa-mosque"></i>
+                    <span>التذكيرات الإسلامية</span>
+                </div>
                 <div class="admin-nav-item" onclick="switchTab('payments')" data-tooltip="طلبات التفعيل"
                     style="position: relative;">
                     <i class="fas fa-money-bill-wave"></i>
@@ -1137,30 +1141,7 @@
                     <span>سجل النشاط</span>
                 </div>
 
-                <!-- User Systems Submenu -->
-                <div class="admin-nav-item submenu-trigger" onclick="toggleSubmenu('user-systems-submenu')"
-                    data-tooltip="أنظمة المستخدمين"
-                    style="background: var(--bg-secondary); border: 1px solid var(--border);">
-                    <i class="fas fa-cubes" style="color: var(--primary);"></i>
-                    <span>أنظمة المستخدمين</span>
-                    <i class="fas fa-chevron-down submenu-arrow"></i>
-                </div>
-                <div id="user-systems-submenu" class="submenu">
-                    <div class="admin-nav-item" onclick="window.location.href='/dashboard/islamic-reminders'"
-                        data-tooltip="التذكيرات الإسلامية"
-                        style="position: relative;">
-                        <i class="fas fa-mosque" style="color: var(--primary);"></i>
-                        <span>التذكيرات الإسلامية</span>
-                        <span style="position: absolute; left: 8px; top: 50%; transform: translateY(-50%); background: #4CAF50; color: white; border-radius: 50%; width: 8px; height: 8px; font-size: 0.6rem; display: flex; align-items: center; justify-content: center;">
-                            <i class="fas fa-check" style="font-size: 0.5rem;"></i>
-                        </span>
-                    </div>
-                    <div class="admin-nav-item" onclick="window.open('https://example.com/future-system', '_blank')"
-                        data-tooltip="أنظمة إضافية (قريباً)">
-                        <i class="fas fa-plus-circle" style="color: var(--text-muted);"></i>
-                        <span style="color: var(--text-muted);">أنظمة أخرى (قريباً)</span>
-                    </div>
-                </div>
+
 
                 <div class="admin-nav-item" onclick="window.location.href='/dashboard/settings'"
                     data-tooltip="الإعدادات">
