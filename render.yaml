@@ -2,7 +2,7 @@ services:
   - type: web
     name: wasel-amin
     env: docker
-    plan: starter
+    plan: free
     region: oregon
     dockerfilePath: ./Dockerfile
     dockerContext: .
@@ -16,38 +16,12 @@ services:
       - key: NODE_VERSION
         value: 20
       - key: DATABASE_PATH
-        value: /var/data/app.db
+        value: ./data/app.db
       - key: UPLOAD_PATH
-        value: /var/data/uploads
-      - key: MAX_CONCURRENT_SESSIONS
-        value: 50
-      - key: ENABLE_LOGGING
-        value: true
-      - key: SQLITE_JOURNAL_MODE
-        value: WAL
-      - key: SQLITE_CACHE_SIZE
-        value: 10000
-      - key: MAX_OLD_SPACE_SIZE
-        value: 512
-      - key: CONNECTION_TIMEOUT
-        value: 60000
-      - key: MAX_CONNECTION_ATTEMPTS
-        value: 3
-      - key: RETRY_DELAY
-        value: 5000
-      - key: NPM_CONFIG_FUND
-        value: false
-      - key: NPM_CONFIG_AUDIT
-        value: false
-      - key: NPM_CONFIG_LOGLEVEL
-        value: error
+        value: ./uploads
+      - key: SESSION_PATH
+        value: ./auth_sessions
+      - key: NODE_OPTIONS
+        value: "--max-old-space-size=400 --optimize-for-size"
       - key: SUPPRESS_NO_CONFIG_WARNING
         value: true
-      - key: NODE_OPTIONS
-        value: "--max-old-space-size=450 --optimize-for-size"
-      - key: SESSION_PATH
-        value: /var/data/sessions
-    disk:
-      name: wasel-data
-      mountPath: /var/data
-      sizeGB: 1
