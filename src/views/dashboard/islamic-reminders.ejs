@@ -52,20 +52,20 @@
             border-color: var(--primary) !important;
             color: var(--primary) !important;
         }
-        
+
         div:where(.swal2-container) .swal2-icon.swal2-success .swal2-success-line-tip,
         div:where(.swal2-container) .swal2-icon.swal2-success .swal2-success-line-long {
             background-color: var(--primary) !important;
             color: var(--primary) !important;
         }
-        
+
         div:where(.swal2-container) .swal2-icon.swal2-success .swal2-success-ring {
             border-color: rgba(37, 211, 102, 0.3) !important;
         }
 
         /* Dark Mode specific backdrop adjustment */
         [data-theme="dark"] div:where(.swal2-container).swal2-backdrop-show {
-            background: rgba(0,0,0,0.8) !important;
+            background: rgba(0, 0, 0, 0.8) !important;
         }
 
         /* --- Admin Layout Styles (Copied from User Dashboard for Consistency) --- */
@@ -704,7 +704,7 @@
             display: flex;
             justify-content: space-between;
         }
-        
+
         .athkar-item:last-child {
             border-bottom: none;
         }
@@ -1562,12 +1562,14 @@
                                         flex-wrap: wrap;
                                         gap: 15px;
                                     }
+
                                     .location-info {
                                         display: flex;
                                         align-items: center;
                                         gap: 12px;
                                         flex: 1;
                                     }
+
                                     .location-icon {
                                         width: 40px;
                                         height: 40px;
@@ -1580,22 +1582,25 @@
                                         font-size: 1.1rem;
                                         flex-shrink: 0;
                                     }
+
                                     .location-icon.manual-mode {
                                         background: var(--warning-light);
                                         color: var(--warning);
                                     }
+
                                     .location-details h4 {
                                         margin: 0;
                                         font-size: 1rem;
                                         font-weight: 700;
                                         color: var(--text-main);
                                     }
+
                                     .location-details p {
                                         margin: 2px 0 0;
                                         font-size: 0.85rem;
                                         color: var(--text-muted);
                                     }
-                                    
+
                                     .location-actions {
                                         display: flex;
                                         align-items: center;
@@ -1604,11 +1609,13 @@
 
                                     .mode-toggle-group {
                                         display: flex;
-                                        background: var(--bg-main); /* Slightly darker than card */
+                                        background: var(--bg-main);
+                                        /* Slightly darker than card */
                                         padding: 4px;
                                         border-radius: 8px;
                                         border: 1px solid var(--border);
                                     }
+
                                     .mode-btn {
                                         border: none;
                                         background: transparent;
@@ -1620,13 +1627,16 @@
                                         font-weight: 600;
                                         transition: all 0.2s;
                                     }
+
                                     .mode-btn:hover {
                                         color: var(--text-main);
                                     }
+
                                     .mode-btn.active {
-                                        background: var(--bg-card); /* White/Card bg */
+                                        background: var(--bg-card);
+                                        /* White/Card bg */
                                         color: var(--primary);
-                                        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                                        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
                                     }
 
                                     .btn-change-loc {
@@ -1642,6 +1652,7 @@
                                         align-items: center;
                                         justify-content: center;
                                     }
+
                                     .btn-change-loc:hover {
                                         background: var(--bg-hover);
                                         border-color: var(--primary);
@@ -1651,42 +1662,47 @@
 
                                 <div class="location-status-bar">
                                     <div class="location-info">
-                                        <div class="location-icon <%= config.prayer_time_mode === 'manual' ? 'manual-mode' : '' %>">
-                                            <i class="fas <%= config.prayer_time_mode === 'manual' ? 'fa-user-clock' : 'fa-map-marker-alt' %>"></i>
+                                        <div
+                                            class="location-icon <%= config.prayer_time_mode === 'manual' ? 'manual-mode' : '' %>">
+                                            <i
+                                                class="fas <%= config.prayer_time_mode === 'manual' ? 'fa-user-clock' : 'fa-map-marker-alt' %>"></i>
                                         </div>
                                         <div class="location-details">
-                                            <% if (config.prayer_time_mode === 'manual') { %>
+                                            <% if (config.prayer_time_mode==='manual' ) { %>
                                                 <h4>نظام التوقيت اليدوي</h4>
                                                 <p>تستخدم المواقيت المخصصة يدوياً</p>
-                                            <% } else if (config.location_city) { %>
-                                                <h4><%= config.location_city %>، <%= config.location_country %></h4>
-                                                <p>حساب تلقائي حسب الموقع</p>
-                                            <% } else { %>
-                                                <h4>لم يتم تحديد الموقع</h4>
-                                                <p>يرجى تحديد الموقع للحساب التلقائي</p>
-                                            <% } %>
+                                                <% } else if (config.location_city) { %>
+                                                    <h4>
+                                                        <%= config.location_city %>، <%= config.location_country %>
+                                                    </h4>
+                                                    <p>حساب تلقائي حسب الموقع</p>
+                                                    <% } else { %>
+                                                        <h4>لم يتم تحديد الموقع</h4>
+                                                        <p>يرجى تحديد الموقع للحساب التلقائي</p>
+                                                        <% } %>
                                         </div>
                                     </div>
 
                                     <div class="location-actions">
                                         <div class="mode-toggle-group">
-                                            <button onclick="setPrayerTimeMode('auto')" 
-                                                    class="mode-btn <%= config.prayer_time_mode !== 'manual' ? 'active' : '' %>" 
-                                                    title="تفعيل التوقيت التلقائي">
+                                            <button onclick="setPrayerTimeMode('auto')"
+                                                class="mode-btn <%= config.prayer_time_mode !== 'manual' ? 'active' : '' %>"
+                                                title="تفعيل التوقيت التلقائي">
                                                 تلقائي
                                             </button>
-                                            <button onclick="setPrayerTimeMode('manual')" 
-                                                    class="mode-btn <%= config.prayer_time_mode === 'manual' ? 'active' : '' %>" 
-                                                    title="تفعيل التوقيت اليدوي">
+                                            <button onclick="setPrayerTimeMode('manual')"
+                                                class="mode-btn <%= config.prayer_time_mode === 'manual' ? 'active' : '' %>"
+                                                title="تفعيل التوقيت اليدوي">
                                                 يدوي
                                             </button>
                                         </div>
 
-                                        <% if (config.prayer_time_mode !== 'manual') { %>
-                                            <button class="btn-change-loc" onclick="switchTab('tab-location')" title="إعدادات الموقع">
+                                        <% if (config.prayer_time_mode !=='manual' ) { %>
+                                            <button class="btn-change-loc" onclick="switchTab('tab-location')"
+                                                title="إعدادات الموقع">
                                                 <i class="fas fa-cog"></i>
                                             </button>
-                                        <% } %>
+                                            <% } %>
                                     </div>
                                 </div>
 
@@ -1700,676 +1716,888 @@
                                     </div>
                                     <% } else { %>
                                         <div class="prayer-list">
-                                            <% prayerSettings.forEach(prayer => { %>
-                                                <% 
-                                                    const time = prayerTimes[prayer.prayer_name.toLowerCase()]; 
-                                                    const isActive = locals.nextPrayer && nextPrayer.name.toLowerCase() === prayer.prayer_name.toLowerCase();
-                                                    const prayerNameAr = { 'fajr': 'الفجر', 'dhuhr': 'الظهر', 'asr': 'العصر', 'maghrib': 'المغرب', 'isha': 'العشاء' }[prayer.prayer_name.toLowerCase()] || prayer.prayer_name; 
-                                                    const prayerIcon = { 'fajr': 'fa-cloud-sun', 'dhuhr': 'fa-sun', 'asr': 'fa-cloud-sun-open', 'maghrib': 'fa-sunset', 'isha': 'fa-moon' }[prayer.prayer_name.toLowerCase()] || 'fa-clock';
-                                                    
-                                                    // Time Formatting Logic (Inline for EJS)
-                                                    let time12 = time;
-                                                    try {
-                                                        const [h, m] = time.split(':');
-                                                        const hour = parseInt(h);
-                                                        const period = hour >= 12 ? 'م' : 'ص';
-                                                        const h12 = hour % 12 || 12;
-                                                        time12 = `${h12}:${m} ${period}`;
+                                            <% prayerSettings.forEach(prayer=> { %>
+                                                <% const time=prayerTimes[prayer.prayer_name.toLowerCase()]; const
+                                                    isActive=locals.nextPrayer &&
+                                                    nextPrayer.name.toLowerCase()===prayer.prayer_name.toLowerCase();
+                                                    const prayerNameAr={ 'fajr' : 'الفجر' , 'dhuhr' : 'الظهر' , 'asr'
+                                                    : 'العصر' , 'maghrib' : 'المغرب' , 'isha' : 'العشاء'
+                                                    }[prayer.prayer_name.toLowerCase()] || prayer.prayer_name; const
+                                                    prayerIcon={ 'fajr' : 'fa-cloud-sun' , 'dhuhr' : 'fa-sun' , 'asr'
+                                                    : 'fa-cloud-sun-open' , 'maghrib' : 'fa-sunset' , 'isha' : 'fa-moon'
+                                                    }[prayer.prayer_name.toLowerCase()] || 'fa-clock' ; // Time
+                                                    Formatting Logic (Inline for EJS) let time12=time; try { const [h,
+                                                    m]=time.split(':'); const hour=parseInt(h); const period=hour>= 12 ?
+                                                    'م' : 'ص';
+                                                    const h12 = hour % 12 || 12;
+                                                    time12 = `${h12}:${m} ${period}`;
                                                     } catch(e) {}
-                                                    
+
                                                     const reminderTime = prayer.reminder_before_minutes || 0;
-                                                %>
-                                                
-                                                <div class="prayer-card <%= isActive ? 'active-glow' : '' %>" id="card-<%= prayer.id %>">
-                                                    <!-- Header -->
-                                                    <div class="prayer-header">
-                                                        <div class="prayer-info">
-                                                            <i class="fas <%= prayerIcon %>"></i>
-                                                            <h3><%= prayerNameAr %></h3>
-                                                            <% if (isActive) { %>
-                                                                <span class="status-badge">الآن</span>
-                                                            <% } %>
-                                                        </div>
-                                                        <div class="prayer-controls">
-                                                            <label class="toggle-switch" title="تفعيل/تعطيل التذكير">
-                                                                <input type="checkbox" onchange="togglePrayer('<%= prayer.id %>', this.checked)" <%= prayer.enabled ? 'checked' : '' %>>
-                                                                <span class="toggle-slider"></span>
-                                                            </label>
-                                                        </div>
-                                                    </div>
+                                                    %>
 
-                                                    <!-- Body -->
-                                                    <div class="prayer-body">
-                                                        <div class="time-display">
-                                                            <div class="main-time">
-                                                                <%= time12 %>
-                                                                <% if (config.prayer_time_mode === 'manual') { %>
-                                                                    <button class="btn-edit-time" 
-                                                                            title="تعديل التوقيت يدوياً"
-                                                                            onclick="openPrayerSettings('<%= prayer.id %>', '<%= prayer.prayer_name %>', '<%= reminderTime %>')">
-                                                                        <i class="fas fa-pen"></i>
-                                                                    </button>
-                                                                <% } %>
+                                                    <div class="prayer-card <%= isActive ? 'active-glow' : '' %>"
+                                                        id="card-<%= prayer.id %>">
+                                                        <!-- Header -->
+                                                        <div class="prayer-header">
+                                                            <div class="prayer-info">
+                                                                <i class="fas <%= prayerIcon %>"></i>
+                                                                <h3>
+                                                                    <%= prayerNameAr %>
+                                                                </h3>
+                                                                <% if (isActive) { %>
+                                                                    <span class="status-badge">الآن</span>
+                                                                    <% } %>
                                                             </div>
-                                                            <span class="time-elapsed-counter" data-prayer-time="<%= time %>" data-prayer-name="<%= prayer.prayer_name %>">--:--:--</span>
+                                                            <div class="prayer-controls">
+                                                                <label class="toggle-switch"
+                                                                    title="تفعيل/تعطيل التذكير">
+                                                                    <input type="checkbox"
+                                                                        onchange="togglePrayer('<%= prayer.id %>', this.checked)"
+                                                                        <%=prayer.enabled ? 'checked' : '' %>>
+                                                                    <span class="toggle-slider"></span>
+                                                                </label>
+                                                            </div>
                                                         </div>
 
-                                                        <!-- Quick Settings -->
-                                                        <div class="quick-settings">
-                                                            <label><i class="fas fa-bell"></i> التنبيه قبل الأذان:</label>
-                                                            <div class="pill-group">
-                                                                <% [0, 5, 10, 15].forEach(mins => { %>
-                                                                    <button class="pill-btn <%= reminderTime == mins ? 'active' : '' %>" 
+                                                        <!-- Body -->
+                                                        <div class="prayer-body">
+                                                            <div class="time-display">
+                                                                <div class="main-time">
+                                                                    <%= time12 %>
+                                                                        <% if (config.prayer_time_mode==='manual' ) { %>
+                                                                            <button class="btn-edit-time"
+                                                                                title="تعديل التوقيت يدوياً"
+                                                                                onclick="openPrayerSettings('<%= prayer.id %>', '<%= prayer.prayer_name %>', '<%= reminderTime %>')">
+                                                                                <i class="fas fa-pen"></i>
+                                                                            </button>
+                                                                            <% } %>
+                                                                </div>
+                                                                <span class="time-elapsed-counter"
+                                                                    data-prayer-time="<%= time %>"
+                                                                    data-prayer-name="<%= prayer.prayer_name %>">--:--:--</span>
+                                                            </div>
+
+                                                            <!-- Quick Settings -->
+                                                            <div class="quick-settings">
+                                                                <label><i class="fas fa-bell"></i> التنبيه قبل
+                                                                    الأذان:</label>
+                                                                <div class="pill-group">
+                                                                    <% [0, 5, 10, 15].forEach(mins=> { %>
+                                                                        <button
+                                                                            class="pill-btn <%= reminderTime == mins ? 'active' : '' %>"
                                                                             data-id="<%= prayer.id %>"
                                                                             data-mins="<%= mins %>"
                                                                             onclick="updateReminderDirectly(this.dataset.id, this.dataset.mins)">
-                                                                        <%= mins === 0 ? 'لا يوجد' : mins + ' دقيقة' %>
-                                                                    </button>
-                                                                <% }); %>
+                                                                            <%= mins===0 ? 'لا يوجد' : mins + ' دقيقة'
+                                                                                %>
+                                                                        </button>
+                                                                        <% }); %>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <!-- Athkar Section -->
-                                                    <div class="athkar-section">
-                                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                                                            <h4 style="margin:0;"><i class="fas fa-scroll"></i> أذكار بعد الصلاة</h4>
-                                                            <label class="toggle-switch" title="تفعيل/تعطيل أذكار بعد الصلاة">
-                                                                <input type="checkbox" onchange="updatePrayerSetting('<%= prayer.id %>', 'post_prayer_adhkar_enabled', this.checked ? 1 : 0)" <%= prayer.post_prayer_adhkar_enabled ? 'checked' : '' %>>
-                                                                <span class="toggle-slider"></span>
-                                                            </label>
-                                                        </div>
-                                                        
-                                                        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: var(--bg-main); padding: 8px 12px; border-radius: var(--radius-sm);">
-                                                            <div style="font-size: 0.85rem; color: var(--text-muted);">
-                                                                <i class="fas fa-clock"></i> إرسال بعد: <strong><%= prayer.post_prayer_adhkar_delay || 5 %> دقيقة</strong>
+                                                        <!-- Athkar Section -->
+                                                        <div class="athkar-section">
+                                                            <div
+                                                                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                                                                <h4 style="margin:0;"><i class="fas fa-scroll"></i>
+                                                                    أذكار بعد الصلاة</h4>
+                                                                <label class="toggle-switch"
+                                                                    title="تفعيل/تعطيل أذكار بعد الصلاة">
+                                                                    <input type="checkbox"
+                                                                        onchange="updatePrayerSetting('<%= prayer.id %>', 'post_prayer_adhkar_enabled', this.checked ? 1 : 0)"
+                                                                        <%=prayer.post_prayer_adhkar_enabled ? 'checked'
+                                                                        : '' %>>
+                                                                    <span class="toggle-slider"></span>
+                                                                </label>
                                                             </div>
-                                                            <button class="btn btn-sm btn-outline" 
+
+                                                            <div
+                                                                style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; background: var(--bg-main); padding: 8px 12px; border-radius: var(--radius-sm);">
+                                                                <div
+                                                                    style="font-size: 0.85rem; color: var(--text-muted);">
+                                                                    <i class="fas fa-clock"></i> إرسال بعد: <strong>
+                                                                        <%= prayer.post_prayer_adhkar_delay || 5 %>
+                                                                            دقيقة
+                                                                    </strong>
+                                                                </div>
+                                                                <button class="btn btn-sm btn-outline"
                                                                     onclick="openPostPrayerAdhkarSettings('<%= prayer.id %>', '<%= prayer.prayer_name %>', '<%= prayer.post_prayer_adhkar_delay || 5 %>', '<%= prayer.post_prayer_adhkar_show_link !== undefined ? prayer.post_prayer_adhkar_show_link : 1 %>')"
                                                                     title="إعدادات الأذكار">
-                                                                <i class="fas fa-cog"></i> إعدادات
-                                                            </button>
+                                                                    <i class="fas fa-cog"></i> إعدادات
+                                                                </button>
+                                                            </div>
+
+                                                            <ul class="athkar-list">
+                                                                <li class="athkar-item">
+                                                                    <span>أستغفر الله</span>
+                                                                    <span class="badge"
+                                                                        style="background:var(--bg-main); color:var(--text-muted)">3x</span>
+                                                                </li>
+                                                                <li class="athkar-item">
+                                                                    <span>اللهم أنت السلام</span>
+                                                                    <span class="badge"
+                                                                        style="background:var(--bg-main); color:var(--text-muted)">1x</span>
+                                                                </li>
+                                                                <li class="athkar-item">
+                                                                    <span>آية الكرسي</span>
+                                                                    <span class="badge"
+                                                                        style="background:var(--bg-main); color:var(--text-muted)">1x</span>
+                                                                </li>
+                                                                <li class="athkar-item">
+                                                                    <span>سبحان الله</span>
+                                                                    <span class="badge"
+                                                                        style="background:var(--bg-main); color:var(--text-muted)">33x</span>
+                                                                </li>
+                                                            </ul>
                                                         </div>
 
-                                                        <ul class="athkar-list">
-                                                            <li class="athkar-item">
-                                                                <span>أستغفر الله</span>
-                                                                <span class="badge" style="background:var(--bg-main); color:var(--text-muted)">3x</span>
-                                                            </li>
-                                                            <li class="athkar-item">
-                                                                <span>اللهم أنت السلام</span>
-                                                                <span class="badge" style="background:var(--bg-main); color:var(--text-muted)">1x</span>
-                                                            </li>
-                                                            <li class="athkar-item">
-                                                                <span>آية الكرسي</span>
-                                                                <span class="badge" style="background:var(--bg-main); color:var(--text-muted)">1x</span>
-                                                            </li>
-                                                            <li class="athkar-item">
-                                                                <span>سبحان الله</span>
-                                                                <span class="badge" style="background:var(--bg-main); color:var(--text-muted)">33x</span>
-                                                            </li>
-                                                        </ul>
+                                                        <!-- Actions -->
+                                                        <div class="prayer-actions">
+                                                            <button class="action-btn"
+                                                                onclick="openTestModal('<%= prayer.prayer_name %>', 'athkar')">
+                                                                <i class="fas fa-paper-plane"></i> اختبار الأذكار
+                                                            </button>
+                                                            <button class="action-btn"
+                                                                onclick="openTestModal('<%= prayer.prayer_name %>', 'prayer_time')">
+                                                                <i class="fas fa-paper-plane"></i> اختبار وقت الصلاة
+                                                            </button>
+                                                        </div>
                                                     </div>
-
-                                                    <!-- Actions -->
-                                                    <div class="prayer-actions">
-                                                        <button class="action-btn" onclick="openTestModal('<%= prayer.prayer_name %>', 'athkar')">
-                                                            <i class="fas fa-paper-plane"></i> اختبار الأذكار
-                                                        </button>
-                                                        <button class="action-btn" onclick="openTestModal('<%= prayer.prayer_name %>', 'prayer_time')">
-                                                            <i class="fas fa-paper-plane"></i> اختبار وقت الصلاة
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            <% }) %>
+                                                    <% }) %>
                                         </div>
                                         <% } %>
                             </div>
-                            
+
                             <!-- Save Button for Prayer Tab -->
                             <div style="margin-top: 20px; text-align: center; padding-bottom: 20px;">
-                                <button onclick="Swal.fire({title: 'تم الحفظ!', text: 'تم حفظ إعدادات الصلاة بنجاح. يتم حفظ التغييرات تلقائياً عند التعديل.', icon: 'success', timer: 2000, showConfirmButton: false})" 
-                                        class="btn btn-primary" 
-                                        style="padding: 12px 30px; font-size: 1.1rem; width: 100%; max-width: 300px; box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);">
+                                <button
+                                    onclick="Swal.fire({title: 'تم الحفظ!', text: 'تم حفظ إعدادات الصلاة بنجاح. يتم حفظ التغييرات تلقائياً عند التعديل.', icon: 'success', timer: 2000, showConfirmButton: false})"
+                                    class="btn btn-primary"
+                                    style="padding: 12px 30px; font-size: 1.1rem; width: 100%; max-width: 300px; box-shadow: 0 4px 15px rgba(var(--primary-rgb), 0.3);">
                                     <i class="fas fa-save"></i> حفظ إعدادات الصلاة
                                 </button>
                             </div>
 
                 </div> <!-- End Tab Prayers -->
 
-                <div id="tab-adhkar" class="tab-pane"
-                    data-text-length="<%= adhkarSettings.text_length || 'full' %>"
+                <div id="tab-adhkar" class="tab-pane" data-text-length="<%= adhkarSettings.text_length || 'full' %>"
                     data-media-preference="<%= adhkarSettings.media_preference || 'mixed' %>">
-                    <% 
-                        const formatTime12 = (timeStr) => {
-                            try {
-                                const parts = String(timeStr || '').split(':');
-                                const h = parseInt(parts[0], 10);
-                                const m = parts[1] || '00';
-                                const period = h >= 12 ? 'م' : 'ص';
-                                const h12 = (h % 12) || 12;
-                                return `${h12}:${m} ${period}`;
-                            } catch (e) {
-                                return timeStr;
-                            }
+                    <% const formatTime12=(timeStr)=> {
+                        try {
+                        const parts = String(timeStr || '').split(':');
+                        const h = parseInt(parts[0], 10);
+                        const m = parts[1] || '00';
+                        const period = h >= 12 ? 'م' : 'ص';
+                        const h12 = (h % 12) || 12;
+                        return `${h12}:${m} ${period}`;
+                        } catch (e) {
+                        return timeStr;
+                        }
                         };
-                    %>
-                    <div class="card" style="margin-bottom: 20px;">
-                        <div style="background: var(--bg-secondary); padding: 15px; border-radius: 10px;">
-                            <h4 style="margin: 0 0 10px 0;">نمط التجربة المفضل:</h4>
-                            <input type="hidden" id="experience_mode_input" value="<%= adhkarSettings.morning_source === 'manual' ? 'manual' : 'auto' %>">
-                            <div style="display: flex; gap: 10px;">
-                                <button onclick="setExperienceMode('manual')" id="btn-mode-manual"
-                                    class="btn mode-btn <%= adhkarSettings.morning_source === 'manual' ? 'mode-btn-active' : 'mode-btn-inactive' %>">
-                                    📖 وضع القراءة (نص كامل)
-                                </button>
-                                <button onclick="setExperienceMode('auto')" id="btn-mode-auto"
-                                    class="btn mode-btn <%= adhkarSettings.morning_source !== 'manual' ? 'mode-btn-active' : 'mode-btn-inactive' %>">
-                                    🖼️ وضع المشاهدة (صور/فيديو)
-                                </button>
+                        %>
+                        <div class="card" style="margin-bottom: 20px;">
+                            <div style="background: var(--bg-secondary); padding: 15px; border-radius: 10px;">
+                                <h4 style="margin: 0 0 10px 0;">نمط التجربة المفضل:</h4>
+                                <input type="hidden" id="experience_mode_input"
+                                    value="<%= adhkarSettings.morning_source === 'manual' ? 'manual' : 'auto' %>">
+                                <div style="display: flex; gap: 10px;">
+                                    <button onclick="setExperienceMode('manual')" id="btn-mode-manual"
+                                        class="btn mode-btn <%= adhkarSettings.morning_source === 'manual' ? 'mode-btn-active' : 'mode-btn-inactive' %>">
+                                        📖 وضع القراءة (نص كامل)
+                                    </button>
+                                    <button onclick="setExperienceMode('auto')" id="btn-mode-auto"
+                                        class="btn mode-btn <%= adhkarSettings.morning_source !== 'manual' ? 'mode-btn-active' : 'mode-btn-inactive' %>">
+                                        🖼️ وضع المشاهدة (صور/فيديو)
+                                    </button>
+                                </div>
+                                <small
+                                    style="color: var(--text-muted); display: block; margin-top: 10px; font-size: 0.9rem;">
+                                    يحدد هذا الإعداد طريقة عرض أذكار الصباح، المساء، وحديث اليوم.
+                                </small>
                             </div>
-                            <small style="color: var(--text-muted); display: block; margin-top: 10px; font-size: 0.9rem;">
-                                يحدد هذا الإعداد طريقة عرض أذكار الصباح، المساء، وحديث اليوم.
-                            </small>
                         </div>
-                    </div>
-                    
-                    <div style="margin-bottom: 20px;">
-                        <button onclick="saveAdhkarTabSettings()" class="btn btn-primary" style="width: 100%; padding: 12px 14px; font-size: 1.05rem;">
-                            <i class="fas fa-save"></i> حفظ جميع الإعدادات
-                        </button>
-                    </div>
 
-                    <div class="adhkar-layout" id="adhkar-layout">
-                        <div class="adhkar-main">
-                            <div class="tabs adhkar-tabs" style="margin-top: 0;">
-                                <button onclick="switchAdhkarHubTab('morning-evening')" id="hub-btn-morning-evening" class="tab-btn active" style="flex:1;">
-                                    <i class="fas fa-sun"></i> الصباح والمساء
-                                </button>
-                                <button onclick="switchAdhkarHubTab('hadith')" id="hub-btn-hadith" class="tab-btn" style="flex:1;">
-                                    <i class="fas fa-book-open"></i> الأحاديث
-                                </button>
-                                <button onclick="switchAdhkarHubTab('selected')" id="hub-btn-selected" class="tab-btn" style="flex:1;">
-                                    <i class="fas fa-praying-hands"></i> أذكار مختارة
-                                </button>
-                                <button onclick="switchAdhkarHubTab('custom')" id="hub-btn-custom" class="tab-btn" style="flex:1;">
-                                    <i class="fas fa-calendar-check"></i> جدولة خاصة
-                                </button>
-                                <button onclick="switchAdhkarHubTab('fasting')" id="hub-btn-fasting" class="tab-btn" style="flex:1;">
-                                    <i class="fas fa-moon"></i> الصيام
-                                </button>
-                            </div>
+                        <div style="margin-bottom: 20px;">
+                            <button onclick="saveAdhkarTabSettings()" class="btn btn-primary"
+                                style="width: 100%; padding: 12px 14px; font-size: 1.05rem;">
+                                <i class="fas fa-save"></i> حفظ جميع الإعدادات
+                            </button>
+                        </div>
 
-                            <div class="card adhkar-card" id="hub-panel-instant">
-                                <div class="adhkar-card-header">
-                                    <h2><i class="fas fa-paper-plane"></i> أدوات النشر الفوري</h2>
-                                    <div class="adhkar-muted">إرسال حديث أو ذكر أو رسالة خاصة فوراً</div>
-                                </div>
-
-                                <div id="content-panel-hadith" class="adhkar-inline-controls">
-                                    <select id="hadith-book-select" class="form-control" style="flex: 2; min-width: 180px;">
-                                        <%
-                                            const hadithBookSetting = ['bukhari', 'muslim', 'mixed'].includes(adhkarSettings.hadith_source) ? adhkarSettings.hadith_source : 'mixed';
-                                            const hadithMediaModeSetting = (adhkarSettings.hadith_media_mode || 'text');
-                                            const hadithShowSourceTextSetting = (adhkarSettings.hadith_show_source_text != null ? Number(adhkarSettings.hadith_show_source_text) : 1);
-                                            const hadithShowImageSourceTextSetting = (adhkarSettings.hadith_show_image_source_text != null ? Number(adhkarSettings.hadith_show_image_source_text) : 1);
-                                            const hadithShowLinkSetting = (adhkarSettings.hadith_show_link != null ? Number(adhkarSettings.hadith_show_link) : 1);
-                                            const hadithImageSourceSetting = (adhkarSettings.hadith_image_source || 'islamic_backgrounds');
-                                            const hadithImageThemeSetting = (adhkarSettings.hadith_image_theme || 'mosques');
-                                        %>
-                                        <option value="mixed" <%= hadithBookSetting === 'mixed' ? 'selected' : '' %>>عشوائي (البخاري + مسلم)</option>
-                                        <option value="bukhari" <%= hadithBookSetting === 'bukhari' ? 'selected' : '' %>>صحيح البخاري</option>
-                                        <option value="muslim" <%= hadithBookSetting === 'muslim' ? 'selected' : '' %>>صحيح مسلم</option>
-                                    </select>
-                                    <button onclick="fetchRandomHadith(true)" class="btn btn-secondary" style="flex: 1; min-width: 160px;">
-                                        <i class="fas fa-random"></i> حديث جديد
+                        <div class="adhkar-layout" id="adhkar-layout">
+                            <div class="adhkar-main">
+                                <div class="tabs adhkar-tabs" style="margin-top: 0;">
+                                    <button onclick="switchAdhkarHubTab('morning-evening')" id="hub-btn-morning-evening"
+                                        class="tab-btn active" style="flex:1;">
+                                        <i class="fas fa-sun"></i> الصباح والمساء
                                     </button>
-                                    <button onclick="hadithPrev()" class="btn btn-outline" style="min-width: 90px;">
-                                        السابق
+                                    <button onclick="switchAdhkarHubTab('hadith')" id="hub-btn-hadith" class="tab-btn"
+                                        style="flex:1;">
+                                        <i class="fas fa-book-open"></i> الأحاديث
                                     </button>
-                                    <button onclick="hadithNext()" class="btn btn-outline" style="min-width: 90px;">
-                                        التالي
+                                    <button onclick="switchAdhkarHubTab('selected')" id="hub-btn-selected"
+                                        class="tab-btn" style="flex:1;">
+                                        <i class="fas fa-praying-hands"></i> أذكار مختارة
+                                    </button>
+                                    <button onclick="switchAdhkarHubTab('custom')" id="hub-btn-custom" class="tab-btn"
+                                        style="flex:1;">
+                                        <i class="fas fa-calendar-check"></i> جدولة خاصة
+                                    </button>
+                                    <button onclick="switchAdhkarHubTab('fasting')" id="hub-btn-fasting" class="tab-btn"
+                                        style="flex:1;">
+                                        <i class="fas fa-moon"></i> الصيام
                                     </button>
                                 </div>
 
-                                <div id="content-panel-selected" class="adhkar-inline-controls" style="display:none;">
-                                    <select id="selected-adhkar-category" class="form-control" style="flex: 2; min-width: 180px;">
-                                        <option value="general">أذكار مختارة</option>
-                                        <option value="istighfar">استغفار</option>
-                                        <option value="tasbeeh">تسبيح</option>
-                                        <option value="hamd">حمد</option>
-                                        <option value="tahleel">تهليل</option>
-                                        <option value="takbeer">تكبير</option>
-                                        <option value="salat">الصلاة على النبي ﷺ</option>
-                                        <option value="dua">دعاء مختار</option>
-                                    </select>
-                                    <button onclick="fetchRandomSelectedAdhkar(true)" class="btn btn-secondary" style="flex: 1; min-width: 160px;">
-                                        <i class="fas fa-random"></i> ذكر جديد
-                                    </button>
-                                </div>
+                                <div class="card adhkar-card" id="hub-panel-instant">
+                                    <div class="adhkar-card-header">
+                                        <h2><i class="fas fa-paper-plane"></i> أدوات النشر الفوري</h2>
+                                        <div class="adhkar-muted">إرسال حديث أو ذكر أو رسالة خاصة فوراً</div>
+                                    </div>
 
-                                <div id="hadith-media-controls" style="margin: 10px 0 12px 0; display: none;">
-                                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="radio" name="hadith_send_mode" value="text" <%= hadithMediaModeSetting !== 'image' ? 'checked' : '' %> onchange="updateHadithInstantUI()">
-                                            <span>حديث فقط</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="radio" name="hadith_send_mode" value="image" <%= hadithMediaModeSetting === 'image' ? 'checked' : '' %> onchange="updateHadithInstantUI()">
-                                            <span>حديث + صورة</span>
-                                        </label>
-                                        <select id="hadith_image_source" class="form-control" style="min-width: 210px; padding: 8px 10px;" onchange="onHadithImageSourceChanged()">
-                                            <option value="islamic_backgrounds" <%= hadithImageSourceSetting === 'islamic_backgrounds' ? 'selected' : '' %>>صور مساجد احترافية</option>
+                                    <div id="content-panel-hadith" class="adhkar-inline-controls">
+                                        <select id="hadith-book-select" class="form-control"
+                                            style="flex: 2; min-width: 180px;">
+                                            <% const hadithBookSetting=['bukhari', 'muslim' , 'mixed'
+                                                ].includes(adhkarSettings.hadith_source) ? adhkarSettings.hadith_source
+                                                : 'mixed' ; const
+                                                hadithMediaModeSetting=(adhkarSettings.hadith_media_mode || 'text' );
+                                                const
+                                                hadithShowSourceTextSetting=(adhkarSettings.hadith_show_source_text
+                                                !=null ? Number(adhkarSettings.hadith_show_source_text) : 1); const
+                                                hadithShowImageSourceTextSetting=(adhkarSettings.hadith_show_image_source_text
+                                                !=null ? Number(adhkarSettings.hadith_show_image_source_text) : 1);
+                                                const hadithShowLinkSetting=(adhkarSettings.hadith_show_link !=null ?
+                                                Number(adhkarSettings.hadith_show_link) : 1); const
+                                                hadithImageSourceSetting=(adhkarSettings.hadith_image_source
+                                                || 'islamic_backgrounds' ); const
+                                                hadithImageThemeSetting=(adhkarSettings.hadith_image_theme || 'mosques'
+                                                ); %>
+                                                <option value="mixed" <%=hadithBookSetting==='mixed' ? 'selected' : ''
+                                                    %>>عشوائي (البخاري + مسلم)</option>
+                                                <option value="bukhari" <%=hadithBookSetting==='bukhari' ? 'selected'
+                                                    : '' %>>صحيح البخاري</option>
+                                                <option value="muslim" <%=hadithBookSetting==='muslim' ? 'selected' : ''
+                                                    %>>صحيح مسلم</option>
                                         </select>
-                                        <select id="hadith_image_theme" class="form-control" style="min-width: 180px; padding: 8px 10px; display:none;" onchange="onHadithImageSourceChanged()">
-                                            <option value="mosques" <%= hadithImageThemeSetting === 'mosques' ? 'selected' : '' %>>مساجد</option>
+                                        <button onclick="fetchRandomHadith(true)" class="btn btn-secondary"
+                                            style="flex: 1; min-width: 160px;">
+                                            <i class="fas fa-random"></i> حديث جديد
+                                        </button>
+                                        <button onclick="hadithPrev()" class="btn btn-outline" style="min-width: 90px;">
+                                            السابق
+                                        </button>
+                                        <button onclick="hadithNext()" class="btn btn-outline" style="min-width: 90px;">
+                                            التالي
+                                        </button>
+                                    </div>
+
+                                    <div id="content-panel-selected" class="adhkar-inline-controls"
+                                        style="display:none;">
+                                        <select id="selected-adhkar-category" class="form-control"
+                                            style="flex: 2; min-width: 180px;">
+                                            <option value="general">أذكار مختارة</option>
+                                            <option value="istighfar">استغفار</option>
+                                            <option value="tasbeeh">تسبيح</option>
+                                            <option value="hamd">حمد</option>
+                                            <option value="tahleel">تهليل</option>
+                                            <option value="takbeer">تكبير</option>
+                                            <option value="salat">الصلاة على النبي ﷺ</option>
+                                            <option value="dua">دعاء مختار</option>
                                         </select>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="hadith_include_source" <%= hadithShowSourceTextSetting === 1 ? 'checked' : '' %> onchange="onHadithSettingChanged()">
-                                            <span>إظهار المصدر</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="hadith_include_image_source" <%= hadithShowImageSourceTextSetting === 1 ? 'checked' : '' %> onchange="onHadithSettingChanged()">
-                                            <span>مصدر الصورة</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="hadith_include_more_link" <%= hadithShowLinkSetting === 1 ? 'checked' : '' %> onchange="onHadithSettingChanged()">
-                                            <span>للمزيد</span>
-                                        </label>
-                                        <button id="hadith-change-image-btn" onclick="fetchHadithBackground()" class="btn btn-outline" style="display:none;">
-                                            <i class="fas fa-image"></i> تغيير الصورة
-                                        </button>
-                                        <button id="hadith-save-btn" onclick="saveHadithTabNow()" class="btn btn-primary" style="padding: 8px 12px;">
-                                            <i class="fas fa-save"></i> حفظ
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div id="selected-media-controls" style="margin: 10px 0 12px 0; display: none;">
-                                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="radio" name="selected_send_mode" value="text" checked onchange="updateSelectedInstantUI()">
-                                            <span>ذكر فقط</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="radio" name="selected_send_mode" value="image" onchange="updateSelectedInstantUI()">
-                                            <span>ذكر + صورة</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="selected_include_source" checked onchange="updateSelectedInstantPreview()">
-                                            <span>إظهار المصدر</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="selected_include_more_link" checked onchange="updateSelectedInstantPreview()">
-                                            <span>للمزيد</span>
-                                        </label>
-                                        <button id="selected-change-image-btn" onclick="fetchSelectedBackground(true)" class="btn btn-outline" style="display:none;">
-                                            <i class="fas fa-image"></i> تغيير الصورة
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div id="selected-inline-schedule" style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
-                                    <%
-                                        let selectedTimes = [];
-                                        try { selectedTimes = JSON.parse(adhkarSettings.selected_times_json || '[]'); } catch (e) { selectedTimes = []; }
-                                        if (!Array.isArray(selectedTimes)) selectedTimes = [];
-                                        selectedTimes = selectedTimes.map(t => String(t || '').trim()).filter(Boolean);
-                                        if (!selectedTimes.length) selectedTimes = ['12:00'];
-                                        const selectedTimesCount = Math.min(5, Math.max(1, Number(adhkarSettings.selected_times_count || selectedTimes.length || 1)));
-                                        while (selectedTimes.length < selectedTimesCount) selectedTimes.push(selectedTimes[selectedTimes.length - 1] || '12:00');
-                                        selectedTimes = selectedTimes.slice(0, 5);
-                                        const selectedEnabled = Number(adhkarSettings.selected_enabled || 0) === 1;
-                                        const selectedMediaMode = (adhkarSettings.selected_media_mode || 'text');
-                                        const selectedShowSource = (adhkarSettings.selected_show_source_text != null ? Number(adhkarSettings.selected_show_source_text) : 1);
-                                        const selectedShowLink = (adhkarSettings.selected_show_link != null ? Number(adhkarSettings.selected_show_link) : 1);
-                                    %>
-                                    <div style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-                                        <div>
-                                            <div style="font-weight: 800;">🗓️ جدولة الأذكار المختارة</div>
-                                            <div style="color: var(--text-muted); font-size: 0.85rem;">الإرسال يتم لك أنت فقط</div>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="selected_schedule_enabled" <%= selectedEnabled ? 'checked' : '' %> onchange="saveSelectedScheduleInline(false)">
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                    </div>
-
-                                    <div style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                                        <span style="color: var(--text-muted);">عدد المرات:</span>
-                                        <select id="selected_schedule_count" class="form-control" style="width: 170px; padding: 8px 10px;" onchange="onSelectedScheduleCountChanged()">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <option value="<%= i %>" <%= selectedTimesCount === i ? 'selected' : '' %>><%= i %> مرة يوميًا</option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-
-                                    <div style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                                        <span style="color: var(--text-muted);">طريقة الإرسال:</span>
-                                        <select id="selected_schedule_media_mode" class="form-control" style="width: 200px; padding: 8px 10px;" onchange="saveSelectedScheduleInline(false)">
-                                            <option value="text" <%= selectedMediaMode !== 'image' ? 'selected' : '' %>>نص فقط</option>
-                                            <option value="image" <%= selectedMediaMode === 'image' ? 'selected' : '' %>>نص + صورة</option>
-                                        </select>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="selected_schedule_show_source" <%= selectedShowSource === 1 ? 'checked' : '' %> onchange="saveSelectedScheduleInline(false)">
-                                            <span>إظهار المصدر</span>
-                                        </label>
-                                        <label style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                            <input type="checkbox" id="selected_schedule_show_link" <%= selectedShowLink === 1 ? 'checked' : '' %> onchange="saveSelectedScheduleInline(false)">
-                                            <span>للمزيد</span>
-                                        </label>
-                                    </div>
-
-                                    <div id="selected_schedule_times_wrap" style="margin-top: 10px; display:flex; flex-direction: column; gap: 8px;">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <div class="selected-schedule-time-row <%= i <= selectedTimesCount ? '' : 'hidden' %>" data-index="<%= i %>" style="display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                                                <span style="color: var(--text-muted); width: 95px;">وقت <%= i %>:</span>
-                                                <input type="time" id="selected_schedule_time_<%= i %>" class="form-control" style="width: 150px; padding: 8px 10px;" value="<%= selectedTimes[i - 1] || '12:00' %>" onchange="saveSelectedScheduleInline(false)">
-                                            </div>
-                                        <% } %>
-                                    </div>
-
-                                    <div style="margin-top: 12px; display:flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
-                                        <button onclick="saveSelectedScheduleInline(true)" class="btn btn-primary" style="min-width: 160px; padding: 9px 12px;">
-                                            <i class="fas fa-save"></i> حفظ من الأسفل
-                                        </button>
-                                        <button onclick="testSelectedAdhkarNow()" class="btn btn-outline" style="min-width: 160px; padding: 9px 12px;">
-                                            <i class="fas fa-vial"></i> اختبار الذكر
-                                        </button>
-                                    </div>
-                                </div>
-
-                                <div class="adhkar-preview-box">
-                                    <label style="display:block; margin-bottom: 8px; color: var(--text-muted);">معاينة المحتوى:</label>
-                                    <div id="preview-media-wrap" style="display:none; margin-bottom: 10px;">
-                                        <img id="preview-media" alt="preview" style="width: 100%; max-height: 260px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-main);" />
-                                        <div style="margin-top: 6px; color: var(--text-muted); font-size: 0.85rem;" id="preview-media-source"></div>
-                                    </div>
-                                    <textarea id="preview-text" class="form-control" rows="6" readonly style="background: var(--bg-main); color: var(--text-main); font-family: 'Amiri', serif; font-size: 1.1rem; line-height: 1.8;"></textarea>
-
-                                    <div class="adhkar-source-row">
-                                        <label style="color: var(--text-muted); white-space: nowrap;">المصدر:</label>
-                                        <input type="text" id="preview-source" class="form-control" readonly style="background: var(--bg-main); font-weight: bold; color: var(--primary);">
-                                    </div>
-                                </div>
-
-                                <div class="adhkar-actions-row">
-                                    <button onclick="sendInstantMessage()" class="btn btn-primary" style="min-width: 150px;">
-                                        <i class="fab fa-whatsapp"></i> إرسال الآن
-                                    </button>
-                                </div>
-
-                                <div id="hadith-inline-schedule" style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
-                                    <%
-                                        let hadithTimes = [];
-                                        try { hadithTimes = JSON.parse(adhkarSettings.hadith_times_json || '[]'); } catch (e) { hadithTimes = []; }
-                                        if (!Array.isArray(hadithTimes)) hadithTimes = [];
-                                        hadithTimes = hadithTimes.map(t => String(t || '').trim()).filter(Boolean);
-                                        if (!hadithTimes.length) hadithTimes = [adhkarSettings.hadith_time || '12:00'];
-                                        const hadithTimesCount = Math.min(5, Math.max(1, Number(adhkarSettings.hadith_times_count || hadithTimes.length || 1)));
-                                        while (hadithTimes.length < hadithTimesCount) hadithTimes.push(hadithTimes[hadithTimes.length - 1] || (adhkarSettings.hadith_time || '12:00'));
-                                        hadithTimes = hadithTimes.slice(0, 5);
-                                    %>
-                                    <div style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-                                        <div>
-                                            <div style="font-weight: 800;">🗓️ الجدولة اليومية</div>
-                                            <div style="color: var(--text-muted); font-size: 0.85rem;">الإرسال يتم حسب إعدادات الحديث بالأعلى</div>
-                                        </div>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" id="hadith_schedule_enabled" <%= adhkarSettings.hadith_enabled ? 'checked' : '' %> onchange="saveHadithScheduleInline()">
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                    </div>
-                                    <div style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                                        <span style="color: var(--text-muted);">عدد المرات:</span>
-                                        <select id="hadith_schedule_count" class="form-control" style="width: 170px; padding: 8px 10px;" onchange="onHadithScheduleCountChanged()">
-                                            <% for (let i = 1; i <= 5; i++) { %>
-                                                <option value="<%= i %>" <%= hadithTimesCount === i ? 'selected' : '' %>><%= i %> مرة يوميًا</option>
-                                            <% } %>
-                                        </select>
-                                    </div>
-                                    <div id="hadith_schedule_times_wrap" style="margin-top: 10px; display:flex; flex-direction: column; gap: 8px;">
-                                        <% for (let i = 1; i <= 5; i++) { %>
-                                            <div class="hadith-schedule-time-row <%= i <= hadithTimesCount ? '' : 'hidden' %>" data-index="<%= i %>" style="display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                                                <span style="color: var(--text-muted); width: 95px;">وقت <%= i %>:</span>
-                                                <input type="time" id="hadith_schedule_time_<%= i %>" class="form-control" style="width: 150px; padding: 8px 10px;" value="<%= hadithTimes[i - 1] || (adhkarSettings.hadith_time || '12:00') %>" onchange="saveHadithScheduleInline()">
-                                            </div>
-                                        <% } %>
-                                    </div>
-                                </div>
-
-                                <div id="custom-schedule-builder" style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
-                                    <div style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
-                                        <div>
-                                            <div style="font-weight: 800;">📅 الجدولة الخاصة</div>
-                                            <div style="color: var(--text-muted); font-size: 0.85rem;">هذه الرسائل تُرسل لك أنت فقط</div>
-                                        </div>
-                                        <button onclick="loadCustomScheduleJobs()" class="btn btn-outline" style="padding: 8px 12px;">
-                                            <i class="fas fa-sync"></i> تحديث
+                                        <button onclick="fetchRandomSelectedAdhkar(true)" class="btn btn-secondary"
+                                            style="flex: 1; min-width: 160px;">
+                                            <i class="fas fa-random"></i> ذكر جديد
                                         </button>
                                     </div>
 
-                                    <div style="margin-top: 12px; display:grid; grid-template-columns: 1fr; gap: 10px;">
-                                        <input id="custom-job-id" type="hidden" value="">
-
-                                        <div style="display:flex; gap: 10px; flex-wrap: wrap;">
-                                            <input id="custom-title" class="form-control" style="flex: 2; min-width: 220px;" placeholder="عنوان الجدولة">
-                                            <select id="custom-kind" class="form-control" style="flex: 1; min-width: 180px;" onchange="onCustomKindChanged()">
-                                                <option value="text">نص</option>
-                                                <option value="image">صورة</option>
-                                                <option value="video">فيديو</option>
-                                                <option value="audio">صوت</option>
-                                            </select>
-                                            <label style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
-                                                <input type="checkbox" id="custom-enabled" checked>
-                                                <span>تفعيل</span>
+                                    <div id="hadith-media-controls" style="margin: 10px 0 12px 0; display: none;">
+                                        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="radio" name="hadith_send_mode" value="text"
+                                                    <%=hadithMediaModeSetting !=='image' ? 'checked' : '' %>
+                                                onchange="updateHadithInstantUI()">
+                                                <span>حديث فقط</span>
                                             </label>
-                                        </div>
-
-                                        <textarea id="custom-text" class="form-control" rows="4" placeholder="اكتب الرسالة..."></textarea>
-
-                                        <div id="custom-media-controls" class="hidden" style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
-                                            <input id="custom-media-url" class="form-control" style="flex: 2; min-width: 260px;" placeholder="رابط (اختياري) أو ارفع ملف">
-                                            <input id="custom-media-file" type="file" class="form-control" style="flex: 1; min-width: 220px; padding: 8px 10px;" accept="image/*,video/*,audio/*">
-                                            <button onclick="uploadCustomMediaFile()" class="btn btn-outline" style="padding: 8px 12px;">
-                                                <i class="fas fa-upload"></i> رفع
-                                            </button>
-                                        </div>
-
-                                        <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
-                                            <select id="custom-schedule-mode" class="form-control" style="min-width: 220px;" onchange="onCustomScheduleModeChanged()">
-                                                <option value="weekly">يوم من الأسبوع + وقت</option>
-                                                <option value="date">تاريخ محدد + وقت</option>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="radio" name="hadith_send_mode" value="image"
+                                                    <%=hadithMediaModeSetting==='image' ? 'checked' : '' %>
+                                                onchange="updateHadithInstantUI()">
+                                                <span>حديث + صورة</span>
+                                            </label>
+                                            <select id="hadith_image_source" class="form-control"
+                                                style="min-width: 210px; padding: 8px 10px;"
+                                                onchange="onHadithImageSourceChanged()">
+                                                <option value="islamic_backgrounds"
+                                                    <%=hadithImageSourceSetting==='islamic_backgrounds' ? 'selected'
+                                                    : '' %>>صور مساجد احترافية</option>
                                             </select>
-                                            <div id="custom-weekly-wrap" style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
-                                                <select id="custom-weekday" class="form-control" style="min-width: 160px;">
-                                                    <option value="0">الأحد</option>
-                                                    <option value="1">الإثنين</option>
-                                                    <option value="2">الثلاثاء</option>
-                                                    <option value="3">الأربعاء</option>
-                                                    <option value="4">الخميس</option>
-                                                    <option value="5">الجمعة</option>
-                                                    <option value="6">السبت</option>
-                                                </select>
-                                            </div>
-                                            <div id="custom-date-wrap" class="hidden" style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
-                                                <input id="custom-date" type="date" class="form-control" style="min-width: 200px; padding: 8px 10px;">
-                                            </div>
-                                            <input type="time" id="custom-time" class="form-control" style="width: 160px; padding: 8px 10px;" value="12:00">
-                                        </div>
-
-                                        <div style="display:flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
-                                            <button onclick="resetCustomJobForm()" class="btn btn-outline" style="padding: 8px 12px;">تفريغ</button>
-                                            <button onclick="saveCustomJob()" class="btn btn-primary" style="padding: 8px 12px;">حفظ الجدولة</button>
-                                        </div>
-                                    </div>
-
-                                    <div style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
-                                        <div style="font-weight: 800; margin-bottom: 10px;">📋 جدولاتي</div>
-                                        <div id="custom-jobs-list" style="display:flex; flex-direction: column; gap: 10px;"></div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card adhkar-card" id="hub-panel-schedule">
-                                <div class="adhkar-card-header">
-                                    <h2><i class="fas fa-clock"></i> الجدولة اليومية</h2>
-                                    <div class="adhkar-muted" id="hub-schedule-subtitle">تفعيل/إيقاف وتعديل الوقت والرابط لكل قسم</div>
-                                </div>
-
-                                <div class="adhkar-schedule-list">
-                                    <div class="adhkar-schedule-item" data-schedule-group="morning-evening">
-                                        <div class="adhkar-schedule-left">
-                                            <div class="adhkar-icon" style="background: rgba(255, 193, 7, 0.12); color: #FFC107;">
-                                                <i class="fas fa-sun"></i>
-                                            </div>
-                                            <div class="adhkar-schedule-meta">
-                                                <div class="adhkar-title">أذكار الصباح</div>
-                                                <div class="adhkar-sub"><i class="far fa-clock"></i><span><%= formatTime12(adhkarSettings.morning_time || '07:00') %></span></div>
-                                            </div>
-                                        </div>
-                                        <div class="adhkar-schedule-actions">
-                                            <button onclick="testScheduler('adhkar', 'morning')" class="btn btn-sm btn-outline-primary" title="إرسال الآن" style="padding: 5px 10px;">
-                                                <i class="fas fa-paper-plane"></i>
+                                            <select id="hadith_image_theme" class="form-control"
+                                                style="min-width: 180px; padding: 8px 10px; display:none;"
+                                                onchange="onHadithImageSourceChanged()">
+                                                <option value="mosques" <%=hadithImageThemeSetting==='mosques'
+                                                    ? 'selected' : '' %>>مساجد</option>
+                                            </select>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="checkbox" id="hadith_include_source"
+                                                    <%=hadithShowSourceTextSetting===1 ? 'checked' : '' %>
+                                                onchange="onHadithSettingChanged()">
+                                                <span>إظهار المصدر</span>
+                                            </label>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="checkbox" id="hadith_include_image_source"
+                                                    <%=hadithShowImageSourceTextSetting===1 ? 'checked' : '' %>
+                                                onchange="onHadithSettingChanged()">
+                                                <span>مصدر الصورة</span>
+                                            </label>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="checkbox" id="hadith_include_more_link"
+                                                    <%=hadithShowLinkSetting===1 ? 'checked' : '' %>
+                                                onchange="onHadithSettingChanged()">
+                                                <span>للمزيد</span>
+                                            </label>
+                                            <button id="hadith-change-image-btn" onclick="fetchHadithBackground()"
+                                                class="btn btn-outline" style="display:none;">
+                                                <i class="fas fa-image"></i> تغيير الصورة
                                             </button>
-                                            <button onclick="openDailyAdhkarSettingsFromButton(this)"
-                                                    data-daily-key="morning"
-                                                    data-daily-name="أذكار الصباح"
+                                            <button id="hadith-save-btn" onclick="saveHadithTabNow()"
+                                                class="btn btn-primary" style="padding: 8px 12px;">
+                                                <i class="fas fa-save"></i> حفظ
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div id="selected-media-controls" style="margin: 10px 0 12px 0; display: none;">
+                                        <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="radio" name="selected_send_mode" value="text" checked
+                                                    onchange="updateSelectedInstantUI()">
+                                                <span>ذكر فقط</span>
+                                            </label>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="radio" name="selected_send_mode" value="image"
+                                                    onchange="updateSelectedInstantUI()">
+                                                <span>ذكر + صورة</span>
+                                            </label>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="checkbox" id="selected_include_source" checked
+                                                    onchange="updateSelectedInstantPreview()">
+                                                <span>إظهار المصدر</span>
+                                            </label>
+                                            <label
+                                                style="display:flex; align-items:center; gap:8px; background: var(--bg-secondary); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                <input type="checkbox" id="selected_include_more_link" checked
+                                                    onchange="updateSelectedInstantPreview()">
+                                                <span>للمزيد</span>
+                                            </label>
+                                            <button id="selected-change-image-btn"
+                                                onclick="fetchSelectedBackground(true)" class="btn btn-outline"
+                                                style="display:none;">
+                                                <i class="fas fa-image"></i> تغيير الصورة
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <div id="selected-inline-schedule"
+                                        style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
+                                        <% let selectedTimes=[]; try {
+                                            selectedTimes=JSON.parse(adhkarSettings.selected_times_json || '[]' ); }
+                                            catch (e) { selectedTimes=[]; } if (!Array.isArray(selectedTimes))
+                                            selectedTimes=[]; selectedTimes=selectedTimes.map(t=> String(t ||
+                                            '').trim()).filter(Boolean);
+                                            if (!selectedTimes.length) selectedTimes = ['12:00'];
+                                            const selectedTimesCount = Math.min(5, Math.max(1,
+                                            Number(adhkarSettings.selected_times_count || selectedTimes.length || 1)));
+                                            while (selectedTimes.length < selectedTimesCount)
+                                                selectedTimes.push(selectedTimes[selectedTimes.length - 1] || '12:00' );
+                                                selectedTimes=selectedTimes.slice(0, 5); const
+                                                selectedEnabled=Number(adhkarSettings.selected_enabled || 0)===1; const
+                                                selectedMediaMode=(adhkarSettings.selected_media_mode || 'text' ); const
+                                                selectedShowSource=(adhkarSettings.selected_show_source_text !=null ?
+                                                Number(adhkarSettings.selected_show_source_text) : 1); const
+                                                selectedShowLink=(adhkarSettings.selected_show_link !=null ?
+                                                Number(adhkarSettings.selected_show_link) : 1); %>
+                                                <div
+                                                    style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                                                    <div>
+                                                        <div style="font-weight: 800;">🗓️ جدولة الأذكار المختارة</div>
+                                                        <div style="color: var(--text-muted); font-size: 0.85rem;">
+                                                            الإرسال يتم لك أنت فقط</div>
+                                                    </div>
+                                                    <label class="toggle-switch">
+                                                        <input type="checkbox" id="selected_schedule_enabled"
+                                                            <%=selectedEnabled ? 'checked' : '' %>
+                                                        onchange="saveSelectedScheduleInline(false)">
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                </div>
+
+                                                <div
+                                                    style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
+                                                    <span style="color: var(--text-muted);">عدد المرات:</span>
+                                                    <select id="selected_schedule_count" class="form-control"
+                                                        style="width: 170px; padding: 8px 10px;"
+                                                        onchange="onSelectedScheduleCountChanged()">
+                                                        <% for (let i=1; i <=5; i++) { %>
+                                                            <option value="<%= i %>" <%=selectedTimesCount===i
+                                                                ? 'selected' : '' %>><%= i %> مرة يوميًا</option>
+                                                            <% } %>
+                                                    </select>
+                                                </div>
+
+                                                <div
+                                                    style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
+                                                    <span style="color: var(--text-muted);">طريقة الإرسال:</span>
+                                                    <select id="selected_schedule_media_mode" class="form-control"
+                                                        style="width: 200px; padding: 8px 10px;"
+                                                        onchange="saveSelectedScheduleInline(false)">
+                                                        <option value="text" <%=selectedMediaMode !=='image'
+                                                            ? 'selected' : '' %>>نص فقط</option>
+                                                        <option value="image" <%=selectedMediaMode==='image'
+                                                            ? 'selected' : '' %>>نص + صورة</option>
+                                                    </select>
+                                                    <label
+                                                        style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                        <input type="checkbox" id="selected_schedule_show_source"
+                                                            <%=selectedShowSource===1 ? 'checked' : '' %>
+                                                        onchange="saveSelectedScheduleInline(false)">
+                                                        <span>إظهار المصدر</span>
+                                                    </label>
+                                                    <label
+                                                        style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                        <input type="checkbox" id="selected_schedule_show_link"
+                                                            <%=selectedShowLink===1 ? 'checked' : '' %>
+                                                        onchange="saveSelectedScheduleInline(false)">
+                                                        <span>للمزيد</span>
+                                                    </label>
+                                                </div>
+
+                                                <div id="selected_schedule_times_wrap"
+                                                    style="margin-top: 10px; display:flex; flex-direction: column; gap: 8px;">
+                                                    <% for (let i=1; i <=5; i++) { %>
+                                                        <div class="selected-schedule-time-row <%= i <= selectedTimesCount ? '' : 'hidden' %>"
+                                                            data-index="<%= i %>"
+                                                            style="display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
+                                                            <span style="color: var(--text-muted); width: 95px;">وقت <%=
+                                                                    i %>:</span>
+                                                            <input type="time" id="selected_schedule_time_<%= i %>"
+                                                                class="form-control"
+                                                                style="width: 150px; padding: 8px 10px;"
+                                                                value="<%= selectedTimes[i - 1] || '12:00' %>"
+                                                                onchange="saveSelectedScheduleInline(false)">
+                                                        </div>
+                                                        <% } %>
+                                                </div>
+
+                                                <div
+                                                    style="margin-top: 12px; display:flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                                                    <button onclick="saveSelectedScheduleInline(true)"
+                                                        class="btn btn-primary"
+                                                        style="min-width: 160px; padding: 9px 12px;">
+                                                        <i class="fas fa-save"></i> حفظ من الأسفل
+                                                    </button>
+                                                    <button onclick="testSelectedAdhkarNow()" class="btn btn-outline"
+                                                        style="min-width: 160px; padding: 9px 12px;">
+                                                        <i class="fas fa-vial"></i> اختبار الذكر
+                                                    </button>
+                                                </div>
+                                    </div>
+
+                                    <div class="adhkar-preview-box">
+                                        <label
+                                            style="display:block; margin-bottom: 8px; color: var(--text-muted);">معاينة
+                                            المحتوى:</label>
+                                        <div id="preview-media-wrap" style="display:none; margin-bottom: 10px;">
+                                            <img id="preview-media" alt="preview"
+                                                style="width: 100%; max-height: 260px; object-fit: cover; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-main);" />
+                                            <div style="margin-top: 6px; color: var(--text-muted); font-size: 0.85rem;"
+                                                id="preview-media-source"></div>
+                                        </div>
+                                        <textarea id="preview-text" class="form-control" rows="6" readonly
+                                            style="background: var(--bg-main); color: var(--text-main); font-family: 'Amiri', serif; font-size: 1.1rem; line-height: 1.8;"></textarea>
+
+                                        <div class="adhkar-source-row">
+                                            <label
+                                                style="color: var(--text-muted); white-space: nowrap;">المصدر:</label>
+                                            <input type="text" id="preview-source" class="form-control" readonly
+                                                style="background: var(--bg-main); font-weight: bold; color: var(--primary);">
+                                        </div>
+                                    </div>
+
+                                    <div class="adhkar-actions-row">
+                                        <button onclick="sendInstantMessage()" class="btn btn-primary"
+                                            style="min-width: 150px;">
+                                            <i class="fab fa-whatsapp"></i> إرسال الآن
+                                        </button>
+                                    </div>
+
+                                    <div id="hadith-inline-schedule"
+                                        style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
+                                        <% let hadithTimes=[]; try {
+                                            hadithTimes=JSON.parse(adhkarSettings.hadith_times_json || '[]' ); } catch
+                                            (e) { hadithTimes=[]; } if (!Array.isArray(hadithTimes)) hadithTimes=[];
+                                            hadithTimes=hadithTimes.map(t=> String(t || '').trim()).filter(Boolean);
+                                            if (!hadithTimes.length) hadithTimes = [adhkarSettings.hadith_time ||
+                                            '12:00'];
+                                            const hadithTimesCount = Math.min(5, Math.max(1,
+                                            Number(adhkarSettings.hadith_times_count || hadithTimes.length || 1)));
+                                            while (hadithTimes.length < hadithTimesCount)
+                                                hadithTimes.push(hadithTimes[hadithTimes.length - 1] ||
+                                                (adhkarSettings.hadith_time || '12:00' ));
+                                                hadithTimes=hadithTimes.slice(0, 5); %>
+                                                <div
+                                                    style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                                                    <div>
+                                                        <div style="font-weight: 800;">🗓️ الجدولة اليومية</div>
+                                                        <div style="color: var(--text-muted); font-size: 0.85rem;">
+                                                            الإرسال يتم حسب إعدادات الحديث بالأعلى</div>
+                                                    </div>
+                                                    <label class="toggle-switch">
+                                                        <input type="checkbox" id="hadith_schedule_enabled"
+                                                            <%=adhkarSettings.hadith_enabled ? 'checked' : '' %>
+                                                        onchange="saveHadithScheduleInline()">
+                                                        <span class="toggle-slider"></span>
+                                                    </label>
+                                                </div>
+                                                <div
+                                                    style="margin-top: 10px; display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
+                                                    <span style="color: var(--text-muted);">عدد المرات:</span>
+                                                    <select id="hadith_schedule_count" class="form-control"
+                                                        style="width: 170px; padding: 8px 10px;"
+                                                        onchange="onHadithScheduleCountChanged()">
+                                                        <% for (let i=1; i <=5; i++) { %>
+                                                            <option value="<%= i %>" <%=hadithTimesCount===i
+                                                                ? 'selected' : '' %>><%= i %> مرة يوميًا</option>
+                                                            <% } %>
+                                                    </select>
+                                                </div>
+                                                <div id="hadith_schedule_times_wrap"
+                                                    style="margin-top: 10px; display:flex; flex-direction: column; gap: 8px;">
+                                                    <% for (let i=1; i <=5; i++) { %>
+                                                        <div class="hadith-schedule-time-row <%= i <= hadithTimesCount ? '' : 'hidden' %>"
+                                                            data-index="<%= i %>"
+                                                            style="display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
+                                                            <span style="color: var(--text-muted); width: 95px;">وقت <%=
+                                                                    i %>:</span>
+                                                            <input type="time" id="hadith_schedule_time_<%= i %>"
+                                                                class="form-control"
+                                                                style="width: 150px; padding: 8px 10px;"
+                                                                value="<%= hadithTimes[i - 1] || (adhkarSettings.hadith_time || '12:00') %>"
+                                                                onchange="saveHadithScheduleInline()">
+                                                        </div>
+                                                        <% } %>
+                                                </div>
+                                    </div>
+
+                                    <div id="custom-schedule-builder"
+                                        style="display:none; margin-top: 12px; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 14px; padding: 12px;">
+                                        <div
+                                            style="display:flex; align-items:center; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
+                                            <div>
+                                                <div style="font-weight: 800;">📅 الجدولة الخاصة</div>
+                                                <div style="color: var(--text-muted); font-size: 0.85rem;">هذه الرسائل
+                                                    تُرسل لك أنت فقط</div>
+                                            </div>
+                                            <button onclick="loadCustomScheduleJobs()" class="btn btn-outline"
+                                                style="padding: 8px 12px;">
+                                                <i class="fas fa-sync"></i> تحديث
+                                            </button>
+                                        </div>
+
+                                        <div
+                                            style="margin-top: 12px; display:grid; grid-template-columns: 1fr; gap: 10px;">
+                                            <input id="custom-job-id" type="hidden" value="">
+
+                                            <div style="display:flex; gap: 10px; flex-wrap: wrap;">
+                                                <input id="custom-title" class="form-control"
+                                                    style="flex: 2; min-width: 220px;" placeholder="عنوان الجدولة">
+                                                <select id="custom-kind" class="form-control"
+                                                    style="flex: 1; min-width: 180px;" onchange="onCustomKindChanged()">
+                                                    <option value="text">نص</option>
+                                                    <option value="image">صورة</option>
+                                                    <option value="video">فيديو</option>
+                                                    <option value="audio">صوت</option>
+                                                </select>
+                                                <label
+                                                    style="display:flex; align-items:center; gap:8px; background: var(--bg-card); border: 1px solid var(--border); padding: 8px 10px; border-radius: 12px;">
+                                                    <input type="checkbox" id="custom-enabled" checked>
+                                                    <span>تفعيل</span>
+                                                </label>
+                                            </div>
+
+                                            <textarea id="custom-text" class="form-control" rows="4"
+                                                placeholder="اكتب الرسالة..."></textarea>
+
+                                            <div id="custom-media-controls" class="hidden"
+                                                style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
+                                                <input id="custom-media-url" class="form-control"
+                                                    style="flex: 2; min-width: 260px;"
+                                                    placeholder="رابط (اختياري) أو ارفع ملف">
+                                                <input id="custom-media-file" type="file" class="form-control"
+                                                    style="flex: 1; min-width: 220px; padding: 8px 10px;"
+                                                    accept="image/*,video/*,audio/*">
+                                                <button onclick="uploadCustomMediaFile()" class="btn btn-outline"
+                                                    style="padding: 8px 12px;">
+                                                    <i class="fas fa-upload"></i> رفع
+                                                </button>
+                                            </div>
+
+                                            <div style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
+                                                <select id="custom-schedule-mode" class="form-control"
+                                                    style="min-width: 220px;" onchange="onCustomScheduleModeChanged()">
+                                                    <option value="weekly">يوم من الأسبوع + وقت</option>
+                                                    <option value="date">تاريخ محدد + وقت</option>
+                                                </select>
+                                                <div id="custom-weekly-wrap"
+                                                    style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
+                                                    <select id="custom-weekday" class="form-control"
+                                                        style="min-width: 160px;">
+                                                        <option value="0">الأحد</option>
+                                                        <option value="1">الإثنين</option>
+                                                        <option value="2">الثلاثاء</option>
+                                                        <option value="3">الأربعاء</option>
+                                                        <option value="4">الخميس</option>
+                                                        <option value="5">الجمعة</option>
+                                                        <option value="6">السبت</option>
+                                                    </select>
+                                                </div>
+                                                <div id="custom-date-wrap" class="hidden"
+                                                    style="display:flex; gap: 10px; flex-wrap: wrap; align-items:center;">
+                                                    <input id="custom-date" type="date" class="form-control"
+                                                        style="min-width: 200px; padding: 8px 10px;">
+                                                </div>
+                                                <input type="time" id="custom-time" class="form-control"
+                                                    style="width: 160px; padding: 8px 10px;" value="12:00">
+                                            </div>
+
+                                            <div
+                                                style="display:flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
+                                                <button onclick="resetCustomJobForm()" class="btn btn-outline"
+                                                    style="padding: 8px 12px;">تفريغ</button>
+                                                <button onclick="saveCustomJob()" class="btn btn-primary"
+                                                    style="padding: 8px 12px;">حفظ الجدولة</button>
+                                            </div>
+                                        </div>
+
+                                        <div
+                                            style="margin-top: 14px; border-top: 1px solid var(--border); padding-top: 12px;">
+                                            <div style="font-weight: 800; margin-bottom: 10px;">📋 جدولاتي</div>
+                                            <div id="custom-jobs-list"
+                                                style="display:flex; flex-direction: column; gap: 10px;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="card adhkar-card" id="hub-panel-schedule">
+                                    <div class="adhkar-card-header">
+                                        <h2><i class="fas fa-clock"></i> الجدولة اليومية</h2>
+                                        <div class="adhkar-muted" id="hub-schedule-subtitle">تفعيل/إيقاف وتعديل الوقت
+                                            والرابط لكل قسم</div>
+                                    </div>
+
+                                    <div class="adhkar-schedule-list">
+                                        <div class="adhkar-schedule-item" data-schedule-group="morning-evening">
+                                            <div class="adhkar-schedule-left">
+                                                <div class="adhkar-icon"
+                                                    style="background: rgba(255, 193, 7, 0.12); color: #FFC107;">
+                                                    <i class="fas fa-sun"></i>
+                                                </div>
+                                                <div class="adhkar-schedule-meta">
+                                                    <div class="adhkar-title">أذكار الصباح</div>
+                                                    <div class="adhkar-sub"><i class="far fa-clock"></i><span>
+                                                            <%= formatTime12(adhkarSettings.morning_time || '07:00' ) %>
+                                                        </span></div>
+                                                </div>
+                                            </div>
+                                            <div class="adhkar-schedule-actions">
+                                                <button onclick="testScheduler('adhkar', 'morning')"
+                                                    class="btn btn-sm btn-outline-primary" title="إرسال الآن"
+                                                    style="padding: 5px 10px;">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                                <button onclick="openDailyAdhkarSettingsFromButton(this)"
+                                                    data-daily-key="morning" data-daily-name="أذكار الصباح"
                                                     data-daily-time="<%= adhkarSettings.morning_time || '07:00' %>"
                                                     data-daily-enabled="<%= adhkarSettings.morning_enabled ? 1 : 0 %>"
                                                     data-daily-show-link="<%= adhkarSettings.morning_show_link != null ? adhkarSettings.morning_show_link : 1 %>"
                                                     data-daily-source="<%= adhkarSettings.morning_source || 'auto' %>"
-                                                    class="btn btn-sm btn-outline" title="إعدادات" style="padding: 5px 10px;">
-                                                <i class="fas fa-cog"></i>
-                                            </button>
-                                            <label class="toggle-switch">
-                                                <input type="checkbox" onchange="updateAdhkar('morning_enabled', this.checked)" <%=adhkarSettings.morning_enabled ? 'checked' : '' %>>
-                                                <span class="toggle-slider"></span>
-                                            </label>
+                                                    class="btn btn-sm btn-outline" title="إعدادات"
+                                                    style="padding: 5px 10px;">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <label class="toggle-switch">
+                                                    <input type="checkbox"
+                                                        onchange="updateAdhkar('morning_enabled', this.checked)"
+                                                        <%=adhkarSettings.morning_enabled ? 'checked' : '' %>>
+                                                    <span class="toggle-slider"></span>
+                                                </label>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div class="adhkar-schedule-item" data-schedule-group="morning-evening">
-                                        <div class="adhkar-schedule-left">
-                                            <div class="adhkar-icon" style="background: rgba(63, 81, 181, 0.12); color: #3F51B5;">
-                                                <i class="fas fa-moon"></i>
+                                        <div class="adhkar-schedule-item" data-schedule-group="morning-evening">
+                                            <div class="adhkar-schedule-left">
+                                                <div class="adhkar-icon"
+                                                    style="background: rgba(63, 81, 181, 0.12); color: #3F51B5;">
+                                                    <i class="fas fa-moon"></i>
+                                                </div>
+                                                <div class="adhkar-schedule-meta">
+                                                    <div class="adhkar-title">أذكار المساء</div>
+                                                    <div class="adhkar-sub"><i class="far fa-clock"></i><span>
+                                                            <%= formatTime12(adhkarSettings.evening_time || '17:00' ) %>
+                                                        </span></div>
+                                                </div>
                                             </div>
-                                            <div class="adhkar-schedule-meta">
-                                                <div class="adhkar-title">أذكار المساء</div>
-                                                <div class="adhkar-sub"><i class="far fa-clock"></i><span><%= formatTime12(adhkarSettings.evening_time || '17:00') %></span></div>
-                                            </div>
-                                        </div>
-                                        <div class="adhkar-schedule-actions">
-                                            <button onclick="testScheduler('adhkar', 'evening')" class="btn btn-sm btn-outline-primary" title="إرسال الآن" style="padding: 5px 10px;">
-                                                <i class="fas fa-paper-plane"></i>
-                                            </button>
-                                            <button onclick="openDailyAdhkarSettingsFromButton(this)"
-                                                    data-daily-key="evening"
-                                                    data-daily-name="أذكار المساء"
+                                            <div class="adhkar-schedule-actions">
+                                                <button onclick="testScheduler('adhkar', 'evening')"
+                                                    class="btn btn-sm btn-outline-primary" title="إرسال الآن"
+                                                    style="padding: 5px 10px;">
+                                                    <i class="fas fa-paper-plane"></i>
+                                                </button>
+                                                <button onclick="openDailyAdhkarSettingsFromButton(this)"
+                                                    data-daily-key="evening" data-daily-name="أذكار المساء"
                                                     data-daily-time="<%= adhkarSettings.evening_time || '17:00' %>"
                                                     data-daily-enabled="<%= adhkarSettings.evening_enabled ? 1 : 0 %>"
                                                     data-daily-show-link="<%= adhkarSettings.evening_show_link != null ? adhkarSettings.evening_show_link : 1 %>"
                                                     data-daily-source="<%= adhkarSettings.evening_source || 'auto' %>"
-                                                    class="btn btn-sm btn-outline" title="إعدادات" style="padding: 5px 10px;">
-                                                <i class="fas fa-cog"></i>
+                                                    class="btn btn-sm btn-outline" title="إعدادات"
+                                                    style="padding: 5px 10px;">
+                                                    <i class="fas fa-cog"></i>
+                                                </button>
+                                                <label class="toggle-switch">
+                                                    <input type="checkbox"
+                                                        onchange="updateAdhkar('evening_enabled', this.checked)"
+                                                        <%=adhkarSettings.evening_enabled ? 'checked' : '' %>>
+                                                    <span class="toggle-slider"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="adhkar-schedule-item" data-schedule-group="selected"
+                                            style="display:none;"></div>
+                                    </div>
+                                </div>
+
+                                <div class="card adhkar-card" id="content-schedule-card">
+                                    <div class="adhkar-card-header">
+                                        <h2><i class="fas fa-photo-video"></i> منوعات إسلامية</h2>
+                                        <div class="adhkar-muted">جدولة مستقلة للمنوعات (صور/فيديو)</div>
+                                    </div>
+
+                                    <div class="adhkar-schedule-item" style="margin: 0;">
+                                        <div class="adhkar-schedule-left">
+                                            <div class="adhkar-icon"
+                                                style="background: rgba(156, 39, 176, 0.12); color: #9c27b0;">
+                                                <i class="fas fa-photo-video"></i>
+                                            </div>
+                                            <div class="adhkar-schedule-meta">
+                                                <div class="adhkar-title">منوعات إسلامية</div>
+                                                <div class="adhkar-sub"><i class="far fa-clock"></i><span>
+                                                        <%= formatTime12(adhkarSettings.content_time || '21:00' ) %>
+                                                    </span></div>
+                                            </div>
+                                        </div>
+                                        <div class="adhkar-schedule-actions">
+                                            <button onclick="testScheduler('content', 'general')"
+                                                class="btn btn-sm btn-outline-primary" title="إرسال الآن"
+                                                style="padding: 5px 10px;">
+                                                <i class="fas fa-paper-plane"></i>
                                             </button>
-                                            <label class="toggle-switch">
-                                                <input type="checkbox" onchange="updateAdhkar('evening_enabled', this.checked)" <%=adhkarSettings.evening_enabled ? 'checked' : '' %>>
-                                                <span class="toggle-slider"></span>
-                                            </label>
-                                        </div>
-                                    </div>
-
-                                    <div class="adhkar-schedule-item" data-schedule-group="selected" style="display:none;"></div>
-                                </div>
-                            </div>
-
-                            <div class="card adhkar-card" id="content-schedule-card">
-                                <div class="adhkar-card-header">
-                                    <h2><i class="fas fa-photo-video"></i> منوعات إسلامية</h2>
-                                    <div class="adhkar-muted">جدولة مستقلة للمنوعات (صور/فيديو)</div>
-                                </div>
-
-                                <div class="adhkar-schedule-item" style="margin: 0;">
-                                    <div class="adhkar-schedule-left">
-                                        <div class="adhkar-icon" style="background: rgba(156, 39, 176, 0.12); color: #9c27b0;">
-                                            <i class="fas fa-photo-video"></i>
-                                        </div>
-                                        <div class="adhkar-schedule-meta">
-                                            <div class="adhkar-title">منوعات إسلامية</div>
-                                            <div class="adhkar-sub"><i class="far fa-clock"></i><span><%= formatTime12(adhkarSettings.content_time || '21:00') %></span></div>
-                                        </div>
-                                    </div>
-                                    <div class="adhkar-schedule-actions">
-                                        <button onclick="testScheduler('content', 'general')" class="btn btn-sm btn-outline-primary" title="إرسال الآن" style="padding: 5px 10px;">
-                                            <i class="fas fa-paper-plane"></i>
-                                        </button>
-                                        <button onclick="openDailyAdhkarSettingsFromButton(this)"
-                                                data-daily-key="content"
-                                                data-daily-name="منوعات إسلامية"
+                                            <button onclick="openDailyAdhkarSettingsFromButton(this)"
+                                                data-daily-key="content" data-daily-name="منوعات إسلامية"
                                                 data-daily-time="<%= adhkarSettings.content_time || '21:00' %>"
                                                 data-daily-enabled="<%= adhkarSettings.content_enabled ? 1 : 0 %>"
                                                 data-daily-show-link="<%= adhkarSettings.content_show_link != null ? adhkarSettings.content_show_link : 1 %>"
                                                 data-daily-content-type="<%= adhkarSettings.content_type || 'mixed' %>"
-                                                class="btn btn-sm btn-outline" title="إعدادات" style="padding: 5px 10px;">
-                                            <i class="fas fa-cog"></i>
-                                        </button>
-                                        <label class="toggle-switch">
-                                            <input type="checkbox" onchange="updateAdhkar('content_enabled', this.checked)" <%= adhkarSettings.content_enabled ? 'checked' : '' %>>
-                                            <span class="toggle-slider"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="card adhkar-card" id="hub-panel-fasting">
-                                <div class="adhkar-card-header">
-                                    <h2><i class="fas fa-moon"></i> تذكيرات الصيام</h2>
-                                    <div style="display: flex; align-items: center; gap: 8px;">
-                                        <small style="color: var(--text-muted);">وقت التنبيه:</small>
-                                        <input type="time" class="form-control" id="fasting_reminder_time" style="width: 110px; padding: 6px;" value="<%= fastingSettings.reminder_time || '20:00' %>">
-                                    </div>
-                                </div>
-
-                                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
-                                    <% const fastingTypes=[ { id: 'monday_thursday' , label: 'الإثنين والخميس' }, { id: 'white_days' , label: 'الأيام البيض' }, { id: 'ashura' , label: 'عاشوراء' }, { id: 'ramadan_alerts' , label: 'تنبيهات رمضان' } ]; %>
-                                    <% fastingTypes.forEach(type=> { %>
-                                        <div class="prayer-list-item" style="flex-direction: column; align-items: flex-start; gap: 10px; margin: 0;">
-                                            <div style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
-                                                <h4 style="margin: 0; font-size: 0.95rem;"><%= type.label %></h4>
-                                                <div style="display:flex; gap: 8px; align-items: center;">
-                                                    <button onclick="testFastingReminder('<%= type.id %>')" class="btn btn-sm btn-outline-primary" title="إرسال اختبار" style="padding: 5px 10px;">
-                                                        <i class="fas fa-paper-plane"></i>
-                                                    </button>
-                                                    <label class="toggle-switch">
-                                                        <input type="checkbox" id="fasting_<%= type.id %>" <%=(locals.fastingSettings && locals.fastingSettings[type.id]) ? 'checked' : '' %>>
-                                                        <span class="toggle-slider"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
+                                                class="btn btn-sm btn-outline" title="إعدادات"
+                                                style="padding: 5px 10px;">
+                                                <i class="fas fa-cog"></i>
+                                            </button>
+                                            <label class="toggle-switch">
+                                                <input type="checkbox"
+                                                    onchange="updateAdhkar('content_enabled', this.checked)"
+                                                    <%=adhkarSettings.content_enabled ? 'checked' : '' %>>
+                                                <span class="toggle-slider"></span>
+                                            </label>
                                         </div>
-                                    <% }) %>
+                                    </div>
                                 </div>
 
-                                <div style="margin-top: 14px;">
-                                    <button onclick="saveAdhkarTabSettings()" class="btn btn-primary" style="width: 100%; padding: 12px 14px; font-size: 1.05rem;">
-                                        <i class="fas fa-save"></i> حفظ جميع الإعدادات
-                                    </button>
+                                <div class="card adhkar-card" id="hub-panel-fasting">
+                                    <div class="adhkar-card-header">
+                                        <h2><i class="fas fa-moon"></i> تذكيرات الصيام</h2>
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <small style="color: var(--text-muted);">وقت التنبيه:</small>
+                                            <input type="time" class="form-control" id="fasting_reminder_time"
+                                                style="width: 110px; padding: 6px;"
+                                                value="<%= fastingSettings.reminder_time || '20:00' %>">
+                                        </div>
+                                    </div>
+
+                                    <div
+                                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
+                                        <% const fastingTypes=[ { id: 'monday_thursday' , label: 'الإثنين والخميس' }, {
+                                            id: 'white_days' , label: 'الأيام البيض' }, { id: 'ashura' ,
+                                            label: 'عاشوراء' }, { id: 'ramadan_alerts' , label: 'تنبيهات رمضان' } ]; %>
+                                            <% fastingTypes.forEach(type=> { %>
+                                                <div class="prayer-list-item"
+                                                    style="flex-direction: column; align-items: flex-start; gap: 10px; margin: 0;">
+                                                    <div
+                                                        style="width: 100%; display: flex; justify-content: space-between; align-items: center;">
+                                                        <h4 style="margin: 0; font-size: 0.95rem;">
+                                                            <%= type.label %>
+                                                        </h4>
+                                                        <div style="display:flex; gap: 8px; align-items: center;">
+                                                            <button onclick="testFastingReminder('<%= type.id %>')"
+                                                                class="btn btn-sm btn-outline-primary"
+                                                                title="إرسال اختبار" style="padding: 5px 10px;">
+                                                                <i class="fas fa-paper-plane"></i>
+                                                            </button>
+                                                            <label class="toggle-switch">
+                                                                <input type="checkbox" id="fasting_<%= type.id %>"
+                                                                    <%=(locals.fastingSettings &&
+                                                                    locals.fastingSettings[type.id]) ? 'checked' : ''
+                                                                    %>>
+                                                                <span class="toggle-slider"></span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                    </div>
+
+                                    <div style="margin-top: 14px;">
+                                        <button onclick="saveAdhkarTabSettings()" class="btn btn-primary"
+                                            style="width: 100%; padding: 12px 14px; font-size: 1.05rem;">
+                                            <i class="fas fa-save"></i> حفظ جميع الإعدادات
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="adhkar-side" id="adhkar-side">
+                                <div class="card adhkar-card"
+                                    style="background: linear-gradient(rgba(var(--primary-rgb), 0.1), transparent); border-right: 4px solid var(--primary);">
+                                    <div class="adhkar-card-header" style="margin-bottom: 10px;">
+                                        <h2 style="font-size: 1.05rem;"><i class="fas fa-quote-right"
+                                                style="color: var(--primary);"></i> دعاء اليوم</h2>
+                                    </div>
+                                    <p id="daily-dua"
+                                        style="font-style: italic; color: var(--text-main); line-height: 1.8; font-size: 1rem; margin-bottom: 0; font-weight: 500;">
+                                        "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً"
+                                    </p>
                                 </div>
                             </div>
                         </div>
-
-                        <div class="adhkar-side" id="adhkar-side">
-                            <div class="card adhkar-card" style="background: linear-gradient(rgba(var(--primary-rgb), 0.1), transparent); border-right: 4px solid var(--primary);">
-                                <div class="adhkar-card-header" style="margin-bottom: 10px;">
-                                    <h2 style="font-size: 1.05rem;"><i class="fas fa-quote-right" style="color: var(--primary);"></i> دعاء اليوم</h2>
-                                </div>
-                                <p id="daily-dua" style="font-style: italic; color: var(--text-main); line-height: 1.8; font-size: 1rem; margin-bottom: 0; font-weight: 500;">
-                                    "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً"
-                                </p>
-                            </div>
-                        </div>
-                    </div>
                 </div> <!-- End Tab Adhkar -->
 
                 <!-- Tab: Location & Session -->
@@ -2408,7 +2636,8 @@
                                             <div style="display: flex; align-items: center; gap: 10px;">
                                                 <span><i class="fas fa-check-circle"></i> متصل</span>
                                                 <button onclick="unlinkSession()" class="btn btn-outline"
-                                                    style="padding: 2px 8px; font-size: 0.7rem; color: #dc3545; border-color: #dc3545;" title="إلغاء ربط الجلسة">
+                                                    style="padding: 2px 8px; font-size: 0.7rem; color: #dc3545; border-color: #dc3545;"
+                                                    title="إلغاء ربط الجلسة">
                                                     <i class="fas fa-unlink"></i> إلغاء
                                                 </button>
                                             </div>
@@ -2496,17 +2725,17 @@
                             </button>
                         </div>
 
-                        <% if (recipients.length === 0) { %>
+                        <% if (recipients.length===0) { %>
                             <p style="color: var(--text-muted); text-align: center; font-size: 0.9rem;">
                                 لا يوجد مستلمون. سيتم الإرسال لرقمك الافتراضي.
                             </p>
                             <% } else { %>
                                 <div style="max-height: 300px; overflow-y: auto;">
-                                    <% recipients.forEach(recipient => { %>
+                                    <% recipients.forEach(recipient=> { %>
                                         <div class="recipient-item">
                                             <div class="recipient-info">
                                                 <div class="recipient-icon">
-                                                    <% if (recipient.type === 'group') { %>
+                                                    <% if (recipient.type==='group' ) { %>
                                                         <i class="fas fa-users"></i>
                                                         <% } else { %>
                                                             <i class="fas fa-user"></i>
@@ -2559,7 +2788,8 @@
         style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center;">
         <div
             style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); width: 90%; max-width: 500px; box-shadow: var(--shadow-lg);">
-            <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text-main);"><span id="modalTitle">إضافة مستلم جديد</span></h3>
+            <h3 style="margin-top: 0; margin-bottom: 20px; color: var(--text-main);"><span id="modalTitle">إضافة مستلم
+                    جديد</span></h3>
 
             <div class="form-group">
                 <label>نوع المستلم:</label>
@@ -2591,11 +2821,14 @@
                         <select id="availableGroups" class="form-control" onchange="selectGroup()" style="flex: 1;">
                             <option value="">-- اختر مجموعة --</option>
                         </select>
-                        <button type="button" onclick="fetchGroups()" class="btn btn-success" style="flex: 0 0 auto; padding: 8px 15px; display: flex; align-items: center; gap: 5px;" title="اضغط هنا لجلب المجموعات من واتساب">
+                        <button type="button" onclick="fetchGroups()" class="btn btn-success"
+                            style="flex: 0 0 auto; padding: 8px 15px; display: flex; align-items: center; gap: 5px;"
+                            title="اضغط هنا لجلب المجموعات من واتساب">
                             <i class="fas fa-sync-alt"></i> <span>تحديث القائمة</span>
                         </button>
                     </div>
-                    <small class="text-muted" style="display: block; margin-top: 5px;">اضغط على زر "تحديث القائمة" لإظهار مجموعات واتساب المتاحة.</small>
+                    <small class="text-muted" style="display: block; margin-top: 5px;">اضغط على زر "تحديث القائمة"
+                        لإظهار مجموعات واتساب المتاحة.</small>
                 </div>
                 <div class="form-group">
                     <label>اسم المجموعة:</label>
@@ -2803,6 +3036,15 @@
             const countrySelect = document.getElementById('country');
             const countries = Object.keys(LOCATION_DATA);
             countrySelect.innerHTML = '<option value="">-- اختر الدولة --</option>';
+
+            // Add GPS/Automatic Option
+            const autoOption = document.createElement('option');
+            autoOption.value = 'GPS_AUTO';
+            autoOption.textContent = '📍 تحديد تلقائي (GPS)';
+            autoOption.style.fontWeight = 'bold';
+            autoOption.style.color = 'var(--primary)';
+            countrySelect.appendChild(autoOption);
+
             countries.forEach(country => {
                 const option = document.createElement('option');
                 option.value = country;
@@ -2876,20 +3118,57 @@
             if (navigator.geolocation) {
                 const btn = document.querySelector('button[onclick="locateMe()"]');
                 const originalText = btn.innerHTML;
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> تحديث...';
                 btn.disabled = true;
 
                 navigator.geolocation.getCurrentPosition(position => {
-                    document.getElementById('latitude').value = position.coords.latitude.toFixed(4);
-                    document.getElementById('longitude').value = position.coords.longitude.toFixed(4);
-                    Swal.fire('تم بنجاح', 'تم تحديد موقعك الحالي بنجاح! يرجى حفظ الإعدادات.', 'success');
+                    const lat = position.coords.latitude.toFixed(4);
+                    const lng = position.coords.longitude.toFixed(4);
+
+                    document.getElementById('latitude').value = lat;
+                    document.getElementById('longitude').value = lng;
+
+                    // Set to GPS_AUTO for country/city
+                    const countrySelect = document.getElementById('country');
+                    countrySelect.value = 'GPS_AUTO';
+
+                    // Trigger gov/city update to clear them
+                    updateGovernorates();
+
+                    const citySelect = document.getElementById('city');
+                    citySelect.innerHTML = '<option value="GPS_AUTO" selected>📍 موقع مكتشف تلقائياً</option>';
+                    citySelect.disabled = false;
+                    citySelect.value = 'GPS_AUTO';
+
+                    Swal.fire({
+                        title: 'تم بنجاح',
+                        text: `تم تحديد موقعك: ${lat}, ${lng}. يرجى الحفظ الآن.`,
+                        icon: 'success',
+                        confirmButtonText: 'حفظ الآن',
+                        showCancelButton: true,
+                        cancelButtonText: 'إغلاق'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            saveLocation();
+                        }
+                    });
+
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 }, error => {
                     console.error("Error getting location:", error);
-                    Swal.fire('خطأ', 'تعذر تحديد الموقع. يرجى التأكد من تفعيل خدمة الموقع.', 'error');
+                    let errMsg = 'تعذر تحديد الموقع الجغرافي.';
+                    if (error.code === 1) errMsg = 'تم رفض طلب تحديد الموقع. يرجى تفعيل الإذن من المتصفح.';
+                    else if (error.code === 2) errMsg = 'موقعك غير متاح حالياً.';
+                    else if (error.code === 3) errMsg = 'انتهت مهلة طلب الموقع.';
+
+                    Swal.fire('خطأ في تحديد الموقع', errMsg, 'error');
                     btn.innerHTML = originalText;
                     btn.disabled = false;
+                }, {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
                 });
             } else {
                 Swal.fire('خطأ', 'المستعرض الخاص بك لا يدعم تحديد الموقع الجغرافي.', 'error');
@@ -2897,28 +3176,42 @@
         }
 
         async function saveLocation() {
-            const country = document.getElementById('country').value;
-            const city = document.getElementById('city').value;
+            let country = document.getElementById('country').value;
+            let city = document.getElementById('city').value;
             const lat = parseFloat(document.getElementById('latitude').value);
             const lng = parseFloat(document.getElementById('longitude').value);
+
+            // Handle GPS_AUTO case
+            if (country === 'GPS_AUTO') country = 'Automatic';
+            if (city === 'GPS_AUTO') city = 'Detected Location';
+
             let timezone = 'Africa/Cairo';
             let calculationMethod = 'Egypt';
 
-            if (country === 'Saudi Arabia') {
+            // Heuristic or predefined logic for timezone/method
+            if (country === 'Saudi Arabia' || (lat > 16 && lat < 32 && lng > 34 && lng < 55)) {
                 timezone = 'Asia/Riyadh';
                 calculationMethod = 'Makkah';
             } else if (country === 'UAE') {
                 timezone = 'Asia/Dubai';
                 calculationMethod = 'MWL';
-            } else if (country === 'Slovakia') {
+            } else if (country === 'Slovakia' || (lat > 47 && lat < 50 && lng > 16 && lng < 23)) {
                 timezone = 'Europe/Bratislava';
+                calculationMethod = 'MWL';
+            } else if (lat > 22 && lat < 32 && lng > 24 && lng < 37) {
+                // Egypt detection
+                timezone = 'Africa/Cairo';
+                calculationMethod = 'Egypt';
+            } else {
+                // Global default
+                timezone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
                 calculationMethod = 'MWL';
             }
 
             const locationData = { country, city, latitude: lat, longitude: lng, timezone, prayer_calculation_method: calculationMethod };
 
-            if (!country || !city || !lat || !lng) {
-                Swal.fire('تنبيه', 'يرجى اختيار الدولة والمحافظة والمدينة', 'warning');
+            if (!lat || !lng) {
+                Swal.fire('تنبيه', 'يرجى تحديد الموقع الجغرافي أولاً (خطوط الطول والعرض)', 'warning');
                 return;
             }
 
@@ -3105,7 +3398,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ sessionId })
                 });
-                if (res.ok) { 
+                if (res.ok) {
                     Swal.fire({
                         title: 'تم بنجاح!',
                         text: 'تم ربط الجلسة بنجاح!',
@@ -3113,8 +3406,8 @@
                         timer: 1500,
                         showConfirmButton: false
                     }).then(() => location.reload());
-                } else { 
-                    Swal.fire('خطأ', 'فشل ربط الجلسة', 'error'); 
+                } else {
+                    Swal.fire('خطأ', 'فشل ربط الجلسة', 'error');
                 }
             } catch (error) { console.error(error); Swal.fire('خطأ', 'خطأ في الاتصال', 'error'); }
         }
@@ -3395,7 +3688,7 @@
             const modal = document.getElementById('addRecipientModal');
             modal.style.display = 'none';
             modal.setAttribute('aria-hidden', 'true');
-            
+
             // Reset to add mode
             document.getElementById('modalTitle').textContent = 'إضافة مستلم جديد';
             const saveBtn = document.getElementById('btnSaveRecipient');
@@ -3403,10 +3696,10 @@
                 saveBtn.textContent = 'حفظ';
                 saveBtn.setAttribute('onclick', 'saveRecipient()');
             }
-            
+
             // Clear the stored recipient ID
             delete document.getElementById('addRecipientModal').dataset.recipientId;
-            
+
             // Clear form fields
             document.getElementById('individualName').value = '';
             document.getElementById('individualPhone').value = '';
@@ -3429,7 +3722,7 @@
                 if (response.ok) {
                     const select = document.getElementById('availableGroups');
                     select.innerHTML = '<option value="">-- اختر مجموعة --</option>';
-                    
+
                     // Fixed: data is an array
                     const groups = Array.isArray(data) ? data : (data.groups || []);
                     groups.forEach(group => {
@@ -3529,10 +3822,10 @@
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
-                if (res.ok) { 
-                    Swal.fire('تم بنجاح!', 'تم إرسال الاختبار بنجاح!', 'success'); 
-                } else { 
-                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error'); 
+                if (res.ok) {
+                    Swal.fire('تم بنجاح!', 'تم إرسال الاختبار بنجاح!', 'success');
+                } else {
+                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error');
                 }
             } catch (error) { console.error(error); Swal.fire('خطأ', 'خطأ في الاتصال', 'error'); }
         }
@@ -3546,7 +3839,7 @@
                 confirmButtonText: 'نعم، أرسل',
                 cancelButtonText: 'إلغاء'
             });
-            
+
             if (!result.isConfirmed) return;
 
             try {
@@ -3555,10 +3848,10 @@
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
-                if (res.ok) { 
-                    Swal.fire('تم بنجاح!', 'تم الإرسال بنجاح!\n' + data.message, 'success'); 
-                } else { 
-                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error'); 
+                if (res.ok) {
+                    Swal.fire('تم بنجاح!', 'تم الإرسال بنجاح!\n' + data.message, 'success');
+                } else {
+                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error');
                 }
             } catch (error) { console.error(error); Swal.fire('خطأ', 'خطأ في الاتصال', 'error'); }
         }
@@ -3672,23 +3965,23 @@
             document.getElementById('modalTitle').textContent = 'إضافة مستلم جديد';
             document.getElementById('recipientType').value = 'individual';
             updateRecipientInputs(); // Update UI based on default type
-            
+
             // Clear form fields
             document.getElementById('individualName').value = '';
             document.getElementById('individualPhone').value = '';
             document.getElementById('groupName').value = '';
             document.getElementById('groupJid').value = '';
-            
+
             // Reset buttons to add mode
             const saveBtn = document.getElementById('btnSaveRecipient');
             if (saveBtn) {
                 saveBtn.textContent = 'حفظ';
                 saveBtn.setAttribute('onclick', 'saveRecipient()');
             }
-            
+
             // Clear stored recipient ID
             delete document.getElementById('addRecipientModal').dataset.recipientId;
-            
+
             const modal = document.getElementById('addRecipientModal');
             modal.style.display = 'flex';
             modal.setAttribute('aria-hidden', 'false');
@@ -3821,10 +4114,10 @@
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
-                if (res.ok) { 
-                    Swal.fire('تم بنجاح!', data.message, 'success'); 
-                } else { 
-                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error'); 
+                if (res.ok) {
+                    Swal.fire('تم بنجاح!', data.message, 'success');
+                } else {
+                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error');
                 }
             } catch (error) { console.error(error); Swal.fire('خطأ', 'خطأ في الاتصال', 'error'); }
         }
@@ -3846,10 +4139,10 @@
                     headers: { 'Content-Type': 'application/json' }
                 });
                 const data = await res.json();
-                if (res.ok) { 
-                    Swal.fire('تم بنجاح!', data.message, 'success'); 
-                } else { 
-                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error'); 
+                if (res.ok) {
+                    Swal.fire('تم بنجاح!', data.message, 'success');
+                } else {
+                    Swal.fire('خطأ', 'فشل الإرسال: ' + (data.error || 'خطأ غير معروف'), 'error');
                 }
             } catch (error) { console.error(error); Swal.fire('خطأ', 'خطأ في الاتصال', 'error'); }
         }
@@ -4810,7 +5103,7 @@
             try {
                 const sendMode = (currentAdhkarHubTab === 'hadith') ? getHadithSendMode()
                     : (currentAdhkarHubTab === 'selected') ? getSelectedSendMode()
-                    : 'text';
+                        : 'text';
 
                 if (currentAdhkarHubTab === 'hadith' && sendMode === 'image' && !hadithBackgroundUrl) {
                     await fetchHadithBackground();
@@ -4827,7 +5120,7 @@
                         forceSource: previewSource,
                         forceMediaUrl: (sendMode === 'image' && currentAdhkarHubTab === 'hadith') ? hadithBackgroundUrl
                             : (sendMode === 'image' && currentAdhkarHubTab === 'selected') ? selectedBackgroundUrl
-                            : undefined,
+                                : undefined,
                         forceMediaType: (sendMode === 'image' && (currentAdhkarHubTab === 'hadith' || currentAdhkarHubTab === 'selected')) ? 'image' : undefined
                     })
                 });
@@ -4875,7 +5168,7 @@
                 // 1. Gather Adhkar Data
                 const expModeElem = document.getElementById('experience_mode_input');
                 const expMode = expModeElem ? expModeElem.value : 'auto';
-                
+
                 const mediaPrefElem = document.querySelector('input[name="media_pref"]:checked');
                 const mediaPref = mediaPrefElem ? mediaPrefElem.value : 'mixed';
 
@@ -4944,9 +5237,9 @@
                     buttons.forEach(btn => {
                         // Check if button text matches the minutes (handling 'لا يوجد')
                         const btnText = btn.innerText;
-                        const isMatch = (minutes === 0 && btnText.includes('لا يوجد')) || 
-                                      (minutes !== 0 && btnText.includes(`${minutes}`));
-                        
+                        const isMatch = (minutes === 0 && btnText.includes('لا يوجد')) ||
+                            (minutes !== 0 && btnText.includes(`${minutes}`));
+
                         if (isMatch) btn.classList.add('active');
                         else btn.classList.remove('active');
                     });
@@ -4960,7 +5253,7 @@
                         settings: { reminder_before_minutes: parseInt(minutes) }
                     })
                 });
-                
+
                 if (response.ok) {
                     showToast(`تم تحديث وقت التنبيه بنجاح`, 'success');
                 } else {
@@ -4991,9 +5284,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ prayerName, prayerNameAr })
                 });
-                
+
                 const data = await res.json();
-                
+
                 if (res.ok) {
                     Swal.fire('تم بنجاح', `تم إرسال تذكير صلاة ${prayerNameAr} بنجاح`, 'success');
                 } else {
@@ -5008,7 +5301,7 @@
         // 2. Adhan Simulation (Deprecated - Kept for reference or alternative use)
         function testAdhanSimulation(prayerName) {
             showToast(`🔊 جاري محاكاة أذان ${prayerName}...`, 'info');
-            
+
             // Visual Pulse Effect on the card
             const cards = document.querySelectorAll('.prayer-card');
             cards.forEach(c => {
@@ -5032,20 +5325,20 @@
             setInterval(() => {
                 const counters = document.querySelectorAll('.time-elapsed-counter');
                 const now = new Date();
-                
+
                 counters.forEach(counter => {
                     const timeStr = counter.getAttribute('data-prayer-time');
                     if (!timeStr) return;
-                    
+
                     const [hours, minutes] = timeStr.split(':');
                     const prayerDate = new Date();
                     prayerDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
-                    
+
                     let diff = now - prayerDate;
-                    
+
                     // Logic: If prayer is more than 12 hours away/ago, adjust day to find nearest instance
                     // Actually, let's keep it simple: Compare to TODAY'S prayer time.
-                    
+
                     if (diff >= 0) {
                         // Prayer passed today
                         const diffSecs = Math.floor(diff / 1000);
@@ -5074,7 +5367,8 @@
     <!-- Test Prayer Modal -->
     <div id="testPrayerModal"
         style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 2000; justify-content: center; align-items: center; backdrop-filter: blur(5px);">
-        <div style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); width: 90%; max-width: 400px; box-shadow: var(--shadow-lg); text-align: center; border: 1px solid var(--border);">
+        <div
+            style="background: var(--bg-card); padding: 30px; border-radius: var(--radius-md); width: 90%; max-width: 400px; box-shadow: var(--shadow-lg); text-align: center; border: 1px solid var(--border);">
             <div style="margin-bottom: 20px;">
                 <i class="fas fa-stopwatch" style="font-size: 3rem; color: var(--primary); margin-bottom: 15px;"></i>
                 <h3 id="testModalTitle" style="margin: 0; color: var(--text-main);">اختبار التذكير</h3>
@@ -5086,21 +5380,28 @@
             <div class="timer-display" id="timerDisplay">00:00</div>
 
             <div class="timer-controls">
-                <button class="timer-btn" onclick="adjustTimer(-10)" title="-10 ثواني"><i class="fas fa-minus"></i></button>
-                <button class="timer-btn" onclick="adjustTimer(10)" title="+10 ثواني"><i class="fas fa-plus"></i></button>
+                <button class="timer-btn" onclick="adjustTimer(-10)" title="-10 ثواني"><i
+                        class="fas fa-minus"></i></button>
+                <button class="timer-btn" onclick="adjustTimer(10)" title="+10 ثواني"><i
+                        class="fas fa-plus"></i></button>
                 <button class="timer-btn" onclick="adjustTimer(60)" title="+1 دقيقة">1d</button>
             </div>
 
             <div class="form-group" style="margin-bottom: 15px; text-align: right;">
-                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--text-main);">إرسال إلى:</label>
-                <div style="display: flex; gap: 15px; justify-content: center; background: var(--bg-main); padding: 10px; border-radius: var(--radius-sm);">
-                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
+                <label style="display: block; margin-bottom: 8px; font-weight: bold; color: var(--text-main);">إرسال
+                    إلى:</label>
+                <div
+                    style="display: flex; gap: 15px; justify-content: center; background: var(--bg-main); padding: 10px; border-radius: var(--radius-sm);">
+                    <label
+                        style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
                         <input type="radio" name="testTarget" value="all" checked> الجميع
                     </label>
-                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
+                    <label
+                        style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
                         <input type="radio" name="testTarget" value="individuals"> الأفراد
                     </label>
-                    <label style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
+                    <label
+                        style="cursor: pointer; display: flex; align-items: center; gap: 5px; color: var(--text-main);">
                         <input type="radio" name="testTarget" value="groups"> المجموعات
                     </label>
                 </div>
@@ -5151,22 +5452,51 @@
             font-weight: 500;
         }
 
-        .toast.success { border-right-color: #4caf50; }
-        .toast.error { border-right-color: #f44336; }
-        .toast.info { border-right-color: var(--primary); }
+        .toast.success {
+            border-right-color: #4caf50;
+        }
 
-        .toast i { font-size: 1.2rem; }
-        .toast.success i { color: #4caf50; }
-        .toast.error i { color: #f44336; }
-        .toast.info i { color: var(--primary); }
+        .toast.error {
+            border-right-color: #f44336;
+        }
+
+        .toast.info {
+            border-right-color: var(--primary);
+        }
+
+        .toast i {
+            font-size: 1.2rem;
+        }
+
+        .toast.success i {
+            color: #4caf50;
+        }
+
+        .toast.error i {
+            color: #f44336;
+        }
+
+        .toast.info i {
+            color: var(--primary);
+        }
 
         @keyframes slideIn {
-            from { transform: translateX(-100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         @keyframes fadeOut {
-            to { transform: translateX(-100%); opacity: 0; }
+            to {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
         }
 
         .timer-display {
@@ -5184,9 +5514,17 @@
         }
 
         @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
         }
 
         .timer-controls {
@@ -5246,10 +5584,10 @@
         function openTestModal(prayerName, mode = 'athkar') {
             currentTestMode = mode;
             document.getElementById('testPrayerName').value = prayerName;
-            
+
             const titleEl = document.getElementById('testModalTitle');
             const messageInput = document.getElementById('testCustomMessage');
-            
+
             if (mode === 'athkar') {
                 titleEl.innerText = `اختبار أذكار ${prayerName}`;
                 // Random Athkar Suggestions
@@ -5279,13 +5617,13 @@
             document.getElementById('testPrayerModal').style.display = 'flex';
             testTimeSeconds = 10; // Reset
             updateTimerDisplay();
-            
+
             // Reset UI state
             document.getElementById('timerDisplay').classList.remove('running');
             const startBtn = document.getElementById('startTestBtn');
             startBtn.disabled = false;
             startBtn.innerHTML = '<i class="fas fa-play"></i> بدء الاختبار';
-            
+
             // Clear any existing interval
             if (testTimerInterval) clearInterval(testTimerInterval);
         }
@@ -5304,14 +5642,14 @@
         function updateTimerDisplay() {
             const minutes = Math.floor(testTimeSeconds / 60);
             const seconds = testTimeSeconds % 60;
-            document.getElementById('timerDisplay').innerText = 
+            document.getElementById('timerDisplay').innerText =
                 `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
         function startTestTimer() {
             const timerDisplay = document.getElementById('timerDisplay');
             const startBtn = document.getElementById('startTestBtn');
-            
+
             if (testTimeSeconds <= 0) {
                 sendTestWithTimer();
                 return;
@@ -5351,12 +5689,12 @@
                 showToast('🚀 جاري إرسال الاختبار...', 'info');
 
                 let endpoint = '/api/islamic-reminders/test-notification';
-                let body = { 
-                    prayerName, 
-                    sessionId, 
+                let body = {
+                    prayerName,
+                    sessionId,
                     customMessage,
                     targetType,
-                    isTest: true 
+                    isTest: true
                 };
 
                 if (currentTestMode === 'prayer_time') {
@@ -5384,7 +5722,7 @@
                 });
 
                 const data = await res.json();
-                
+
                 if (res.ok && data.success) {
                     showToast('✅ ' + data.message, 'success');
                 } else {
@@ -5413,9 +5751,9 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ type, category })
                 });
-                
+
                 const data = await res.json();
-                
+
                 if (res.ok) {
                     Swal.fire('تم بنجاح', 'تم إرسال رسالة الاختبار بنجاح.\nتحقق من هاتفك.', 'success');
                 } else {
@@ -5446,14 +5784,14 @@
 
             <div class="form-group" style="margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px;">⏳ وقت الإرسال بعد الصلاة (دقيقة):</label>
-                <input type="number" id="modal-pp-delay" class="form-control" min="0" max="60"
-                    placeholder="5">
+                <input type="number" id="modal-pp-delay" class="form-control" min="0" max="60" placeholder="5">
                 <small style="color: var(--text-muted); display: block; margin-top: 5px;">
                     المدة الزمنية للانتظار بعد موعد الصلاة قبل إرسال الأذكار.
                 </small>
             </div>
 
-            <div class="form-group" style="margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
+            <div class="form-group"
+                style="margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
                 <div>
                     <label style="display: block; font-weight: bold; margin-bottom: 2px;">🔗 إرفاق رابط المصدر</label>
                     <small style="color: var(--text-muted);">إظهار رابط "للمزيد" مع الأذكار</small>
@@ -5504,7 +5842,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         id: id,
-                        settings: { 
+                        settings: {
                             post_prayer_adhkar_delay: parseInt(delay) || 5,
                             post_prayer_adhkar_show_link: showLink
                         }
@@ -5594,11 +5932,13 @@
             <div id="modal-daily-text-length-group" class="form-group" style="display: none; margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px;">📏 طول النص:</label>
                 <div style="display: flex; gap: 10px;">
-                    <label style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
+                    <label
+                        style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
                         <input type="radio" name="modal-daily-text-length" value="full">
                         <span>نص كامل</span>
                     </label>
-                    <label style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
+                    <label
+                        style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px;">
                         <input type="radio" name="modal-daily-text-length" value="short">
                         <span>مختصر</span>
                     </label>
@@ -5617,19 +5957,23 @@
             <div id="modal-hadith-media-mode-group" class="form-group" style="display: none; margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px;">🖼️ طريقة إرسال الحديث:</label>
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
-                    <label style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; min-width: 150px;">
+                    <label
+                        style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; min-width: 150px;">
                         <input type="radio" name="modal-hadith-media-mode" value="text">
                         <span>حديث فقط</span>
                     </label>
-                    <label style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; min-width: 150px;">
+                    <label
+                        style="flex: 1; cursor: pointer; background: var(--bg-secondary); padding: 10px; border-radius: 10px; border: 1px solid var(--border); display: flex; align-items: center; gap: 10px; min-width: 150px;">
                         <input type="radio" name="modal-hadith-media-mode" value="image">
                         <span>حديث + صورة</span>
                     </label>
                 </div>
-                <small style="color: var(--text-muted); display:block; margin-top: 8px;">يتم الإرسال مرة يوميًا في الوقت المحدد.</small>
+                <small style="color: var(--text-muted); display:block; margin-top: 8px;">يتم الإرسال مرة يوميًا في الوقت
+                    المحدد.</small>
             </div>
 
-            <div id="modal-hadith-show-source-text-group" class="form-group" style="display: none; margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; border: 1px solid var(--border); display: none;">
+            <div id="modal-hadith-show-source-text-group" class="form-group"
+                style="display: none; margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; border: 1px solid var(--border); display: none;">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <div>
                         <label style="display: block; font-weight: bold; margin-bottom: 2px;">📚 إظهار نص المصدر</label>
@@ -5642,10 +5986,12 @@
                 </div>
             </div>
 
-            <div id="modal-hadith-show-image-source-text-group" class="form-group" style="display: none; margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
+            <div id="modal-hadith-show-image-source-text-group" class="form-group"
+                style="display: none; margin-bottom: 20px; background: var(--bg-secondary); padding: 10px; border-radius: 8px; border: 1px solid var(--border);">
                 <div style="display: flex; align-items: center; justify-content: space-between;">
                     <div>
-                        <label style="display: block; font-weight: bold; margin-bottom: 2px;">🖼️ إظهار مصدر الصورة</label>
+                        <label style="display: block; font-weight: bold; margin-bottom: 2px;">🖼️ إظهار مصدر
+                            الصورة</label>
                         <small style="color: var(--text-muted);">إظهار مصدر الصورة داخل الرسالة</small>
                     </div>
                     <label class="toggle-switch">
@@ -5657,16 +6003,21 @@
 
             <div id="modal-hadith-image-preview-group" class="form-group" style="display: none; margin-bottom: 20px;">
                 <label style="display: block; margin-bottom: 8px;">🔎 معاينة الصورة:</label>
-                <div style="background: var(--bg-secondary); padding: 10px; border-radius: 12px; border: 1px solid var(--border);">
+                <div
+                    style="background: var(--bg-secondary); padding: 10px; border-radius: 12px; border: 1px solid var(--border);">
                     <input type="hidden" id="modal-hadith-image-source" value="islamic_backgrounds" />
                     <input type="hidden" id="modal-hadith-image-theme" value="mosques" />
-                    <img id="modal-hadith-image-preview" alt="preview" style="width: 100%; max-height: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-main); display: none;" />
-                    <div id="modal-hadith-image-preview-meta" style="margin-top: 8px; color: var(--text-muted); font-size: 0.85rem;"></div>
+                    <img id="modal-hadith-image-preview" alt="preview"
+                        style="width: 100%; max-height: 240px; object-fit: cover; border-radius: 10px; border: 1px solid var(--border); background: var(--bg-main); display: none;" />
+                    <div id="modal-hadith-image-preview-meta"
+                        style="margin-top: 8px; color: var(--text-muted); font-size: 0.85rem;"></div>
                     <div style="margin-top: 10px; display:flex; gap: 10px; justify-content: flex-end; flex-wrap: wrap;">
-                        <button onclick="previewHadithScheduledImage()" class="btn btn-outline" style="padding: 8px 12px;">
+                        <button onclick="previewHadithScheduledImage()" class="btn btn-outline"
+                            style="padding: 8px 12px;">
                             <i class="fas fa-eye"></i> معاينة الصورة
                         </button>
-                        <button onclick="previewHadithScheduledImage(true)" class="btn btn-outline" style="padding: 8px 12px;">
+                        <button onclick="previewHadithScheduledImage(true)" class="btn btn-outline"
+                            style="padding: 8px 12px;">
                             <i class="fas fa-sync"></i> تغيير الصورة
                         </button>
                     </div>
@@ -5717,7 +6068,7 @@
             // Handle Content Type
             const typeGroup = document.getElementById('modal-daily-content-type-group');
             const typeSelect = document.getElementById('modal-daily-content-type');
-            
+
             if (key === 'content') {
                 typeGroup.style.display = 'block';
                 typeSelect.value = contentType || 'mixed';
