@@ -2843,11 +2843,9 @@
         }
 
         // Theme Management
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme) {
-            document.documentElement.setAttribute('data-theme', currentTheme);
-            updateThemeIcon(currentTheme);
-        }
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
 
         function toggleTheme() {
             let theme = document.documentElement.getAttribute('data-theme');
@@ -2858,16 +2856,10 @@
         }
 
         function updateThemeIcon(theme) {
-            const icon = document.querySelector('.theme-toggle i');
-            if (icon) { // Check if icon exists before manipulating classes
-                if (theme === 'dark') {
-                    icon.classList.remove('fa-moon');
-                    icon.classList.add('fa-sun');
-                } else {
-                    icon.classList.remove('fa-sun');
-                    icon.classList.add('fa-moon');
-                }
-            }
+            document.querySelectorAll('.theme-toggle i').forEach(icon => {
+                icon.classList.remove('fa-moon', 'fa-sun');
+                icon.classList.add(theme === 'dark' ? 'fa-sun' : 'fa-moon');
+            });
         }
 
         // Tab Switching
@@ -5247,7 +5239,7 @@
                     switchTab('whatsapp');
                 } else if (targetTab === 'overview' || targetTab === 'dashboard' || targetTab === 'stats') {
                     switchTab('stats'); // Admin dashboard uses 'stats' for overview
-                } else if (targetTab === 'users' || targetTab === 'plans' || targetTab === 'payments' || targetTab === 'logs') {
+                } else if (targetTab === 'users' || targetTab === 'plans' || targetTab === 'payments' || targetTab === 'subscriptions' || targetTab === 'logs') {
                     switchTab(targetTab);
                 }
             }
@@ -5869,6 +5861,8 @@
 
         // Switch tab function (updated to work with dynamic tabs)
         function switchTab(tabName) {
+            const originalTabName = tabName;
+            const tabContentName = tabName === 'subscriptions' ? 'payments' : tabName;
             // Special handling for settings tab - redirect to settings page
             if (tabName === 'settings') {
                 window.location.href = '/dashboard/settings';
@@ -5886,13 +5880,13 @@
             allTabs.forEach(tab => tab.classList.remove('active'));
             allNavItems.forEach(item => item.classList.remove('active'));
 
-            const selectedTab = document.getElementById(tabName + '-tab');
+            const selectedTab = document.getElementById(tabContentName + '-tab');
             if (selectedTab) {
                 selectedTab.classList.add('active');
             }
 
             // Set active nav item
-            const selectedNav = document.querySelector(`[data-tab-name="${tabName}"]`);
+            const selectedNav = document.querySelector(`[data-tab-name="${originalTabName}"]`);
             if (selectedNav) {
                 selectedNav.classList.add('active');
             }
@@ -5938,7 +5932,7 @@
 
             // Update URL without reload to persist tab state
             const newUrl = new URL(window.location);
-            newUrl.searchParams.set('tab', tabName);
+            newUrl.searchParams.set('tab', originalTabName);
             window.history.pushState({}, '', newUrl);
         }
 
@@ -6020,15 +6014,11 @@
         }
 
         function toggleTheme() {
-            document.body.classList.toggle('dark-theme');
-            const isDark = document.body.classList.contains('dark-theme');
-            localStorage.setItem('theme', isDark ? 'dark' : 'light');
-
-            // Update icon
-            const themeIcon = document.querySelector('.theme-toggle i');
-            if (themeIcon) {
-                themeIcon.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
-            }
+            let theme = document.documentElement.getAttribute('data-theme');
+            let newTheme = theme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
         }
 
         function toggleSubmenu(submenuId) {
@@ -6050,10 +6040,9 @@
                 });
             }
 
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
-                document.body.classList.add('dark-theme');
-            }
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            document.documentElement.setAttribute('data-theme', savedTheme);
+            updateThemeIcon(savedTheme);
         })();
 
         // Enhanced mobile menu support for admin dashboard
