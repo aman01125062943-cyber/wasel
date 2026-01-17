@@ -1144,7 +1144,11 @@
                         </button>
                     </div>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">مرحباً، <%= user.name %>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-top: 5px;">
+                    مرحباً، <%= user.name %>
+                    <span style="display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: rgba(102,126,234,0.12); color: var(--primary);">
+                        مدير
+                    </span>
                 </p>
             </div>
 
@@ -2982,6 +2986,10 @@
             }
         }
 
+        function loadPayments() {
+            return loadActivationRequests();
+        }
+
         function filterActivationRequests(filter) {
             currentActivationFilter = filter;
 
@@ -3073,7 +3081,8 @@
                 try {
                     const res = await fetch(`/api/admin/payments/${id}`, { method: 'DELETE' });
                     if (res.ok) {
-                        loadPayments();
+                        loadActivationRequests();
+                        loadStats();
                     } else {
                         showToast('حدث خطأ أثناء الحذف', 'error');
                     }

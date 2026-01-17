@@ -1360,7 +1360,11 @@
                         </button>
                     </div>
                 </div>
-                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">مرحباً، <%= user.name %>
+                <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 8px;">
+                    مرحباً، <%= user.name %>
+                    <span style="display: inline-block; margin-right: 8px; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; font-weight: 700; background: <%= user.role==='admin' ? 'rgba(102,126,234,0.12)' : 'rgba(34,197,94,0.12)' %>; color: <%= user.role==='admin' ? 'var(--primary)' : '#16a34a' %>;">
+                        <%= user.role==='admin' ? 'مدير' : 'مستخدم' %>
+                    </span>
                 </p>
             </div>
 
@@ -3136,6 +3140,56 @@
             }
         }
 
+        let flatLocationsCache = null;
+
+        function getFlatLocations() {
+            if (flatLocationsCache) return flatLocationsCache;
+
+            const list = [];
+            for (const [country, govs] of Object.entries(LOCATION_DATA)) {
+                for (const [governorate, cities] of Object.entries(govs)) {
+                    for (const [city, coords] of Object.entries(cities)) {
+                        if (!coords) continue;
+                        if (typeof coords.lat !== 'number' || typeof coords.lng !== 'number') continue;
+                        list.push({ country, governorate, city, lat: coords.lat, lng: coords.lng });
+                    }
+                }
+            }
+
+            flatLocationsCache = list;
+            return list;
+        }
+
+        function haversineKm(lat1, lng1, lat2, lng2) {
+            const toRad = (deg) => (deg * Math.PI) / 180;
+            const R = 6371;
+            const dLat = toRad(lat2 - lat1);
+            const dLng = toRad(lng2 - lng1);
+            const a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+                Math.sin(dLng / 2) * Math.sin(dLng / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
+
+        function findNearestLocation(lat, lng) {
+            const list = getFlatLocations();
+            let best = null;
+            let bestDist = Infinity;
+
+            for (const item of list) {
+                const d = haversineKm(lat, lng, item.lat, item.lng);
+                if (d < bestDist) {
+                    bestDist = d;
+                    best = item;
+                }
+            }
+
+            if (!best) return null;
+            return { ...best, distanceKm: bestDist };
+        }
+
         function locateMe() {
             if (navigator.geolocation) {
                 const btn = document.querySelector('button[onclick="locateMe()"]');
@@ -3150,17 +3204,38 @@
                     document.getElementById('latitude').value = lat;
                     document.getElementById('longitude').value = lng;
 
-                    // Set to GPS_AUTO for country/city
                     const countrySelect = document.getElementById('country');
-                    countrySelect.value = 'GPS_AUTO';
+                    const nearest = findNearestLocation(parseFloat(lat), parseFloat(lng));
+                    const maxAutoPickDistanceKm = 120;
 
-                    // Trigger gov/city update to clear them
-                    updateGovernorates();
+                    if (nearest && nearest.distanceKm <= maxAutoPickDistanceKm) {
+                        countrySelect.value = nearest.country;
+                        updateGovernorates();
 
-                    const citySelect = document.getElementById('city');
-                    citySelect.innerHTML = '<option value="GPS_AUTO" selected>📍 موقع مكتشف تلقائياً</option>';
-                    citySelect.disabled = false;
-                    citySelect.value = 'GPS_AUTO';
+                        const govSelect = document.getElementById('governorate');
+                        if (govSelect) govSelect.value = nearest.governorate;
+                        updateCities();
+
+                        const citySelect = document.getElementById('city');
+                        if (citySelect) citySelect.value = nearest.city;
+                    } else {
+                        countrySelect.value = 'GPS_AUTO';
+
+                        updateGovernorates();
+
+                        const govSelect = document.getElementById('governorate');
+                        if (govSelect) {
+                            govSelect.disabled = true;
+                            govSelect.innerHTML = '<option value="">-- اختر المحافظة --</option>';
+                        }
+
+                        const citySelect = document.getElementById('city');
+                        if (citySelect) {
+                            citySelect.innerHTML = '<option value="GPS_AUTO" selected>📍 موقع مكتشف تلقائياً</option>';
+                            citySelect.disabled = false;
+                            citySelect.value = 'GPS_AUTO';
+                        }
+                    }
 
                     Swal.fire({
                         title: 'تم بنجاح',
@@ -3202,10 +3277,6 @@
             let city = document.getElementById('city').value;
             const lat = parseFloat(document.getElementById('latitude').value);
             const lng = parseFloat(document.getElementById('longitude').value);
-
-            // Handle GPS_AUTO case
-            if (country === 'GPS_AUTO') country = 'Automatic';
-            if (city === 'GPS_AUTO') city = 'Detected Location';
 
             let timezone = 'Africa/Cairo';
             let calculationMethodElement = document.getElementById('calculationMethod');
@@ -3263,14 +3334,23 @@
 
         document.addEventListener('DOMContentLoaded', () => {
             populateCountries();
-            const savedCountry = "<%= config.location_country || 'Egypt' %>";
-            const savedCity = "<%= config.location_city || '' %>";
+            const savedCountryRaw = "<%= config.location_country || 'Egypt' %>";
+            const savedCityRaw = "<%= config.location_city || '' %>";
+            const savedCountry = savedCountryRaw === 'Automatic' ? 'GPS_AUTO' : savedCountryRaw;
+            const savedCity = savedCityRaw === 'Detected Location' ? 'GPS_AUTO' : savedCityRaw;
 
             if (savedCountry) {
                 const countrySelect = document.getElementById('country');
                 countrySelect.value = savedCountry;
                 updateGovernorates();
-                if (savedCity) {
+                if (savedCountry === 'GPS_AUTO') {
+                    const citySelect = document.getElementById('city');
+                    if (citySelect) {
+                        citySelect.innerHTML = '<option value="GPS_AUTO" selected>📍 موقع مكتشف تلقائياً</option>';
+                        citySelect.disabled = false;
+                        citySelect.value = 'GPS_AUTO';
+                    }
+                } else if (savedCity) {
                     const countryData = LOCATION_DATA[savedCountry];
                     if (countryData) {
                         for (const [gov, cities] of Object.entries(countryData)) {

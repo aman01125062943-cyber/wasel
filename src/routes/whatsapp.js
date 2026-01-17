@@ -193,48 +193,41 @@ router.post('/connect', connectionStability, requireAuth, async (req, res) => {
 
         let { sessionId, userId, deviceType, sessionName, webhookUrl, phoneNumber } = req.body;
 
-        // Force userId for non-admins
         if (req.user.role !== 'admin') {
             userId = req.user.id;
-        }
-
-        if (!userId) {
-            return res.status(400).json({ error: 'userId is required' });
+        } else {
+            userId = userId || req.user.id;
         }
 
         // --- Check Session Limits (New Feature) ---
-        try {
-            // Get user's active subscription and plan limits
-            const subscription = await db.get(`
-                SELECT p.max_sessions 
-                FROM subscriptions s 
-                JOIN plans p ON s.plan_id = p.id 
-                WHERE s.user_id = ? AND s.status = 'active'
-                ORDER BY s.created_at DESC LIMIT 1
-            `, [userId]);
+        if (req.user.role !== 'admin') {
+            try {
+                const subscription = await db.get(`
+                    SELECT p.max_sessions 
+                    FROM subscriptions s 
+                    JOIN plans p ON s.plan_id = p.id 
+                    WHERE s.user_id = ? AND s.status = 'active'
+                    ORDER BY s.created_at DESC LIMIT 1
+                `, [userId]);
 
-            // Default to 1 (Trial) if no active sub found
-            const maxSessions = subscription ? (subscription.max_sessions || 1) : 1;
+                const maxSessions = subscription ? (subscription.max_sessions || 1) : 1;
+                const sessionCount = await db.get('SELECT count(*) as count FROM whatsapp_sessions WHERE user_id = ?', [userId]);
 
-            // Count existing sessions
-            const sessionCount = await db.get('SELECT count(*) as count FROM whatsapp_sessions WHERE user_id = ?', [userId]);
+                let isNewSession = true;
+                if (req.body.sessionId) {
+                    const existing = await db.get('SELECT session_id FROM whatsapp_sessions WHERE session_id = ?', [req.body.sessionId]);
+                    if (existing) isNewSession = false;
+                }
 
-            // Only block if creating a NEW session (sessionId not in DB)
-            let isNewSession = true;
-            if (req.body.sessionId) {
-                const existing = await db.get('SELECT session_id FROM whatsapp_sessions WHERE session_id = ?', [req.body.sessionId]);
-                if (existing) isNewSession = false;
+                if (isNewSession && sessionCount.count >= maxSessions) {
+                    return res.status(403).json({
+                        success: false,
+                        error: `عفواً، لقد وصلت للحد الأقصى من الجلسات المسموحة (${maxSessions}). رقي باقتك لإضافة المزيد.`
+                    });
+                }
+            } catch (limitErr) {
+                console.error('Session limit check error:', limitErr);
             }
-
-            if (isNewSession && sessionCount.count >= maxSessions) {
-                return res.status(403).json({
-                    success: false,
-                    error: `عفواً، لقد وصلت للحد الأقصى من الجلسات المسموحة (${maxSessions}). رقي باقتك لإضافة المزيد.`
-                });
-            }
-        } catch (limitErr) {
-            console.error('Session limit check error:', limitErr);
-            // Don't block on error, just log it? Or fail safe? Let's allow for now but log.
         }
         // ------------------------------------------
 

@@ -106,9 +106,10 @@ const validateSessionConnected = async (req, res, next) => {
     }
 };
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
     try {
         const user = req.user;
+        if (user && user.role === 'admin') return next();
         const userFeatures = await getUserFeatures(user);
 
         let subscription = null;
