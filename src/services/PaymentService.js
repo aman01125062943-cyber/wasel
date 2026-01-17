@@ -51,9 +51,8 @@ class PaymentService {
             const paymentId = result.id;
             console.log(`[PaymentService] Payment created: ID=${paymentId}, Subscription=${subscription.id}`);
 
-            // 3. Notify Admin (async, fire-and-forget)
-            this.notifyAdminWithReceipt(paymentId, userId, planId, amount, method, transactionRef, receiptPath)
-                .catch(e => console.error('[PaymentService] Notification error:', e));
+            // 3. Notify Admin (awaited)
+            await this.notifyAdminWithReceipt(paymentId, userId, planId, amount, method, transactionRef, receiptPath);
 
             return paymentId;
 

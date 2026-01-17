@@ -46,51 +46,54 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Navigate to the correct login page URL or find a clickable element to reach the login page.
+        # -> Navigate to the correct login page or find a way to access the login form to start the JWT token test.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to navigate to the login page.
+        # -> Click on the login link labeled 'دخول' to access the login form.
         frame = context.pages[-1]
-        # Click on the 'دخول' (Login) link to go to the login page
+        # Click on the login link labeled 'دخول' to open the login form
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input valid username/email and password, then submit the login form.
+        # -> Input username and password, then click the login button to attempt login and obtain JWT token.
         frame = context.pages[-1]
-        # Input valid username/email
+        # Input username/email in the login form
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input valid password
+        # Input password in the login form
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit the form
+        # Click the login button to submit credentials and login
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
+        # -> Simulate access to a protected endpoint with an expired or invalid token and verify access is denied with an appropriate error.
+        frame = context.pages[-1]
+        # Click the logout button to invalidate the current token and simulate expired/invalid token scenario
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[10]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Attempt to access a protected endpoint with an invalid token to verify access is denied with an appropriate error message.
+        await page.goto('http://localhost:3001/dashboard', timeout=10000)
+        await asyncio.sleep(3)
+        
+
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=لوحة الإدارة').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=مرحباً، Admin').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=جلساتي').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=منتظرين التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=طلبات التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة المستخدمين').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=سجل النشاط').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=التذكيرات الإسلامية').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=الإعدادات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=تسجيل الخروج').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=أهلاً بعودتك، تابع إدارة عملك').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=دخول').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=ليس لديك حساب؟ إنشاء حساب جديد').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

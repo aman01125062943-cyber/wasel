@@ -67,16 +67,13 @@ class ContentService {
             params.push(category);
         }
 
-        // LRU Strategy: Order by last_sent_at ASC (NULLs first usually, or check DB specific)
-        // SQLite: NULLs are considered smaller than any value? No, check.
-        // Better: ORDER BY last_sent_at IS NOT NULL, last_sent_at ASC, RANDOM() LIMIT 1
-        // This puts NULLs (never sent) first. Then oldest sent.
+        // LRU Strategy: Order by last_sent_at to prioritize content that hasn't been sent recently.
+        // NULLS FIRST ensures that content never sent is prioritized.
         sql += ' ORDER BY last_sent_at ASC NULLS FIRST, RANDOM() LIMIT 1';
 
         const content = await db.get(sql, params);
 
-        // If we found content, we should mark it as sent? 
-        // No, Scheduler should do it after successful send to ensure delivery.
+        // Note: The Scheduler is responsible for marking content as sent after successful delivery.
         return content;
     }
 

@@ -46,95 +46,94 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Find a valid URL or navigation element to access the registration page
-        await page.goto('http://localhost:3001/', timeout=10000)
+        # -> Check if there is any link or button on the current page to navigate to a valid registration page or try a different approach to reach the registration page.
+        await page.mouse.wheel(0, await page.evaluate('() => window.innerHeight'))
+        
+
+        # -> Try to navigate to the base URL or homepage to find a valid link to the registration page.
+        await page.goto('http://localhost:3001', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on 'إنشاء حساب' (Create Account) to go to the registration page
+        # -> Click on the 'إنشاء حساب' (Create Account) link to navigate to the registration page.
         frame = context.pages[-1]
-        # Click on 'إنشاء حساب' (Create Account) link to navigate to registration page
+        # Click on 'إنشاء حساب' (Create Account) link to go to registration page
         elem = frame.locator('xpath=html/body/header/div/nav/a[5]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Fill in the registration form with valid user details and submit
+        # -> Input incomplete registration details (leave some fields empty) and submit the form to verify validation.
         frame = context.pages[-1]
-        # Fill full name
+        # Leave full name empty to test incomplete fields validation
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
+        await page.wait_for_timeout(3000); await elem.fill('')
         
 
         frame = context.pages[-1]
-        # Fill WhatsApp number
+        # Input valid WhatsApp number
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('01012345678')
         
 
         frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        # Input valid email
+        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('validemail@mail.com')
         
 
         frame = context.pages[-1]
-        # Fill email
+        # Input strong password
+        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('StrongPass123!')
+        
+
+        frame = context.pages[-1]
+        # Click submit button to attempt registration with incomplete fields
+        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Test invalid email input by entering an invalid email format and submitting the form.
+        frame = context.pages[-1]
+        # Input valid full name
+        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('Test User')
+        
+
+        frame = context.pages[-1]
+        # Input invalid email format
+        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('invalid-email-format')
+        
+
+        frame = context.pages[-1]
+        # Click submit button to attempt registration with invalid email
+        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Test weak password input by entering a weak password and submitting the form.
+        frame = context.pages[-1]
+        # Input valid email
         elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Fill password
+        # Input weak password
         elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click submit button to register
-        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Try registering with a new unique email and phone number to verify successful registration and confirmation
-        frame = context.pages[-1]
-        # Fill full name with new attempt
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
-        
-
-        frame = context.pages[-1]
-        # Fill WhatsApp number with a new unique number
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01098765432')
-        
-
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Fill email with a new unique email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062944@gmail.com')
-        
-
-        frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('1994')
-        
-
-        frame = context.pages[-1]
-        # Click submit button to register with new unique details
+        # Click submit button to attempt registration with weak password
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=مرحباً، Aman User').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=رقم الهاتف أو البريد الإلكتروني مسجل بالفعل').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

@@ -46,95 +46,90 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Find a valid URL or navigation element to access the registration page
+        # -> Check if there is a correct link or button to navigate to the login or dashboard page or try to fix the URL to load the correct page.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on 'إنشاء حساب' (Create Account) to go to the registration page
+        # -> Click on the login link to go to the user dashboard login page.
         frame = context.pages[-1]
-        # Click on 'إنشاء حساب' (Create Account) link to navigate to registration page
-        elem = frame.locator('xpath=html/body/header/div/nav/a[5]').nth(0)
+        # Click on the 'دخول' (Login) link to go to the login page
+        elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Fill in the registration form with valid user details and submit
+        # -> Input username and password, then click login button.
         frame = context.pages[-1]
-        # Fill full name
+        # Input username/email
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
-        
-
-        frame = context.pages[-1]
-        # Fill WhatsApp number
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01012345678')
-        
-
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Fill email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('1994')
-        
-
-        frame = context.pages[-1]
-        # Click submit button to register
-        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Try registering with a new unique email and phone number to verify successful registration and confirmation
-        frame = context.pages[-1]
-        # Fill full name with new attempt
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
-        
-
-        frame = context.pages[-1]
-        # Fill WhatsApp number with a new unique number
+        # Input password
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01098765432')
-        
-
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Fill email with a new unique email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062944@gmail.com')
-        
-
-        frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click submit button to register with new unique details
+        # Click login button to submit credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'الإعدادات' (Settings) tab to access location settings.
+        frame = context.pages[-1]
+        # Click on the 'الإعدادات' (Settings) tab
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'إعدادات الصفحة' (Page Settings) tab to check for location or prayer time settings.
+        frame = context.pages[-1]
+        # Click on 'إعدادات الصفحة' (Page Settings) tab
+        elem = frame.locator('xpath=html/body/div/main/div[2]/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Scroll down to check for location or prayer time settings fields or sections further down the page.
+        await page.mouse.wheel(0, 600)
+        
+
+        # -> Scroll further down to find location or prayer time settings or any relevant section.
+        await page.mouse.wheel(0, 800)
+        
+
+        # -> Click on the 'النظام' (System) tab to check for location and prayer time settings.
+        frame = context.pages[-1]
+        # Click on the 'النظام' (System) tab to access system settings including location and prayer times
+        elem = frame.locator('xpath=html/body/div/main/div[2]/button[3]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Scroll down the 'النظام' tab page to check for location or prayer time settings or any relevant configuration fields.
+        await page.mouse.wheel(0, 600)
+        
+
+        # -> Navigate to the 'التذكيرات الإسلامية' (Islamic Reminders) tab to check for location and prayer time settings.
+        frame = context.pages[-1]
+        # Click on the 'التذكيرات الإسلامية' (Islamic Reminders) tab
+        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'الموقع' (Location) button to set the location parameters.
+        frame = context.pages[-1]
+        # Click on the 'الموقع' (Location) button to set location parameters
+        elem = frame.locator('xpath=html/body/div[2]/main/div/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=مرحباً، Aman User').first).to_be_visible(timeout=30000)
+        try:
+            await expect(frame.locator('text=Prayer Times Successfully Updated').first).to_be_visible(timeout=1000)
+        except AssertionError:
+            raise AssertionError("Test case failed: The test plan execution failed because the user could not set their location and prayer times were not accurately calculated via the AlAdhan API.")
         await asyncio.sleep(5)
     
     finally:

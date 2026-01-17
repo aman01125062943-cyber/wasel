@@ -46,51 +46,83 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Navigate to the correct login page URL or find a clickable element to reach the login page.
+        # -> Navigate to the correct login or home page URL to start the onboarding process for WhatsApp sessions.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to navigate to the login page.
+        # -> Click on the login link to proceed with user authentication.
         frame = context.pages[-1]
         # Click on the 'دخول' (Login) link to go to the login page
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input valid username/email and password, then submit the login form.
+        # -> Input username and password, then click the login button to authenticate.
         frame = context.pages[-1]
-        # Input valid username/email
+        # Input username/email
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input valid password
+        # Input password
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit the form
+        # Click login button to submit credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'جلساتي' (My Sessions) section to navigate to WhatsApp sessions management.
+        frame = context.pages[-1]
+        # Click on 'جلساتي' (My Sessions) to manage WhatsApp sessions
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on 'إضافة جلسة جديدة' (Add New Session) button to create a new WhatsApp session and generate QR code.
+        frame = context.pages[-1]
+        # Click on 'إضافة جلسة جديدة' (Add New Session) to create a new WhatsApp session
+        elem = frame.locator('xpath=html/body/div[2]/main/div[8]/div/div[2]/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Fill in the session name and phone number fields, then click the 'إنشاء وربط الجلسة' (Create and Link Session) button to generate the QR code for scanning.
+        frame = context.pages[-1]
+        # Input session name
+        elem = frame.locator('xpath=html/body/div[11]/div/form/div/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('Test Session 1')
+        
+
+        frame = context.pages[-1]
+        # Input phone number
+        elem = frame.locator('xpath=html/body/div[11]/div/form/div[2]/div/div[2]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('123456789')
+        
+
+        frame = context.pages[-1]
+        # Click 'إنشاء وربط الجلسة' (Create and Link Session) button to generate QR code
+        elem = frame.locator('xpath=html/body/div[11]/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click the 'ربط' (Link) button for the created session to generate and display the QR code for scanning with WhatsApp app.
+        frame = context.pages[-1]
+        # Click 'ربط' (Link) button to generate QR code for the session
+        elem = frame.locator('xpath=html/body/div[2]/main/div[8]/div[3]/table/tbody/tr/td[7]/div/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=لوحة الإدارة').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=مرحباً، Admin').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=جلساتي').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=منتظرين التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=طلبات التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة المستخدمين').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=سجل النشاط').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=التذكيرات الإسلامية').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=الإعدادات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=تسجيل الخروج').first).to_be_visible(timeout=30000)
+        try:
+            await expect(frame.locator('text=Session Connected Successfully').first).to_be_visible(timeout=1000)
+        except AssertionError:
+            raise AssertionError("Test case failed: The WhatsApp session did not connect successfully or the connection status is not displayed correctly as required by the test plan.")
         await asyncio.sleep(5)
     
     finally:

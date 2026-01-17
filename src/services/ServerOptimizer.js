@@ -46,7 +46,7 @@ class ServerOptimizer {
             // تعزيز سياسة أمن المحتوى (CSP)
             // في وضع التطوير نسمح باتصالات أوسع لتجنب مشاكل DevTools و WebSockets
             const cspHeader = isDev
-                ? "default-src 'self' http: https: data: blob: ws: wss:; script-src 'self' 'unsafe-inline' 'unsafe-eval' http: https:; style-src 'self' 'unsafe-inline' http: https:; img-src 'self' data: blob: http: https:; connect-src * 'self' http: https: ws: wss:; font-src 'self' http: https: data:; object-src 'none'; frame-src 'self' http: https:;"
+                ? "default-src 'self' http: https: data: blob: ws: wss:; script-src 'self' 'unsafe-inline' 'unsafe-eval' http: https:; style-src 'self' 'unsafe-inline' http: https:; img-src 'self' data: blob: http: https:; connect-src * 'self' http: https: ws: wss:; font-src 'self' http: https: data:; object-src 'none'; frame-src 'self' http: https:; worker-src 'self' blob:;"
                 : "default-src 'self' https: data: blob: ws: wss:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: blob: https:; connect-src 'self' https: ws: wss:; font-src 'self' https: data:; object-src 'none'; frame-src 'self' https:;";
 
             res.setHeader('Content-Security-Policy', cspHeader);

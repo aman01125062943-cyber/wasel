@@ -27,37 +27,47 @@ describe('PaymentService', () => {
     });
 
     describe('createPaymentRequest', () => {
-        test('should create subscription and payment records', async () => {
+        test('should create records and notify admin', async () => {
             const userId = 'u1';
             const planId = 'p1';
+            const paymentData = {
+                amount: 100,
+                method: 'Vodafone',
+                transactionRef: 'REF123',
+                receiptPath: '/path.jpg'
+            };
+
+            // Spy on the notification method so we don't re-test its implementation here
+            const notifySpy = jest.spyOn(PaymentService, 'notifyAdminWithReceipt')
+                                 .mockResolvedValue(true);
 
             // Mock DB responses
-            // 1. Check pending subscription -> returns null (so create one)
-            db.get.mockResolvedValueOnce(null);
-            // 2. Insert subscription -> returns ID
-            db.run.mockResolvedValueOnce({ id: 'sub-new' });
-            // 3. Insert payment -> returns ID
-            db.run.mockResolvedValueOnce({ id: 'pay-new' });
+            db.get.mockResolvedValueOnce(null); // No pending subscription
+            db.run.mockResolvedValueOnce({ id: 'sub-new' }); // Insert subscription
+            db.run.mockResolvedValueOnce({ id: 'pay-new' }); // Insert payment
 
-            // Mock async notification
-            NotificationService.getAdminSession.mockResolvedValue('session-admin');
-            // We need to mock DB calls inside notifyAdminWithReceipt as well
-            // createPaymentRequest calls notifyAdminWithReceipt asynchronously.
-            // If we await the promise returned by createPaymentRequest, the notify might rely on catching error or separate promise.
-            // PaymentService Line 38: calling notify without await!
-            // So we might not catch it in test unless we wait a bit or spy on it.
+            const result = await PaymentService.createPaymentRequest(
+                userId, planId, paymentData.amount, paymentData.method, 
+                paymentData.transactionRef, paymentData.receiptPath
+            );
 
-            // NOTE: Since line 38 is fire-and-forget (no await), the test will finish createPaymentRequest immediately.
-            // We verify the DB insertions first.
-
-            const result = await PaymentService.createPaymentRequest(userId, planId, 100, 'Vodafone', 'REF123', '/path.jpg');
-
+            // 1. Verify DB calls
             expect(result).toBe('pay-new');
-            expect(db.run).toHaveBeenCalledTimes(2); // insert sub + insert payment
+            expect(db.run).toHaveBeenCalledTimes(2);
             expect(db.run).toHaveBeenCalledWith(
                 expect.stringContaining('INSERT INTO payments'),
-                expect.arrayContaining(['u1', 'sub-new', 100, 'Vodafone', 'REF123'])
+                expect.arrayContaining([userId, 'sub-new', paymentData.amount, paymentData.method])
             );
+
+            // 2. Verify notification was called
+            expect(notifySpy).toHaveBeenCalledTimes(1);
+            expect(notifySpy).toHaveBeenCalledWith(
+                'pay-new', userId, planId, paymentData.amount, 
+                paymentData.method, paymentData.transactionRef, paymentData.receiptPath
+            );
+
+            // Clean up spy
+            notifySpy.mockRestore();
         });
     });
 

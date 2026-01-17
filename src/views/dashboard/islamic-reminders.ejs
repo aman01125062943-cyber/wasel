@@ -1716,25 +1716,37 @@
                                     </div>
                                     <% } else { %>
                                         <div class="prayer-list">
-                                            <% prayerSettings.forEach(prayer=> { %>
-                                                <% const time=prayerTimes[prayer.prayer_name.toLowerCase()]; const
-                                                    isActive=locals.nextPrayer &&
-                                                    nextPrayer.name.toLowerCase()===prayer.prayer_name.toLowerCase();
-                                                    const prayerNameAr={ 'fajr' : 'الفجر' , 'dhuhr' : 'الظهر' , 'asr'
-                                                    : 'العصر' , 'maghrib' : 'المغرب' , 'isha' : 'العشاء'
-                                                    }[prayer.prayer_name.toLowerCase()] || prayer.prayer_name; const
-                                                    prayerIcon={ 'fajr' : 'fa-cloud-sun' , 'dhuhr' : 'fa-sun' , 'asr'
-                                                    : 'fa-cloud-sun-open' , 'maghrib' : 'fa-sunset' , 'isha' : 'fa-moon'
-                                                    }[prayer.prayer_name.toLowerCase()] || 'fa-clock' ; // Time
-                                                    Formatting Logic (Inline for EJS) let time12=time; try { const [h,
-                                                    m]=time.split(':'); const hour=parseInt(h); const period=hour>= 12 ?
-                                                    'م' : 'ص';
-                                                    const h12 = hour % 12 || 12;
-                                                    time12 = `${h12}:${m} ${period}`;
-                                                    } catch(e) {}
-
+                                            <% prayerSettings.forEach(prayer => { %>
+                                                <%
+                                                    const time = prayerTimes[prayer.prayer_name.toLowerCase()];
+                                                    const isActive = locals.nextPrayer &&
+                                                        nextPrayer.name.toLowerCase() === prayer.prayer_name.toLowerCase();
+                                                    const prayerNameAr = {
+                                                        fajr: 'الفجر',
+                                                        dhuhr: 'الظهر',
+                                                        asr: 'العصر',
+                                                        maghrib: 'المغرب',
+                                                        isha: 'العشاء'
+                                                    }[prayer.prayer_name.toLowerCase()] || prayer.prayer_name;
+                                                    const prayerIcon = {
+                                                        fajr: 'fa-cloud-sun',
+                                                        dhuhr: 'fa-sun',
+                                                        asr: 'fa-cloud-sun-open',
+                                                        maghrib: 'fa-sunset',
+                                                        isha: 'fa-moon'
+                                                    }[prayer.prayer_name.toLowerCase()] || 'fa-clock';
+                                                    let time12 = time;
+                                                    try {
+                                                        const [h, m] = String(time || '').split(':');
+                                                        const hour = parseInt(h, 10);
+                                                        const period = hour >= 12 ? 'م' : 'ص';
+                                                        const h12 = hour % 12 || 12;
+                                                        time12 = `${h12}:${m} ${period}`;
+                                                    } catch (e) {
+                                                        time12 = time;
+                                                    }
                                                     const reminderTime = prayer.reminder_before_minutes || 0;
-                                                    %>
+                                                %>
 
                                                     <div class="prayer-card <%= isActive ? 'active-glow' : '' %>"
                                                         id="card-<%= prayer.id %>">

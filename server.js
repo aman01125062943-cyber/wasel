@@ -69,7 +69,7 @@ app.init = async () => {
         const adminEmail = 'aman01125062943@gmail.com';
         const adminPassword = '1994';
         const adminHash = await bcrypt.hash(adminPassword, 10);
-        
+
         const existingAdmin = await db.get("SELECT id FROM users WHERE email = ?", [adminEmail]);
         if (existingAdmin) {
             await db.run("UPDATE users SET password_hash = ?, role = 'admin' WHERE id = ?", [adminHash, existingAdmin.id]);
@@ -138,13 +138,13 @@ app.get('/api/health', (req, res) => {
         uptime: process.uptime(),
         initialized: app.isInitialized || false
     };
-    
+
     if (app.initializationError) {
         health.status = 'ERROR';
         health.error = app.initializationError.message;
         return res.status(500).json(health);
     }
-    
+
     res.json(health);
 });
 
@@ -387,46 +387,6 @@ app.get('/dashboard/settings', authenticateToken, async (req, res) => {
     }
 });
 
-// Islamic Reminders Dashboard Route
-app.get('/dashboard/islamic-reminders', authenticateToken, async (req, res) => {
-    try {
-        // Get user's Islamic reminders configuration
-        const config = await db.get(`
-            SELECT * FROM islamic_reminders_config 
-            WHERE user_id = ?
-        `, [req.user.id]);
-
-        // Get adhkar settings
-        const adhkarSettings = config ? await db.get(`
-            SELECT * FROM adhkar_settings 
-            WHERE config_id = ?
-        `, [config.id]) : null;
-
-        // Get prayer reminders
-        const prayerReminders = config ? await db.all(`
-            SELECT * FROM prayer_reminders 
-            WHERE config_id = ?
-            ORDER BY prayer_name
-        `, [config.id]) : [];
-
-        // Get fasting settings
-        const fastingSettings = config ? await db.get(`
-            SELECT * FROM fasting_settings 
-            WHERE config_id = ?
-        `, [config.id]) : null;
-
-        res.render('dashboard/islamic-reminders', { 
-            user: req.user,
-            config: config || {},
-            adhkarSettings: adhkarSettings || {},
-            prayerReminders: prayerReminders || [],
-            fastingSettings: fastingSettings || {}
-        });
-    } catch (error) {
-        console.error('Error loading Islamic Reminders dashboard:', error);
-        res.status(500).send('خطأ في تحميل صفحة التذكيرات الإسلامية');
-    }
-});
 
 app.post('/dashboard/settings', authenticateToken, async (req, res) => {
     if (req.user.role !== 'admin') return res.status(403).send('Unauthorized');

@@ -6,7 +6,7 @@ const getDbPath = () => {
     if (process.env.NODE_ENV === 'test') {
         return ':memory:';
     }
-    
+
     // For cloud environments, try to use a persistent volume or fallback
     const possiblePaths = [
         process.env.DATABASE_PATH, // Custom path from environment
@@ -14,7 +14,7 @@ const getDbPath = () => {
         path.join(process.cwd(), 'data', 'app.db'), // Data directory
         path.join(__dirname, 'app.db')  // Fallback to original
     ];
-    
+
     for (const dbPath of possiblePaths) {
         if (dbPath) {
             try {
@@ -29,7 +29,7 @@ const getDbPath = () => {
             }
         }
     }
-    
+
     return path.join(__dirname, 'app.db');
 };
 
@@ -39,7 +39,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
         console.error('❌ Database connection failed:', err.message);
     } else {
         console.log(`✅ Database connected: ${dbPath}`);
-        
+
         // Optimize SQLite for cloud environments
         db.exec(`
             PRAGMA journal_mode = ${process.env.SQLITE_JOURNAL_MODE || 'WAL'};
@@ -640,7 +640,8 @@ async function init() {
             await dbAsync.run(insertTab, ['users', 'إدارة المستخدمين', 'fas fa-users', 5, 1]);
             await dbAsync.run(insertTab, ['plans', 'إدارة الباقات', 'fas fa-box', 6, 1]);
             await dbAsync.run(insertTab, ['logs', 'سجل النشاط', 'fas fa-history', 7, 1]);
-            await dbAsync.run(insertTab, ['settings', 'الإعدادات', 'fas fa-cog', 8, 1]);
+            await dbAsync.run(insertTab, ['islamic_reminders', 'التذكيرات الإسلامية', 'fas fa-mosque', 8, 1]);
+            await dbAsync.run(insertTab, ['settings', 'الإعدادات', 'fas fa-cog', 9, 1]);
             console.log('✅ Default admin tabs seeded successfully');
         } catch (err) {
             console.error('Error seeding admin tabs:', err.message);
@@ -652,10 +653,13 @@ async function init() {
         try {
             const tabsToEnsure = [
                 { name: 'logs', label: 'سجل النشاطات', icon: 'fas fa-history', order: 7, active: 1, description: 'سجل جميع العمليات والأنشطة' },
-                { name: 'settings', label: 'الإعدادات', icon: 'fas fa-cog', order: 8, active: 1, description: 'إعدادات النظام العامة' },
-                { name: 'islamic_reminders', label: 'التذكيرات الإسلامية', icon: 'fas fa-mosque', order: 9, active: 1, description: 'نظام التذكيرات الإسلامية الآلي' },
-                { name: 'content_library', label: 'مكتبة المحتوى', icon: 'fas fa-book-open', order: 10, active: 1, description: 'إدارة الأذكار والأحاديث' }
+                { name: 'islamic_reminders', label: 'التذكيرات الإسلامية', icon: 'fas fa-mosque', order: 8, active: 1, description: 'نظام التذكيرات الإسلامية الآلي' },
+                { name: 'settings', label: 'الإعدادات', icon: 'fas fa-cog', order: 9, active: 1, description: 'إعدادات النظام العامة' }
             ];
+
+            // Specific cleanup: Remove content_library tab
+            await dbAsync.run('DELETE FROM admin_tabs WHERE name = ?', ['content_library']);
+            console.log('🗑️ Removed content_library tab from database');
 
             for (const tab of tabsToEnsure) {
                 const existingTab = await dbAsync.get('SELECT id FROM admin_tabs WHERE name = ?', [tab.name]);
@@ -665,6 +669,9 @@ async function init() {
                         [tab.name, tab.label, tab.icon, tab.order, tab.active, tab.description]
                     );
                     console.log(`➕ Added missing admin tab: ${tab.name}`);
+                } else {
+                    // Update order if it exists
+                    await dbAsync.run('UPDATE admin_tabs SET tab_order = ? WHERE name = ?', [tab.order, tab.name]);
                 }
             }
         } catch (error) {

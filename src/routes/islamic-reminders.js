@@ -82,20 +82,20 @@ const validateSessionConnected = async (req, res, next) => {
     try {
         const userId = req.user.id;
         const config = await IslamicRemindersService.getOrCreateConfig(userId);
-        
+
         if (!config.session_id) {
-            return res.status(200).json({ 
-                success: false, 
+            return res.status(200).json({
+                success: false,
                 error: 'SESSION_NOT_LINKED',
-                message: 'يجب ربط جلسة واتساب أولاً قبل القيام بهذا الإجراء.' 
+                message: 'يجب ربط جلسة واتساب أولاً قبل القيام بهذا الإجراء.'
             });
         }
 
         if (!sessionManager.isConnected(config.session_id)) {
-            return res.status(200).json({ 
-                success: false, 
+            return res.status(200).json({
+                success: false,
                 error: 'SESSION_NOT_CONNECTED',
-                message: 'جلسة الواتساب غير متصلة حالياً. يرجى التأكد من اتصال الجلسة من صفحة الربط.' 
+                message: 'جلسة الواتساب غير متصلة حالياً. يرجى التأكد من اتصال الجلسة من صفحة الربط.'
             });
         }
 
@@ -156,6 +156,8 @@ router.get('/islamic-reminders', async (req, res) => {
         });
     } catch (error) {
         console.error('Islamic Reminders Page Error:', error);
+        // Log to a file we can read
+        require('fs').appendFileSync(path.join(__dirname, '../../debug_logs.txt'), `[${new Date().toISOString()}] 500 Error: ${error.stack}\n`);
         res.status(500).send('Error loading page: ' + error.message);
     }
 });
@@ -170,7 +172,7 @@ router.post('/test-notification', validateSessionConnected, async (req, res) => 
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const userFeatures = await getUserFeatures(req.user);
         if (!userFeatures.prayer_times && !userFeatures.adhkar && !userFeatures.hadith && !userFeatures.quran && !userFeatures.fasting) {
             return res.status(403).json({ error: 'خدمة التذكيرات الإسلامية غير مفعلة في باقتك.' });
@@ -195,17 +197,17 @@ router.post('/test-notification', validateSessionConnected, async (req, res) => 
         }
 
         let message;
-        
+
         // Handle specific prayer test
         if (req.body.prayerName) {
             const customMsg = req.body.customMessage ? `\n💬 *رسالة مخصصة:* ${req.body.customMessage}` : '';
             message = `🕌 *اختبار تذكير الصلاة*\n\nهذا اختبار لتذكير صلاة *${req.body.prayerName}*.\n${customMsg}\n\n✅ *الحالة:* النظام يعمل بنجاح\n⌚ *التوقيت:* ${new Date().toLocaleTimeString('ar-EG')}\n\n*ــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*`;
-        } 
+        }
         // Handle custom message (Force Content)
         else if (req.body.forceContent) {
             const source = req.body.forceSource ? `\n📌 *المصدر:* ${req.body.forceSource}` : '';
             message = `✨ *تذكير إسلامي* ✨\n\n${req.body.forceContent}\n${source}\n\n*ــــــــــــــــــــــــــــــــــــــــــــــــــــــــ*`;
-        } 
+        }
         // Default Test Message
         else {
             message = `🔔 *اختبار نظام التذكيرات الإسلامية*
@@ -271,7 +273,7 @@ router.post('/test-recipient/:id', validateSessionConnected, async (req, res) =>
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const userFeatures = await getUserFeatures(req.user);
         if (!userFeatures.prayer_times && !userFeatures.adhkar && !userFeatures.hadith && !userFeatures.quran && !userFeatures.fasting) {
             return res.status(403).json({ error: 'خدمة التذكيرات الإسلامية غير مفعلة في باقتك.' });
@@ -306,7 +308,7 @@ router.post('/test-individuals', validateSessionConnected, async (req, res) => {
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const userFeatures = await getUserFeatures(req.user);
         if (!userFeatures.prayer_times && !userFeatures.adhkar && !userFeatures.hadith && !userFeatures.quran && !userFeatures.fasting) {
             return res.status(403).json({ error: 'خدمة التذكيرات الإسلامية غير مفعلة في باقتك.' });
@@ -347,7 +349,7 @@ router.post('/test-groups', validateSessionConnected, async (req, res) => {
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const userFeatures = await getUserFeatures(req.user);
         if (!userFeatures.prayer_times && !userFeatures.adhkar && !userFeatures.hadith && !userFeatures.quran && !userFeatures.fasting) {
             return res.status(403).json({ error: 'خدمة التذكيرات الإسلامية غير مفعلة في باقتك.' });
@@ -818,7 +820,7 @@ router.get('/recipient/:id', async (req, res) => {
         }
 
         const config = await IslamicRemindersService.getOrCreateConfig(userId);
-        
+
         // Verify that the recipient belongs to the current user
         const recipient = await db.get(
             'SELECT * FROM reminder_recipients WHERE id = ? AND config_id = ?',
@@ -859,20 +861,20 @@ router.post('/test-prayer/:prayerName', validateSessionConnected, async (req, re
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const prayerName = req.params.prayerName;
         const userFeatures = await getUserFeatures(req.user);
-        
+
         if (!userFeatures.prayer_times) {
             return res.status(403).json({ error: 'ميزة مواقيت الصلاة غير مفعلة في باقتك.' });
         }
 
         const SchedulerService = require('../services/SchedulerService');
         const PrayerTimesService = require('../services/PrayerTimesService');
-        
+
         const times = await PrayerTimesService.getPrayerTimes(config);
         const prayerTime = times ? times[prayerName.toLowerCase()] : '--:--';
-        
+
         const prayerSettings = await IslamicRemindersService.getPrayerSettings(config.id);
         const setting = prayerSettings.find(s => s.prayer_name.toLowerCase() === prayerName.toLowerCase());
 
@@ -897,7 +899,7 @@ router.post('/test-prayer-reminder', validateSessionConnected, async (req, res) 
     try {
         const userId = req.user.id;
         const config = req.islamicConfig;
-        
+
         const userFeatures = await getUserFeatures(req.user);
         if (!userFeatures.prayer_times) {
             return res.status(403).json({ error: 'ميزة مواقيت الصلاة غير مفعلة في باقتك.' });
@@ -930,9 +932,9 @@ router.post('/test-prayer-time', validateSessionConnected, async (req, res) => {
     try {
         const config = req.islamicConfig;
         const { prayerName, prayerNameAr, targetType } = req.body;
-        
+
         console.log(`[Test-Prayer] Triggering test for ${prayerName} (${prayerNameAr})`);
-        
+
         // Fetch actual prayer times to make the test realistic
         let testTime;
         try {
@@ -948,7 +950,7 @@ router.post('/test-prayer-time', validateSessionConnected, async (req, res) => {
         if (!testTime) {
             testTime = new Date().toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit' });
         }
-        
+
         // Construct a realistic setting object for testing
         const dummySetting = {
             prayer_name: prayerName,
@@ -957,12 +959,12 @@ router.post('/test-prayer-time', validateSessionConnected, async (req, res) => {
         };
 
         const SchedulerService = require('../services/SchedulerService');
-        
+
         // If targetType is specified, we might need to handle it in SchedulerService
         // But sendPrayerReminder usually sends to all recipients of a config
         // For now, we'll stick to the standard behavior which respects enabled recipients
         await SchedulerService.sendPrayerReminder(config, prayerName, testTime, dummySetting, targetType);
-        
+
         res.json({ success: true, message: `تم إرسال اختبار صلاة ${prayerNameAr} بنجاح` });
     } catch (error) {
         console.error('Test Prayer Time Error:', error);
@@ -978,11 +980,11 @@ router.post('/test-scheduler', validateSessionConnected, async (req, res) => {
     try {
         const config = req.islamicConfig;
         const { type, category } = req.body;
-        
+
         console.log(`[Test-Scheduler] Triggering ${type}/${category} for user ${req.user.id}`);
-        
+
         await SchedulerService.sendUserContentReminder(config, type, category, 'manual');
-        
+
         res.json({ success: true, message: 'تم إرسال رسالة الاختبار بنجاح' });
     } catch (error) {
         console.error('Test Scheduler Error:', error);

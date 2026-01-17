@@ -1,8 +1,10 @@
 // Mock dependencies BEFORE requiring the module under test
+jest.mock('bcrypt');
 jest.mock('../src/services/NotificationService', () => ({
     createAdminNotification: jest.fn().mockResolvedValue(true)
 }));
 
+const bcrypt = require('bcrypt');
 const AuthService = require('../src/services/auth');
 const { db } = require('../src/database/db');
 
@@ -28,6 +30,12 @@ describe('AuthService', () => {
             planId: 1
         };
 
+        // We keep bcrypt for hashing in registration, but it's mocked.
+        // Let's provide a mock implementation for hash.
+        bcrypt.hash.mockResolvedValue('hashed-password');
+        bcrypt.genSalt.mockResolvedValue('salt');
+
+
         test('should register new user successfully', async () => {
             // Mock 1: Check existing user (return null = not found)
             db.get.mockResolvedValueOnce(null);
@@ -50,6 +58,8 @@ describe('AuthService', () => {
                 expect.stringContaining('INSERT INTO users'),
                 expect.any(Array)
             );
+            // Check if password was hashed
+            expect(bcrypt.hash).toHaveBeenCalledWith('password123', 'salt');
         });
 
         test('should fail if phone/email already exists', async () => {
@@ -75,39 +85,28 @@ describe('AuthService', () => {
 
     describe('login', () => {
         test('should login with valid credentials', async () => {
-            // We need to mock bcrypt.compare, but AuthService likely imports valid bcrypt.
-            // Wait, AuthService code does: bcrypt.compare(password, user.password_hash)
-            // We rely on real bcrypt here since we didn't mock it explicitly?
-            // Actually, bcrypt hash generated in register uses real bcrypt.
-            // Let's create a real hash for the mock user or mock bcrypt too.
-            // Ideally unit tests shouldn't be slow (bcrypt is slow).
-            // For simplicity, let's assume we use real bcrypt, it's fine for a few tests.
-
-            const bcrypt = require('bcrypt');
-            const hash = await bcrypt.hash('password123', 10);
-
-            // Mock get user
             db.get.mockResolvedValueOnce({
                 id: 'user-id',
                 name: 'User',
-                password_hash: hash
+                password_hash: 'hashed-password'
             });
+            bcrypt.compare.mockResolvedValueOnce(true);
 
             const user = await AuthService.login('test@example.com', 'password123');
             expect(user).toHaveProperty('id', 'user-id');
+            expect(bcrypt.compare).toHaveBeenCalledWith('password123', 'hashed-password');
         });
 
         test('should fail with invalid password', async () => {
-            const bcrypt = require('bcrypt');
-            const hash = await bcrypt.hash('password123', 10);
-
             db.get.mockResolvedValueOnce({
                 id: 'user-id',
-                password_hash: hash
+                password_hash: 'hashed-password'
             });
+            bcrypt.compare.mockResolvedValueOnce(false);
 
             await expect(AuthService.login('test@example.com', 'wrongpassword'))
                 .rejects.toThrow('بيانات الدخول غير صحيحة');
+            expect(bcrypt.compare).toHaveBeenCalledWith('wrongpassword', 'hashed-password');
         });
 
         test('should fail if user not found', async () => {
@@ -115,6 +114,9 @@ describe('AuthService', () => {
 
             await expect(AuthService.login('unknown@email.com', 'pass'))
                 .rejects.toThrow('بيانات الدخول غير صحيحة');
+
+            // bcrypt.compare should not be called if user is not found
+            expect(bcrypt.compare).not.toHaveBeenCalled();
         });
     });
 });

@@ -7,6 +7,7 @@ const PaymentService = require('../services/PaymentService');
 const AuthService = require('../services/auth');
 const SettingsService = require('../services/settings');
 const NotificationService = require('../services/NotificationService');
+const { authenticateToken } = require('../middleware/auth');
 
 // Configure Multer for local storage
 const storage = multer.diskStorage({
@@ -39,19 +40,22 @@ const upload = multer({
 });
 
 // Render Payment Page
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', authenticateToken, async (req, res) => {
     try {
         const { userId } = req.params;
         const { plan: planId } = req.query;
 
-        // This route might usually be protected, but if redirected from register, user might not be logged in fully yet?
-        // Actually auth.js redirects to /payment/:userId if status != active.
-        // So we assume public access but validated by ID existence? Better to rely on session/cookie if possible.
-        // For security, checking if req.user exists if authenticated.
+        const viewer = req.user;
+        if (viewer.role !== 'admin' && viewer.id !== userId) {
+            return res.status(403).send('غير مسموح لك بالوصول إلى صفحة الدفع لهذا المستخدم');
+        }
 
         // Fetch plan details
         const { db } = require('../database/db');
         const plan = await db.get('SELECT * FROM plans WHERE id = ?', [planId || 1]); // Default to first plan if missing
+        if (!plan) {
+            return res.status(404).send('لم يتم العثور على الباقة المطلوبة');
+        }
 
         // Fetch payment settings
         const settings = await SettingsService.get('landing_page');
@@ -68,7 +72,7 @@ router.get('/:userId', async (req, res) => {
 });
 
 // Handle Payment Submission
-router.post('/submit', upload.single('receipt'), async (req, res) => {
+router.post('/submit', authenticateToken, upload.single('receipt'), async (req, res) => {
     try {
         const { userId, planId, amount, method, transactionRef } = req.body;
         const file = req.file;
@@ -79,14 +83,27 @@ router.post('/submit', upload.single('receipt'), async (req, res) => {
             return res.status(400).send('يرجى رفع صورة الإيصال');
         }
 
+        const { db } = require('../database/db');
+
+        // Ensure authenticated user matches target user (unless admin)
+        const viewer = req.user;
+        if (viewer.role !== 'admin' && String(viewer.id) !== String(userId)) {
+            return res.status(403).send('غير مسموح لك بإرسال دفع لهذا المستخدم');
+        }
+
+        // Fetch plan and enforce server-side amount
+        const plan = await db.get('SELECT * FROM plans WHERE id = ?', [planId]);
+        if (!plan) {
+            return res.status(400).send('الباقة المحددة غير موجودة');
+        }
+        const safeAmount = plan.price;
+
         // Save to database
         const receiptPath = '/uploads/payments/' + file.filename;
-        await PaymentService.createPaymentRequest(userId, planId, amount, method, transactionRef, receiptPath);
+        await PaymentService.createPaymentRequest(userId, planId, safeAmount, method, transactionRef, receiptPath);
         console.log('✅ Payment request saved to DB');
 
-        const { db } = require('../database/db');
         const user = await db.get('SELECT * FROM users WHERE id = ?', [userId]);
-        const plan = await db.get('SELECT * FROM plans WHERE id = ?', [planId]);
 
         // Send notification in background (don't wait for it)
         NotificationService.sendPaymentNotification({
@@ -94,7 +111,7 @@ router.post('/submit', upload.single('receipt'), async (req, res) => {
             userName: user?.name || 'Unknown',
             userPhone: user?.phone || 'Unknown',
             planName: plan?.name || 'Unknown',
-            amount,
+            amount: safeAmount,
             method,
             transactionRef
         }, receiptPath).then(() => {
@@ -106,7 +123,7 @@ router.post('/submit', upload.single('receipt'), async (req, res) => {
         // Create DB notification for admin dashboard
         await NotificationService.createAdminNotification(
             'طلب دفع جديد 💰',
-            `قام ${user?.name || 'مستخدم'} بإرسال إيصال دفع بمبلغ ${amount} ج.م`,
+            `قام ${user?.name || 'مستخدم'} بإرسال إيصال دفع بمبلغ ${safeAmount} ج.م`,
             'warning'
         );
 
@@ -114,7 +131,7 @@ router.post('/submit', upload.single('receipt'), async (req, res) => {
         res.render('payment_success', {
             userName: user?.name,
             planName: plan?.name,
-            amount
+            amount: safeAmount
         });
 
     } catch (error) {

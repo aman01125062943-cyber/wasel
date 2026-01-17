@@ -6,6 +6,12 @@ const { db } = require('../database/db');
 const { generateToken } = require('../middleware/auth');
 const AuditService = require('../services/AuditService');
 
+const authCookieOptions = {
+    httpOnly: false,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production'
+};
+
 router.get('/register', (req, res) => {
     const planId = req.query.plan || 1;
     res.render('register', { planId });
@@ -30,9 +36,15 @@ router.post('/register', async (req, res) => {
                 .catch(err => console.error('[Auth] Notification error:', err));
 
             const token = generateToken(user);
-            res.cookie('token', token, { httpOnly: true });
+            res.cookie('token', token, authCookieOptions);
             res.redirect('/dashboard');
         } else {
+            const user = await db.get('SELECT * FROM users WHERE id = ?', [result.userId]);
+            if (!user) {
+                return res.redirect('/login');
+            }
+            const token = generateToken(user);
+            res.cookie('token', token, authCookieOptions);
             res.redirect('/payment/' + result.userId + '?plan=' + result.plan?.id);
         }
     } catch (err) {
@@ -51,7 +63,7 @@ router.post('/login', async (req, res) => {
         const dbUser = await db.get('SELECT * FROM users WHERE id = ?', [user.id]);
 
         const token = generateToken(user);
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, authCookieOptions);
 
         // If this is first login (no last_login), send onboarding welcome message
         try {

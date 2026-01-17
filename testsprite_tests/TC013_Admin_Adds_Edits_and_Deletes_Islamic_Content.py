@@ -46,51 +46,71 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Navigate to the correct login page URL or find a clickable element to reach the login page.
+        # -> Navigate to the correct admin dashboard login page to start the login process.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to navigate to the login page.
+        # -> Click on the 'دخول' (Login) link to access the login page.
         frame = context.pages[-1]
-        # Click on the 'دخول' (Login) link to go to the login page
+        # Click on the 'دخول' (Login) link to go to the login page.
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input valid username/email and password, then submit the login form.
+        # -> Input admin email and password, then click the login button.
         frame = context.pages[-1]
-        # Input valid username/email
+        # Input admin email in the phone/email field
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input valid password
+        # Input admin password in the password field
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit the form
+        # Click the login button to submit credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'التذكيرات الإسلامية' (Islamic Reminders) section to access the content management interface for adhkar and hadith.
+        frame = context.pages[-1]
+        # Click on 'التذكيرات الإسلامية' (Islamic Reminders) to open content management section
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[8]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'الأذكار والمحتوى' (Adhkar and Content) button to access the content management interface for adhkar and hadith.
+        frame = context.pages[-1]
+        # Click on 'الأذكار والمحتوى' (Adhkar and Content) to open content management section
+        elem = frame.locator('xpath=html/body/div[2]/main/div/button[3]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'الأحاديث' (Hadith) tab to test adding a new hadith entry.
+        frame = context.pages[-1]
+        # Click on 'الأحاديث' (Hadith) tab to open hadith content management
+        elem = frame.locator('xpath=html/body/div[2]/main/div[2]/div[2]/div[3]/div/div/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'حديث جديد' (New Hadith) button to start adding a new hadith entry.
+        frame = context.pages[-1]
+        # Click on 'حديث جديد' (New Hadith) button to add a new hadith entry
+        elem = frame.locator('xpath=html/body/div[2]/main/div[2]/div[2]/div[3]/div/div[2]/div[2]/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=لوحة الإدارة').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=مرحباً، Admin').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=جلساتي').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=منتظرين التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=طلبات التفعيل').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة المستخدمين').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=سجل النشاط').first).to_be_visible(timeout=30000)
         await expect(frame.locator('text=التذكيرات الإسلامية').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=الإعدادات').first).to_be_visible(timeout=30000)
-        await expect(frame.locator('text=تسجيل الخروج').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=الأذكار والمحتوى').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=الأحاديث').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=حديث جديد').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

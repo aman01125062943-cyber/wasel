@@ -46,95 +46,118 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Find a valid URL or navigation element to access the registration page
+        # -> Correct the URL or find a valid entry point to begin subscription purchase.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on 'إنشاء حساب' (Create Account) to go to the registration page
+        # -> Click on the subscription purchase button to begin subscription purchase.
         frame = context.pages[-1]
-        # Click on 'إنشاء حساب' (Create Account) link to navigate to registration page
-        elem = frame.locator('xpath=html/body/header/div/nav/a[5]').nth(0)
+        # Click on the 'اشترك' (Subscribe) button to begin subscription purchase
+        elem = frame.locator('xpath=html/body/main/section[3]/div/div[2]/div[2]/a').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Fill in the registration form with valid user details and submit
+        # -> Fill in the registration form with user details and submit to start subscription purchase.
         frame = context.pages[-1]
-        # Fill full name
+        # Input full name in registration form
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
+        await page.wait_for_timeout(3000); await elem.fill('Aman Tester')
         
 
         frame = context.pages[-1]
-        # Fill WhatsApp number
+        # Input WhatsApp phone number
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01012345678')
+        await page.wait_for_timeout(3000); await elem.fill('011225062943')
         
 
         frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
+        # Check the WhatsApp confirmation checkbox
         elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         frame = context.pages[-1]
-        # Fill email
+        # Input email address
         elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Fill password
+        # Input password
         elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click submit button to register
+        # Click the submit button to register and start subscription
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Try registering with a new unique email and phone number to verify successful registration and confirmation
+        # -> Click on the login link to navigate to the login page.
         frame = context.pages[-1]
-        # Fill full name with new attempt
+        # Click on the 'تسجيل الدخول' (Login) link to go to login page
+        elem = frame.locator('xpath=html/body/div/div[3]/p/a').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Input email and password, then click login button to authenticate user.
+        frame = context.pages[-1]
+        # Input email address for login
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
+        await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Fill WhatsApp number with a new unique number
+        # Input password for login
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01098765432')
-        
-
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Fill email with a new unique email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062944@gmail.com')
-        
-
-        frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click submit button to register with new unique details
+        # Click login button to authenticate user
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Navigate to subscription management or purchase page to start subscription purchase and simulate payment failure.
+        frame = context.pages[-1]
+        # Click on 'إدارة الباقات' (Subscription Management) to manage or purchase subscriptions
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[6]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Click on the 'تعديل' (Edit) button of a subscription package to proceed with purchase and simulate payment failure.
+        frame = context.pages[-1]
+        # Click 'تعديل' (Edit) on the 'باقة تجريبية' (Trial Package) to proceed with purchase
+        elem = frame.locator('xpath=html/body/div[2]/main/div[5]/div/div/div[2]/div[4]/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Close the edit package modal to return to the subscription management page and locate the subscription purchase or payment initiation button.
+        frame = context.pages[-1]
+        # Click the close (×) button to close the edit package modal
+        elem = frame.locator('xpath=html/body/div[10]/div/div/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Locate and click the subscription purchase or payment initiation button for a subscription package to start the payment process.
+        await page.mouse.wheel(0, 300)
+        
+
+        frame = context.pages[-1]
+        # Click on the 'باقة تجريبية' (Trial Package) card to initiate purchase or payment process
+        elem = frame.locator('xpath=html/body/div[2]/main/div[5]/div/div/div[2]/div[4]/button[2]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=مرحباً، Aman User').first).to_be_visible(timeout=30000)
+        try:
+            await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=5000)
+        except AssertionError:
+            raise AssertionError("Test failed: Subscription management page did not remain accessible while simulating the subscription payment scenario.")
         await asyncio.sleep(5)
     
     finally:

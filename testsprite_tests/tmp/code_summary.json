@@ -1,57 +1,141 @@
 {
-    "tech_stack": [
-        "Node.js",
-        "Express",
-        "EJS",
-        "Bootstrap",
-        "Vanilla JS"
-    ],
-    "features": [
-        {
-            "name": "Landing Page",
-            "description": "Public home page with features, pricing, and login links.",
-            "files": [
-                "src/views/landing.ejs"
-            ],
-            "url": "/"
-        },
-        {
-            "name": "Authentication",
-            "description": "User Login and Registration pages.",
-            "files": [
-                "src/views/login.ejs",
-                "src/views/register.ejs"
-            ],
-            "url": [
-                "/login",
-                "/register"
-            ]
-        },
-        {
-            "name": "Dashboard",
-            "description": "Main user dashboard after login.",
-            "files": [
-                "src/views/dashboard/user.ejs"
-            ],
-            "url": "/dashboard"
-        },
-        {
-            "name": "Islamic Reminders UI",
-            "description": "Dashboard section for configuring Islamic reminders.",
-            "files": [
-                "src/views/dashboard/islamic-reminders.ejs"
-            ],
-            "url": "/dashboard/islamic-reminders"
-        },
-        {
-            "name": "Payment",
-            "description": "Payment processing page for subscriptions.",
-            "files": [
-                "src/views/payment.ejs",
-                "src/views/payment_pending.ejs",
-                "src/views/payment_success.ejs"
-            ],
-            "url": "/payment"
-        }
-    ]
+  "tech_stack": [
+    "Node.js",
+    "Express",
+    "EJS templates",
+    "SQLite (sqlite3)",
+    "Jest",
+    "Supertest",
+    "Socket.IO",
+    "Vanilla JS",
+    "Bootstrap"
+  ],
+  "features": [
+    {
+      "name": "Landing Page & Marketing",
+      "description": "Public home page describing the WhatsApp SaaS platform, features and pricing.",
+      "files": [
+        "src/views/landing.ejs",
+        "public/css/style.css"
+      ],
+      "url": "/"
+    },
+    {
+      "name": "User Authentication",
+      "description": "User login and registration flows including JWT-based auth and session handling.",
+      "files": [
+        "src/views/login.ejs",
+        "src/views/register.ejs",
+        "src/routes/auth.js",
+        "src/middleware/auth.js",
+        "src/services/auth.js"
+      ],
+      "url": [
+        "/login",
+        "/register"
+      ]
+    },
+    {
+      "name": "User Dashboard",
+      "description": "Main dashboard for regular users showing subscription status and quick actions.",
+      "files": [
+        "src/views/dashboard/user.ejs",
+        "src/routes/admin.js"
+      ],
+      "url": "/dashboard"
+    },
+    {
+      "name": "Admin Dashboard & Management",
+      "description": "Admin dashboard for managing users, subscriptions, audit logs and advanced settings.",
+      "files": [
+        "src/views/dashboard/admin.ejs",
+        "src/views/dashboard/settings.ejs",
+        "src/routes/admin.js",
+        "src/services/settings.js",
+        "src/services/AuditService.js"
+      ],
+      "url": "/dashboard/admin"
+    },
+    {
+      "name": "Islamic Reminders Management",
+      "description": "UI and services to configure, schedule and deliver Islamic reminders via WhatsApp.",
+      "files": [
+        "src/views/dashboard/islamic-reminders.ejs",
+        "src/routes/islamic-reminders.js",
+        "src/services/IslamicRemindersService.js",
+        "src/services/FastingService.js",
+        "src/services/IslamicBackgroundService.js",
+        "src/services/IslamicVideoService.js"
+      ],
+      "url": "/dashboard/islamic-reminders"
+    },
+    {
+      "name": "Adhkar & Daily Content",
+      "description": "Services and APIs for Adhkar content, hadiths and other Islamic materials.",
+      "files": [
+        "src/routes/adhkar.js",
+        "src/routes/hadith.js",
+        "src/services/AdhkarService.js",
+        "src/services/HadithService.js",
+        "src/services/ContentService.js",
+        "src/services/ExternalContentService.js"
+      ]
+    },
+    {
+      "name": "Prayer Times & Calendar",
+      "description": "Calculates prayer times, fasting information and related calendar logic.",
+      "files": [
+        "src/services/PrayerTimesService.js",
+        "src/services/FastingService.js"
+      ]
+    },
+    {
+      "name": "Payment & Subscription Plans",
+      "description": "Subscription plans, checkout flows and payment status handling.",
+      "files": [
+        "src/views/payment.ejs",
+        "src/views/payment_pending.ejs",
+        "src/views/payment_success.ejs",
+        "src/routes/payment.js",
+        "src/services/PaymentService.js",
+        "src/services/plans.js"
+      ],
+      "url": "/payment"
+    },
+    {
+      "name": "WhatsApp Messaging & Sessions",
+      "description": "Session management, QR onboarding and sending WhatsApp messages to users.",
+      "files": [
+        "src/routes/whatsapp.js",
+        "src/services/baileys/SessionManager.js",
+        "src/services/baileys/MessageService.js",
+        "src/services/NotificationService.js",
+        "src/services/NotificationTemplates.js"
+      ]
+    },
+    {
+      "name": "Scheduling & Notification Engine",
+      "description": "Background scheduler for reminders and audit-friendly notification delivery.",
+      "files": [
+        "src/services/SchedulerService.js",
+        "src/services/NotificationService.js",
+        "src/services/AuditService.js"
+      ]
+    },
+    {
+      "name": "Health Checks & Monitoring",
+      "description": "Health and readiness endpoints plus server optimization and stability middleware.",
+      "files": [
+        "server.js",
+        "health-check.js",
+        "src/middleware/connectionStability.js",
+        "src/services/ServerOptimizer.js"
+      ],
+      "url": [
+        "/api/health",
+        "/api/ready",
+        "/health"
+      ]
+    }
+  ]
 }
