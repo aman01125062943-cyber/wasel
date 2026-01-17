@@ -245,6 +245,14 @@ router.put('/users/:id/subscription', requireAdmin, async (req, res) => {
             [startDate, endDate, status, sub.id]
         );
 
+        // Log the action
+        await AuditService.log(
+            req.user.id, 
+            'UPDATE_SUBSCRIPTION', 
+            { userId: req.params.id, subId: sub.id, changes: { startDate, endDate, status } }, 
+            req
+        );
+
         res.json({ success: true, message: 'Subscription updated successfully' });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -255,15 +263,41 @@ router.put('/users/:id/subscription', requireAdmin, async (req, res) => {
 router.put('/subscriptions/:id/approve', requireAdmin, async (req, res) => {
     try {
         const sub = await db.get('SELECT * FROM subscriptions WHERE id = ?', [req.params.id]);
+        if (!sub) {
+            return res.status(404).json({ error: 'Subscription not found' });
+        }
+
         const plan = await db.get('SELECT * FROM plans WHERE id = ?', [sub.plan_id]);
+        if (!plan) {
+            return res.status(404).json({ error: 'Plan not found' });
+        }
 
         const startDate = new Date();
         const endDate = new Date();
-        endDate.setDate(endDate.getDate() + plan.duration_days);
+        const durationDays = Number.isFinite(Number(req.body?.duration)) ? Number(req.body.duration) : plan.duration_days;
+        endDate.setDate(endDate.getDate() + Number(durationDays));
 
         await db.run(
             'UPDATE subscriptions SET status = ?, start_date = ?, end_date = ? WHERE id = ?',
             ['active', startDate.toISOString(), endDate.toISOString(), req.params.id]
+        );
+
+        await AuditService.log(
+            req.user.id,
+            'APPROVE_SUBSCRIPTION',
+            {
+                subscriptionId: req.params.id,
+                userId: sub.user_id,
+                planId: sub.plan_id,
+                durationDays,
+                startDate: startDate.toISOString(),
+                endDate: endDate.toISOString(),
+                sendWhatsApp: Boolean(req.body?.sendWhatsApp),
+                phone: req.body?.phone || null,
+                userName: req.body?.userName || null,
+                planName: req.body?.planName || plan.name || null
+            },
+            req
         );
 
         // Send WhatsApp notification if requested
@@ -295,7 +329,24 @@ router.put('/subscriptions/:id/approve', requireAdmin, async (req, res) => {
 // Reject subscription
 router.put('/subscriptions/:id/reject', requireAdmin, async (req, res) => {
     try {
-        await db.run('UPDATE subscriptions SET status = ? WHERE id = ?', ['expired', req.params.id]);
+        const sub = await db.get('SELECT * FROM subscriptions WHERE id = ?', [req.params.id]);
+        if (!sub) {
+            return res.status(404).json({ error: 'Subscription not found' });
+        }
+
+        await db.run('UPDATE subscriptions SET status = ? WHERE id = ?', ['rejected', req.params.id]);
+
+        await AuditService.log(
+            req.user.id,
+            'REJECT_SUBSCRIPTION',
+            {
+                subscriptionId: req.params.id,
+                userId: sub.user_id,
+                planId: sub.plan_id,
+                reason: req.body?.reason || null
+            },
+            req
+        );
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -305,13 +356,35 @@ router.put('/subscriptions/:id/reject', requireAdmin, async (req, res) => {
 // Extend subscription
 router.put('/subscriptions/:id/extend', requireAdmin, async (req, res) => {
     try {
-        const { days } = req.body;
-        const sub = await db.get('SELECT * FROM subscriptions WHERE id = ?', [req.params.id]);
-        const currentEnd = new Date(sub.end_date);
-        currentEnd.setDate(currentEnd.getDate() + parseInt(days));
+        const days = Number.parseInt(req.body?.days, 10);
+        if (!Number.isFinite(days) || days <= 0) {
+            return res.status(400).json({ error: 'يرجى إدخال عدد الأيام الصحيح' });
+        }
 
-        await db.run('UPDATE subscriptions SET end_date = ? WHERE id = ?',
-            [currentEnd.toISOString(), req.params.id]);
+        const sub = await db.get('SELECT * FROM subscriptions WHERE id = ?', [req.params.id]);
+        if (!sub) {
+            return res.status(404).json({ error: 'Subscription not found' });
+        }
+
+        const previousEnd = sub.end_date ? new Date(sub.end_date) : null;
+        const newEnd = previousEnd ? new Date(previousEnd) : new Date();
+        newEnd.setDate(newEnd.getDate() + days);
+
+        await db.run('UPDATE subscriptions SET end_date = ? WHERE id = ?', [newEnd.toISOString(), req.params.id]);
+
+        await AuditService.log(
+            req.user.id,
+            'EXTEND_SUBSCRIPTION',
+            {
+                subscriptionId: req.params.id,
+                userId: sub.user_id,
+                planId: sub.plan_id,
+                days,
+                previousEnd: previousEnd ? previousEnd.toISOString() : null,
+                newEnd: newEnd.toISOString()
+            },
+            req
+        );
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: error.message });

@@ -1120,7 +1120,7 @@
     </style>
 </head>
 
-<body>
+<body data-user-id="<%= user.id %>">
     <!-- Mobile Sidebar Toggle -->
     <button class="sidebar-toggle" id="mobile-menu-toggle" onclick="toggleAdminSidebar()" title="فتح القائمة">
         <i class="fas fa-bars"></i>
@@ -1670,28 +1670,68 @@
                     <i class="fas fa-arrow-right" style="margin-left: 6px;"></i>
                     العودة إلى لوحة المعلومات
                 </button>
+
                 <div
-                    style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem; flex-wrap: wrap; gap: 20px;">
-                    <div>
-                        <h1 style="margin: 0; color: var(--text-main); font-size: 1.8rem;">
-                            <i class="fab fa-whatsapp" style="color: #25D366; margin-left:10px;"></i>
-                            جلسات واتساب
-                        </h1>
-                        <p style="color: var(--text-muted); margin-top: 5px;">إدارة جلسات الواتساب الخاصة بك وربطها
-                            بالنظام</p>
+                    style="background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 25px; margin-bottom: 30px;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap;">
+                        <div>
+                            <h3 style="margin-bottom: 8px; display: flex; align-items: center; gap: 10px;">
+                                <i class="fas fa-shield-alt" style="color: var(--primary);"></i>
+                                رقم الهاتف المرتبط بالحساب
+                            </h3>
+                            <p
+                                style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 15px; max-width: 600px;">
+                                يتم ربط هذا الرقم بحسابك لاستلام الإشعارات وتأكيد هويتك.
+                                <% if (user.phone_verified_at) { %>
+                                    <span style="color: #4caf50; font-weight: 600;">(موثق)</span>
+                                <% } else { %>
+                                    <span style="color: #f44336; font-weight: 600;">(غير موثق)</span>
+                                <% } %>
+                            </p>
+
+                            <div style="display: flex; align-items: center; gap: 15px;">
+                                <div
+                                    style="background: var(--bg-secondary); padding: 8px 15px; border-radius: 8px; font-family: monospace; font-size: 1.1rem; letter-spacing: 1px;">
+                                    <%= user.phone || 'لم يتم الربط' %>
+                                </div>
+                                <% if (user.phone_verified_at) { %>
+                                    <div
+                                        style="color: #4caf50; display: flex; align-items: center; gap: 5px; font-weight: 600;">
+                                        <i class="fas fa-check-circle"></i> تم التوثيق
+                                    </div>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <% if (!user.phone_verified_at) { %>
+                            <button onclick="openLinkAccountModal()"
+                                style="background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.2s;">
+                                <i class="fas fa-link"></i> ربط وتوثيق الرقم
+                            </button>
+                        <% } else { %>
+                            <button onclick="openLinkAccountModal()"
+                                style="background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border); padding: 10px 15px; border-radius: 12px; cursor: pointer; font-weight: 600; display: flex; align-items: center; gap: 8px; transition: 0.2s;">
+                                <i class="fas fa-pen"></i> تغيير الرقم
+                            </button>
+                        <% } %>
                     </div>
-                    <div style="display: flex; gap: 12px;">
-                        <button onclick="reconnectAllSessions()" class="btn"
-                            style="background: var(--bg-secondary); color: var(--text-main);">
+                </div>
+
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <h2>جلسات واتساب</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="reconnect-all-btn" class="btn" onclick="reconnectAllSessions()"
+                            style="background: #4CAF50;">
                             <i class="fas fa-sync-alt"></i> إعادة الاتصال بالكل
                         </button>
-                        <button onclick="openAddSessionModal()" class="btn primary" id="add-session-btn-main">
+                        <button id="add-session-btn-main" class="btn" onclick="openAddSessionModal()"
+                            data-max-sessions="<%= maxSessions %>">
                             <i class="fas fa-plus"></i> إضافة جلسة
                         </button>
                     </div>
                 </div>
 
-                <!-- Stats Summary -->
                 <div class="stats-grid" style="margin-bottom: 2rem;">
                     <div class="stat-card">
                         <div class="stat-icon" style="background: rgba(37, 211, 102, 0.1); color: #25D366;">
@@ -1713,23 +1753,23 @@
                     </div>
                 </div>
 
-                <div class="card"
-                    style="padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--bg-card);">
-                    <table class="data-table">
-                        <thead>
-                            <tr>
-                                <th>الجلسة</th>
-                                <th>الجهاز</th>
-                                <th>رقم الهاتف</th>
-                                <th>الحالة</th>
-                                <th>تاريخ الإنشاء</th>
-                                <th>إجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody id="sessions-table-body">
-                        </tbody>
-                    </table>
-                </div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>الجلسة</th>
+                            <th>الجهاز</th>
+                            <th>رقم الهاتف</th>
+                            <th>الحالة</th>
+                            <th>تاريخ الإنشاء</th>
+                            <th>إجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sessions-table-body">
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">جاري التحميل...</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
     <!-- User Sessions Modal -->
@@ -2175,6 +2215,46 @@
         }
     </style>
 
+    <!-- Link Account Modal -->
+    <div id="link-account-modal" class="modal" style="z-index: 2000;">
+        <div class="modal-content"
+            style="max-width: 500px; padding: 0; background: var(--bg-card); color: var(--text-main); border-radius: var(--radius-md); box-shadow: var(--shadow-lg);">
+            <div class="modal-header"
+                style="background: var(--bg-card); color: var(--text-main); border-bottom: 1px solid var(--border); border-radius: var(--radius-md) var(--radius-md) 0 0; padding: 1.5rem;">
+                <h2 style="margin: 0; font-size: 1.4rem; display: flex; align-items: center; gap: 10px;">
+                    <div
+                        style="width: 40px; height: 40px; background: rgba(37, 211, 102, 0.1); color: #25D366; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <span>توثيق الحساب</span>
+                </h2>
+                <button class="modal-close" onclick="closeModal('link-account-modal')"
+                    style="color: var(--text-muted); border: none; background: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+            </div>
+            <div class="modal-body" style="padding: 2rem;">
+                <p style="color: var(--text-muted); margin-bottom: 25px; line-height: 1.6;">
+                    قم بربط رقم الواتساب الخاص بك لتأكيد هويتك واستلام الإشعارات المهمة. سيتم إرسال كود ربط إلى هاتفك.
+                </p>
+
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label style="display: block; margin-bottom: 10px; font-weight: 600;">رقم الهاتف</label>
+                    <div style="position: relative;">
+                        <input type="tel" id="link-account-phone" placeholder="أدخل رقم الهاتف (مثال: 01xxxxxxxxx)"
+                            style="width: 100%; padding: 14px; padding-left: 50px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg-secondary); color: var(--text-main); font-size: 1.1rem; direction: ltr; text-align: left;">
+                        <span
+                            style="position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-weight: 600;">🇪🇬</span>
+                    </div>
+                </div>
+
+                <button onclick="submitLinkAccount()" id="btn-link-account-submit" class="btn primary"
+                    style="width: 100%; padding: 14px; border-radius: 12px; font-weight: 600; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <span>بدء التوثيق</span>
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add WhatsApp Session Modal -->
     <div id="add-session-modal" class="modal">
         <div class="modal-content" style="max-width: 500px; border-radius: 24px;">
@@ -2382,101 +2462,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Pairing Code Section -->
-    <div
-        style="background: white; padding: 1.5rem; border-radius: var(--radius-md); margin-bottom: 1.5rem; border: 2px dashed #f44336;">
-        <div style="text-align: center; margin-bottom: 1rem;">
-            <h3 style="margin: 0; color: #f44336; font-size: 1rem;">
-                <i class="fas fa-mobile-alt" style="margin-left: 5px;"></i>
-                دخول باستخدام كود الربط / رمز الاقتران
-            </h3>
-        </div>
-
-        <!-- Pairing Code Display -->
-        <div id="smartwats-pairing-code-display" style="display: none; text-align: center; margin-bottom: 1rem;">
-            <div
-                style="background: rgba(37, 211, 102, 0.1); border: 2px solid #25D366; padding: 15px; border-radius: var(--radius-md); margin-bottom: 1rem;">
-                <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: var(--text-main); font-weight: 600;">
-                    <i class="fab fa-whatsapp" style="color: #25D366; margin-left: 5px;"></i>
-                    يجب أن يصل إشعار على الواتساب يطلب ربط الجهاز
-                </p>
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted);">
-                    تحقق من الواتساب على الرقم المدخل - افتح الإشعار واضغط "تأكيد"
-                </p>
-            </div>
-            <div
-                style="background: var(--bg-secondary); padding: 20px; border-radius: var(--radius-md); margin-bottom: 1rem;">
-                <p style="margin: 0 0 10px 0; font-size: 0.9rem; color: var(--text-muted);">كود الربط:</p>
-                <div style="font-size: 2rem; font-weight: 800; letter-spacing: 8px; color: var(--primary); font-family: monospace; user-select: all; cursor: pointer;"
-                    id="smartwats-pairing-code-value" onclick="copySmartWatsPairingCode()">
-                    --------
-                </div>
-                <div style="display: flex; gap: 8px; margin-top: 10px; justify-content: center;">
-                    <button onclick="copySmartWatsPairingCode()"
-                        style="padding: 8px 16px; background: var(--primary); color: white; border: none; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                        <i class="fas fa-copy" style="margin-left: 5px;"></i> نسخ الكود
-                    </button>
-                    <button
-                        onclick="document.getElementById('smartwats-pairing-code-display').style.display='none'; document.getElementById('smartwats-pairing-form').style.display='block';"
-                        style="padding: 8px 16px; background: var(--bg-secondary); color: var(--text-main); border: 1px solid var(--border); border-radius: var(--radius-sm); cursor: pointer; font-size: 0.85rem;">
-                        <i class="fas fa-redo" style="margin-left: 5px;"></i> طلب كود جديد
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Pairing Code Form -->
-        <div id="smartwats-pairing-form">
-            <div style="display: flex; gap: 8px; margin-bottom: 1rem;">
-                <input type="tel" id="smartwats-phone-input" placeholder="+201066284516 أو 201066284516"
-                    style="flex: 1; padding: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--bg-main); direction: ltr; text-align: left;">
-                <button onclick="requestSmartWatsPairingCode()" id="smartwats-get-code-btn" class="btn"
-                    style="white-space: nowrap; padding: 12px 20px;">
-                    <i class="fas fa-key" style="margin-left: 5px;"></i> طلب الكود
-                </button>
-            </div>
-            <div
-                style="background: rgba(33, 150, 243, 0.1); border-right: 3px solid #2196F3; padding: 10px; border-radius: var(--radius-sm); text-align: right; margin-bottom: 1rem;">
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-main); line-height: 1.5;">
-                    💡 أدخل رقم الهاتف <strong>بنفس الصيغة المسجلة</strong> في واتساب على هاتفك.
-                </p>
-            </div>
-            <div
-                style="background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3); padding: 10px; border-radius: var(--radius-sm); text-align: right;">
-                <p style="margin: 0; font-size: 0.8rem; color: var(--text-main); line-height: 1.5;">
-                    <strong>📱 بعد طلب الكود:</strong><br>
-                    1. سيتم إرسال إشعار على الواتساب على الرقم المدخل<br>
-                    2. افتح الإشعار واضغط "تأكيد" لربط الجهاز<br>
-                    3. أدخل الكود المكون من 8 أرقام في واتساب
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Instructions Section -->
-    <div
-        style="background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3); border-radius: var(--radius-md); padding: 1.5rem; text-align: right;">
-        <p style="margin: 0 0 10px 0; font-weight: 600; color: var(--text-main);">
-            <i class="fab fa-whatsapp" style="color: #25D366; margin-left: 5px;"></i>
-            خطوات الربط:
-        </p>
-        <ol style="margin: 0; padding: 0 20px 0 0; font-size: 0.9rem; line-height: 2; color: var(--text-main);">
-            <li>افتح <strong>واتساب</strong> على هاتفك المحمول</li>
-            <li>اذهب إلى: <strong>الإعدادات ⚙️ ← الأجهزة المرتبطة 📱</strong></li>
-            <li>اضغط على <strong>"ربط جهاز"</strong></li>
-            <li>امسح رمز QR أو أدخل كود الربط (8 أرقام)</li>
-            <li>✅ سيتم الربط تلقائياً!</li>
-        </ol>
-    </div>
-    </div>
-    </div>
-    </div>
-
     <div id="qr-popup" class="qr-popup">
         <div class="qr-content" style="border-radius: 32px; overflow: hidden; color: white;">
             <button onclick="closeQRPopup()"
@@ -3180,33 +3165,42 @@
             tbody.innerHTML = '<tr><td colspan="5" class="text-center">جاري التحميل...</td></tr>';
 
             try {
-                const res = await fetch('/api/admin/logs?limit=50');
-                const logs = await res.json();
+                const logs = await fetchJson('/api/admin/logs?limit=50');
+                if (!Array.isArray(logs)) throw new Error('Invalid logs response');
 
                 if (logs.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" class="text-center">لا توجد سجلات</td></tr>';
                     return;
                 }
 
-                tbody.innerHTML = logs.map(log => `
-                    <tr>
-                        <td data-label="المستخدم">
-                            <div class="user-info">
-                                <div>${log.user_name || 'System / Unknown'}</div>
-                                <div class="text-muted" style="font-size: 0.8rem;">${log.user_email || ''}</div>
-                            </div>
-                        </td>
-                        <td data-label="الإجراء"><span class="badge badge-info">${log.action}</span></td>
-                        <td data-label="التفاصيل" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${escapeHtml(log.details)}">
-                            ${escapeHtml(log.details)}
-                        </td>
-                        <td data-label="IP">${log.ip_address || '-'}</td>
-                        <td data-label="التاريخ" dir="ltr">${new Date(log.created_at).toLocaleString('ar-EG')}</td>
-                    </tr>
-                `).join('');
+                tbody.innerHTML = logs.map(log => {
+                    const rawDetails = log.details ?? '';
+                    const titleDetails = escapeHtml(rawDetails);
+                    const visibleDetails = (log.action === 'UPDATE_SUBSCRIPTION') ? 'Subscription Edit Successful' : escapeHtml(rawDetails);
+
+                    return `
+                        <tr>
+                            <td data-label="المستخدم">
+                                <div class="user-info">
+                                    <div>${log.user_name || 'System / Unknown'}</div>
+                                    <div class="text-muted" style="font-size: 0.8rem;">${log.user_email || ''}</div>
+                                </div>
+                            </td>
+                            <td data-label="الإجراء"><span class="badge badge-info">${log.action}</span></td>
+                            <td data-label="التفاصيل" style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" title="${titleDetails}">
+                                ${visibleDetails}
+                            </td>
+                            <td data-label="IP">${log.ip_address || '-'}</td>
+                            <td data-label="التاريخ" dir="ltr">${new Date(log.created_at).toLocaleString('ar-EG')}</td>
+                        </tr>
+                    `;
+                }).join('');
             } catch (error) {
                 console.error('Error loading logs:', error);
                 tbody.innerHTML = '<tr><td colspan="5" class="text-center text-danger">فشل تحميل السجلات</td></tr>';
+                if (error && error.status === 401) {
+                    if (typeof showToast === 'function') showToast('انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى', 'error');
+                }
             }
         }
 
@@ -3503,7 +3497,7 @@
                     const bgGradient = colors[index % colors.length];
 
                     return `
-                    <div class="plan-card" style="
+                    <div class="plan-card" data-plan-id="${plan.id}" style="
                 background: var(--bg-card);
                 border: 2px solid transparent;
                 border-radius: var(--radius-lg);
@@ -3617,6 +3611,18 @@
                         </div>
                     </div> `;
                 }).join('');
+
+                const currentUserId = document.body.getAttribute('data-user-id');
+                if (currentUserId) {
+                    grid.querySelectorAll('.plan-card').forEach(card => {
+                        card.addEventListener('click', (e) => {
+                            if (e.target.closest('.action-btn')) return;
+                            const planId = card.getAttribute('data-plan-id');
+                            if (!planId) return;
+                            window.location.href = `/payment/${currentUserId}?plan=${planId}`;
+                        });
+                    });
+                }
             } catch (error) {
                 console.error('Error loading plans:', error);
                 const grid = document.getElementById('plans-grid');
@@ -4021,8 +4027,8 @@
             document.getElementById('user-sessions-modal').classList.add('active');
 
             try {
-                const res = await fetch(`/api/whatsapp/list?userId=${userId}`);
-                const sessions = await res.json();
+                const sessions = await fetchJson(`/api/whatsapp/list?userId=${userId}`);
+                if (!Array.isArray(sessions)) throw new Error('Invalid sessions response');
 
                 if (sessions.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--text-muted);">لا توجد جلسات لهذا المستخدم</td></tr>';
@@ -4054,14 +4060,41 @@
             } catch (error) {
                 console.error('Error loading user sessions:', error);
                 tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; padding: 2rem; color: var(--danger);">حدث خطأ أثناء تحميل البيانات</td></tr>';
+                if (error && error.status === 401) {
+                    if (typeof showToast === 'function') showToast('انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى', 'error');
+                }
             }
+        }
+
+        async function fetchJson(url, options = {}) {
+            const res = await fetch(url, {
+                credentials: 'same-origin',
+                ...options,
+                headers: {
+                    Accept: 'application/json',
+                    ...(options.headers || {})
+                }
+            });
+
+            const contentType = res.headers.get('content-type') || '';
+            const data = contentType.includes('application/json') ? await res.json() : await res.text();
+
+            if (!res.ok) {
+                const message = typeof data === 'object' && data && data.error ? data.error : `Request failed: ${res.status}`;
+                const err = new Error(message);
+                err.status = res.status;
+                err.data = data;
+                throw err;
+            }
+
+            return data;
         }
 
         async function loadSessions() {
             window.checkWhatsAppStatus = loadSessions;
             try {
-                const res = await fetch('/api/whatsapp/list');
-                const sessions = await res.json();
+                const sessions = await fetchJson('/api/whatsapp/list');
+                if (!Array.isArray(sessions)) throw new Error('Invalid sessions response');
 
                 const totalEl = document.getElementById('stats-total-sessions');
                 const connectedEl = document.getElementById('stats-connected-sessions');
@@ -4140,6 +4173,9 @@
                 if (tbody) {
                     tbody.innerHTML = `<tr><td colspan="6" class="text-center" style="color: var(--danger);">فشل في تحميل الجلسات</td></tr>`;
                 }
+                if (error && error.status === 401) {
+                    if (typeof showToast === 'function') showToast('انتهت الجلسة، يرجى تسجيل الدخول مرة أخرى', 'error');
+                }
             }
         }
 
@@ -4147,8 +4183,8 @@
         async function reconnectSingleSession(sessionId) {
             try {
                 // Get session details first
-                const sessionsRes = await fetch('/api/whatsapp/list');
-                const sessions = await sessionsRes.json();
+                const sessions = await fetchJson('/api/whatsapp/list');
+                if (!Array.isArray(sessions)) throw new Error('Invalid sessions response');
                 const session = sessions.find(s => s.session_id === sessionId);
 
                 if (!session) {
@@ -4185,8 +4221,8 @@
         async function reconnectAllSessions() {
             try {
                 // Get all sessions
-                const res = await fetch('/api/whatsapp/list');
-                const sessions = await res.json();
+                const sessions = await fetchJson('/api/whatsapp/list');
+                if (!Array.isArray(sessions)) throw new Error('Invalid sessions response');
 
                 // Filter disconnected sessions
                 const disconnectedSessions = sessions.filter(session => !session.connected);
@@ -4244,6 +4280,86 @@
         }
 
         let allCountries = [];
+
+        function openLinkAccountModal() {
+            const modal = document.getElementById('link-account-modal');
+            if (modal) {
+                modal.classList.add('active');
+                setTimeout(() => {
+                    const input = document.getElementById('link-account-phone');
+                    if (input) input.focus();
+                }, 100);
+            }
+        }
+
+        async function submitLinkAccount() {
+            const phoneInput = document.getElementById('link-account-phone');
+            const btn = document.getElementById('btn-link-account-submit');
+            if (!phoneInput || !btn) return;
+
+            let phone = phoneInput.value.trim();
+
+            if (!phone) {
+                showToast('يرجى إدخال رقم الهاتف', 'error');
+                return;
+            }
+
+            if (phone.startsWith('01')) {
+                phone = '2' + phone;
+            }
+
+            const originalContent = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري التحضير...';
+
+            try {
+                const res = await fetch('/api/whatsapp/connect', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        sessionName: 'توثيق الحساب',
+                        phoneNumber: phone,
+                        deviceType: 'Android'
+                    })
+                });
+
+                const data = await res.json();
+
+                if (data.success) {
+                    closeModal('link-account-modal');
+
+                    currentSmartWatsSessionId = data.sessionId;
+                    const smartWatsModal = document.getElementById('smartwats-connection-modal');
+
+                    const modalTitle = smartWatsModal.querySelector('.modal-header h2 span');
+                    if (modalTitle) modalTitle.textContent = 'إتمام توثيق الحساب';
+
+                    const modeSwitcher = document.querySelector('#smartwats-connection-modal .modal-body > div:first-child');
+                    if (modeSwitcher) modeSwitcher.style.display = 'none';
+
+                    smartWatsModal.classList.add('active');
+
+                    switchConnectionMode('pairing');
+
+                    setTimeout(() => {
+                        const smartPhoneInput = document.getElementById('smartwats-phone-input');
+                        if (smartPhoneInput) {
+                            smartPhoneInput.value = phone;
+                            const getCodeBtn = document.getElementById('smartwats-get-code-btn');
+                            if (getCodeBtn) getCodeBtn.click();
+                        }
+                    }, 500);
+                } else {
+                    showToast(data.error || 'فشل إنشاء الجلسة', 'error');
+                }
+            } catch (error) {
+                console.error(error);
+                showToast('حدث خطأ في الاتصال', 'error');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalContent;
+            }
+        }
 
         function openAddSessionModal() {
             // Initialize countries

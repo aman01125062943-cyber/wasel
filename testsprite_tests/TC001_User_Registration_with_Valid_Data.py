@@ -1,142 +1,45 @@
 import asyncio
+import uuid
 from playwright import async_api
 from playwright.async_api import expect
+
 
 async def run_test():
     pw = None
     browser = None
     context = None
-    
+
     try:
-        # Start a Playwright session in asynchronous mode
         pw = await async_api.async_playwright().start()
-        
-        # Launch a Chromium browser in headless mode with custom arguments
-        browser = await pw.chromium.launch(
-            headless=True,
-            args=[
-                "--window-size=1280,720",         # Set the browser window size
-                "--disable-dev-shm-usage",        # Avoid using /dev/shm which can cause issues in containers
-                "--ipc=host",                     # Use host-level IPC for better stability
-                "--single-process"                # Run the browser in a single process mode
-            ],
-        )
-        
-        # Create a new browser context (like an incognito window)
+        browser = await pw.chromium.launch(headless=True)
         context = await browser.new_context()
-        context.set_default_timeout(5000)
-        
-        # Open a new page in the browser context
+        context.set_default_timeout(15000)
+
         page = await context.new_page()
-        
-        # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:3001/http://localhost:3001/", wait_until="commit", timeout=10000)
-        
-        # Wait for the main page to reach DOMContentLoaded state (optional for stability)
-        try:
-            await page.wait_for_load_state("domcontentloaded", timeout=3000)
-        except async_api.Error:
-            pass
-        
-        # Iterate through all iframes and wait for them to load as well
-        for frame in page.frames:
-            try:
-                await frame.wait_for_load_state("domcontentloaded", timeout=3000)
-            except async_api.Error:
-                pass
-        
-        # Interact with the page elements to simulate user flow
-        # -> Find a valid URL or navigation element to access the registration page
-        await page.goto('http://localhost:3001/', timeout=10000)
-        await asyncio.sleep(3)
-        
 
-        # -> Click on 'إنشاء حساب' (Create Account) to go to the registration page
-        frame = context.pages[-1]
-        # Click on 'إنشاء حساب' (Create Account) link to navigate to registration page
-        elem = frame.locator('xpath=html/body/header/div/nav/a[5]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
+        unique = uuid.uuid4().hex[:8]
+        name = f"Aman Tester {unique}"
+        phone = f"010{int(unique, 16) % 100000000:08d}"
+        email = f"test_{unique}@example.com"
+        password = "TestPassword123!"
 
-        # -> Fill in the registration form with valid user details and submit
-        frame = context.pages[-1]
-        # Fill full name
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
-        
+        await page.goto("http://localhost:3001/register", wait_until="domcontentloaded", timeout=30000)
 
-        frame = context.pages[-1]
-        # Fill WhatsApp number
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01012345678')
-        
+        await page.locator('input[name="name"]').fill(name)
+        await page.locator('input[name="phone"]').fill(phone)
+        checkbox = page.locator('input[name="isWhatsapp"]')
+        if await checkbox.count() > 0:
+            if not await checkbox.is_checked():
+                await checkbox.check()
+        await page.locator('input[name="email"]').fill(email)
+        await page.locator('input[name="password"]').fill(password)
 
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
+        await page.locator('form[action="/register"] button[type="submit"]').click()
 
-        frame = context.pages[-1]
-        # Fill email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
-        
+        await page.wait_for_url("**/dashboard**", timeout=30000)
+        await expect(page.locator(f"text=مرحباً، {name}").first).to_be_visible(timeout=30000)
+        await asyncio.sleep(1)
 
-        frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('1994')
-        
-
-        frame = context.pages[-1]
-        # Click submit button to register
-        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Try registering with a new unique email and phone number to verify successful registration and confirmation
-        frame = context.pages[-1]
-        # Fill full name with new attempt
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('Aman User')
-        
-
-        frame = context.pages[-1]
-        # Fill WhatsApp number with a new unique number
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01098765432')
-        
-
-        frame = context.pages[-1]
-        # Check 'هذا الرقم عليه واتساب' checkbox
-        elem = frame.locator('xpath=html/body/div/form/div[2]/div/label/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Fill email with a new unique email
-        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062944@gmail.com')
-        
-
-        frame = context.pages[-1]
-        # Fill password
-        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('1994')
-        
-
-        frame = context.pages[-1]
-        # Click submit button to register with new unique details
-        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # --> Assertions to verify final state
-        frame = context.pages[-1]
-        await expect(frame.locator('text=مرحباً، Aman User').first).to_be_visible(timeout=30000)
-        await asyncio.sleep(5)
-    
     finally:
         if context:
             await context.close()
@@ -144,6 +47,8 @@ async def run_test():
             await browser.close()
         if pw:
             await pw.stop()
-            
+
+
+asyncio.run(run_test())
 asyncio.run(run_test())
     

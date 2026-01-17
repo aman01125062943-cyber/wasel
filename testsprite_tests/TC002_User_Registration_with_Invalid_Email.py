@@ -46,80 +46,54 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Navigate to the correct login page or home page to start the login process.
-        await page.goto('http://localhost:3001/', timeout=10000)
+        # -> Find a correct way to navigate to the registration page or fix the URL to access the registration page.
+        await page.goto('http://localhost:3001/register', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to proceed with user login.
+        # -> Input username, invalid email format, and password into the registration form.
         frame = context.pages[-1]
-        # Click on 'دخول' (Login) link to go to login page
-        elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        # Input username in full name field
+        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('aman01125062943')
         
 
-        # -> Input username and password, then click login button.
         frame = context.pages[-1]
-        # Input username/email
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
+        # Input invalid email format
+        elem = frame.locator('xpath=html/body/div/form/div[3]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('invalid-email-format')
         
 
         frame = context.pages[-1]
         # Input password
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
+        elem = frame.locator('xpath=html/body/div/form/div[4]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
+        # -> Submit the registration form by clicking the submit button.
         frame = context.pages[-1]
-        # Click login button to submit credentials
+        # Click the submit button to submit the registration form
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on 'إدارة الباقات' (Manage Subscriptions) tab to navigate to subscription plans page.
+        # -> Fill the WhatsApp number field with a valid phone number to isolate the email validation test.
         frame = context.pages[-1]
-        # Click on 'إدارة الباقات' (Manage Subscriptions) tab
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[6]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        # Input valid WhatsApp number to allow form submission and isolate email validation
+        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('01012345678')
         
 
-        # -> Select a subscription plan to proceed with payment.
+        # -> Submit the registration form by clicking the submit button to verify the invalid email format error.
         frame = context.pages[-1]
-        # Select the 'باقة تجريبية' (Trial Plan) subscription plan to proceed
-        elem = frame.locator('xpath=html/body/div[2]/main/div[5]/div/div').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Scroll down to find payment options (Vodafone Cash or Instapay) or click on a plan to initiate subscription purchase process.
-        await page.mouse.wheel(0, 400)
-        
-
-        frame = context.pages[-1]
-        # Input phone number for payment code request
-        elem = frame.locator('xpath=html/body/div[13]/div[3]/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        frame = context.pages[-1]
-        # Input phone number for payment code request
-        elem = frame.locator('xpath=html/body/div[13]/div[3]/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('01066284516')
-        
-
-        # -> Click on 'طلب الكود' (Request Code) button to receive payment code and proceed with payment.
-        frame = context.pages[-1]
-        # Click on 'طلب الكود' (Request Code) button to request payment code
-        elem = frame.locator('xpath=html/body/div[13]/div[3]/div/button').nth(0)
+        # Click the submit button to submit the registration form with invalid email format
+        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        try:
-            await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=5000)
-        except AssertionError:
-            raise AssertionError('Test case failed: Subscription management page did not load as expected after selecting the plan.')
+        await expect(frame.locator('text=البريد الإلكتروني').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

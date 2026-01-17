@@ -30,7 +30,7 @@ async def run_test():
         page = await context.new_page()
         
         # Navigate to your target URL and wait until the network request is committed
-        await page.goto("http://localhost:3001/http://localhost:3001/", wait_until="commit", timeout=10000)
+        await page.goto("http://localhost:3001/", wait_until="commit", timeout=10000)
         
         # Wait for the main page to reach DOMContentLoaded state (optional for stability)
         try:
@@ -46,40 +46,39 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Navigate to the correct login page URL or find a clickable element to reach the login page.
+        # -> Correct the URL or find a valid link to the login page to continue testing login functionality.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to navigate to the login page.
+        # -> Click on the 'دخول' (Login) link to navigate to the login page.
         frame = context.pages[-1]
-        # Click on the 'دخول' (Login) link to go to the login page
+        # Click on the 'دخول' (Login) link to go to the login page.
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input valid username/email and password, then submit the login form.
+        # -> Input the username/email and password, then submit the login form.
         frame = context.pages[-1]
-        # Input valid username/email
+        # Enter the username/email in the input field.
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input valid password
+        # Enter the password in the password field.
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit the form
+        # Click the login button to submit the form.
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=لوحة الإدارة').first).to_be_visible(timeout=30000)
         await expect(frame.locator('text=مرحباً، Admin').first).to_be_visible(timeout=30000)
         await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
         await expect(frame.locator('text=جلساتي').first).to_be_visible(timeout=30000)

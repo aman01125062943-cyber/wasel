@@ -181,16 +181,34 @@ class HadithService {
      * Get a random Hadith from the DB cache
      */
     async getRandomHadith(book = null) {
+        let row = null;
+
         if (book === 'bukhari') {
-            const row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح البخاري%' ORDER BY RANDOM() LIMIT 1");
-            return row || null;
+            row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح البخاري%' ORDER BY RANDOM() LIMIT 1");
+            if (!row) {
+                await this.checkAndRefillCache();
+                row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح البخاري%' ORDER BY RANDOM() LIMIT 1");
+            }
+        } else if (book === 'muslim') {
+            row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح مسلم%' ORDER BY RANDOM() LIMIT 1");
+            if (!row) {
+                await this.checkAndRefillCache();
+                row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح مسلم%' ORDER BY RANDOM() LIMIT 1");
+            }
+        } else {
+            row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' ORDER BY RANDOM() LIMIT 1");
+            if (!row) {
+                await this.checkAndRefillCache();
+                row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' ORDER BY RANDOM() LIMIT 1");
+            }
         }
-        if (book === 'muslim') {
-            const row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' AND source LIKE 'صحيح مسلم%' ORDER BY RANDOM() LIMIT 1");
-            return row || null;
+
+        if (row) {
+            return row;
         }
-        const row = await db.get("SELECT * FROM content_library WHERE type = 'hadith_cached' ORDER BY RANDOM() LIMIT 1");
-        return row || null;
+
+        const fallback = await db.get("SELECT * FROM content_library WHERE type = 'hadith' ORDER BY RANDOM() LIMIT 1");
+        return fallback || null;
     }
 
     /**

@@ -17,8 +17,7 @@
       "files": [
         "src/views/landing.ejs",
         "public/css/style.css"
-      ],
-      "url": "/"
+      ]
     },
     {
       "name": "User Authentication",
@@ -29,10 +28,6 @@
         "src/routes/auth.js",
         "src/middleware/auth.js",
         "src/services/auth.js"
-      ],
-      "url": [
-        "/login",
-        "/register"
       ]
     },
     {
@@ -41,8 +36,7 @@
       "files": [
         "src/views/dashboard/user.ejs",
         "src/routes/admin.js"
-      ],
-      "url": "/dashboard"
+      ]
     },
     {
       "name": "Admin Dashboard & Management",
@@ -53,8 +47,7 @@
         "src/routes/admin.js",
         "src/services/settings.js",
         "src/services/AuditService.js"
-      ],
-      "url": "/dashboard/admin"
+      ]
     },
     {
       "name": "Islamic Reminders Management",
@@ -66,8 +59,7 @@
         "src/services/FastingService.js",
         "src/services/IslamicBackgroundService.js",
         "src/services/IslamicVideoService.js"
-      ],
-      "url": "/dashboard/islamic-reminders"
+      ]
     },
     {
       "name": "Adhkar & Daily Content",
@@ -99,8 +91,7 @@
         "src/routes/payment.js",
         "src/services/PaymentService.js",
         "src/services/plans.js"
-      ],
-      "url": "/payment"
+      ]
     },
     {
       "name": "WhatsApp Messaging & Sessions",
@@ -130,11 +121,6 @@
         "health-check.js",
         "src/middleware/connectionStability.js",
         "src/services/ServerOptimizer.js"
-      ],
-      "url": [
-        "/api/health",
-        "/api/ready",
-        "/health"
       ]
     }
   ]

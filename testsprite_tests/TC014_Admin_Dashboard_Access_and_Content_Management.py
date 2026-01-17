@@ -46,102 +46,73 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Correct the URL or find a valid entry point to access the system setup for fasting reminders.
+        # -> Navigate to the correct login page URL to start admin login.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to proceed to the login page.
+        # -> Click on the 'دخول' (Login) link to go to the login page.
         frame = context.pages[-1]
-        # Click on the 'دخول' (Login) link to go to the login page
+        # Click on the 'دخول' (Login) link to navigate to the login page.
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input username and password, then click login button.
+        # -> Input admin username and password, then click login button.
         frame = context.pages[-1]
-        # Input the username/email
+        # Input admin username/email
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input the password
+        # Input admin password
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit credentials
+        # Click login button to submit admin credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'الإعدادات' (Settings) tab to access system setup for fasting reminders.
+        # -> Click on the 'التذكيرات الإسلامية' (Islamic Reminders) tab to access content management section.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) tab to open system setup
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
+        # Click on 'التذكيرات الإسلامية' (Islamic Reminders) tab to access content management.
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[8]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'النظام' (System) tab to check for fasting reminder schedule settings.
+        # -> Click on the 'الأذكار والمحتوى' (Azkar and Content) button to manage Islamic content like Adhkar or Hadith.
         frame = context.pages[-1]
-        # Click on 'النظام' (System) tab to access system configuration including fasting reminders
-        elem = frame.locator('xpath=html/body/div/main/div[2]/button[3]').nth(0)
+        # Click on 'الأذكار والمحتوى' (Azkar and Content) button to access content management.
+        elem = frame.locator('xpath=html/body/div[2]/main/div/button[3]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab to check fasting reminder schedule settings.
+        # -> Click on the 'الأحاديث' (Hadith) button to test editing or adding Hadith content.
         frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Click on 'الأحاديث' (Hadith) button to manage Hadith content.
+        elem = frame.locator('xpath=html/body/div[2]/main/div[2]/div[2]/div[3]/div/div/button[2]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Scroll down to search for fasting reminder schedule or related settings on this page.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Scroll further down to continue searching for fasting reminder schedule or related settings.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or any settings button that might open fasting reminder configuration.
-        await page.mouse.wheel(0, 200)
-        
-
-        # -> Click on the 'الإعدادات' (Settings) button (index 10) to check if fasting reminder schedule is configured there.
+        # -> Click on 'حديث جديد' (New Hadith) button to add a new Hadith entry.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) button to check fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab on the right sidebar (index 8) to check fasting reminder schedule.
-        frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Click on 'حديث جديد' (New Hadith) button to start adding a new Hadith.
+        elem = frame.locator('xpath=html/body/div[2]/main/div[2]/div[2]/div[3]/div/div[2]/div[2]/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        try:
-            await expect(frame.locator('text=Fasting Reminder Sent Successfully').first).to_be_visible(timeout=1000)
-        except AssertionError:
-            raise AssertionError('Test case failed: Fasting reminders are not automatically sent on Mondays, Thursdays, and white days at 8 PM as per the test plan.')
+        await expect(frame.locator('text=Admin').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=التذكيرات الإسلامية').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=الأذكار والمحتوى').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=الأحاديث').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=حديث جديد').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

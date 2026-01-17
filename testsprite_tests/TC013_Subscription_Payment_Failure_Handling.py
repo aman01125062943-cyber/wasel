@@ -46,49 +46,12 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Correct the API endpoint URL or find the proper API endpoint to send requests for rate limiting test.
-        await page.goto('http://localhost:3001/', timeout=10000)
-        await asyncio.sleep(3)
-        
-
-        # -> Click on 'دخول' (Login) to access the user account for API testing.
-        frame = context.pages[-1]
-        # Click on 'دخول' (Login) link to access login page
-        elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Input username and password, then click login button to authenticate.
-        frame = context.pages[-1]
-        # Input username/email in login form
-        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
-        
-
-        frame = context.pages[-1]
-        # Input password in login form
-        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
-        await page.wait_for_timeout(3000); await elem.fill('1994')
-        
-
-        frame = context.pages[-1]
-        # Click login button to submit credentials
-        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Send a high volume of requests to a likely API endpoint to test rate limiting enforcement, starting with a common user management or message sending endpoint.
-        await page.goto('http://localhost:3001/api/users', timeout=10000)
-        await asyncio.sleep(3)
-        
-
-        await page.goto('http://localhost:3001/api/messages/send', timeout=10000)
-        await asyncio.sleep(3)
-        
-
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        await expect(frame.locator('text=Cannot GET /api/messages/send').first).to_be_visible(timeout=30000)
+        try:
+            await expect(frame.locator('text=Subscription Activated Successfully').first).to_be_visible(timeout=30000)
+        except AssertionError:
+            raise AssertionError('Test case failed: Payment failure during subscription purchase was not handled gracefully. Expected clear error message and no subscription activation, but subscription was activated.')
         await asyncio.sleep(5)
     
     finally:

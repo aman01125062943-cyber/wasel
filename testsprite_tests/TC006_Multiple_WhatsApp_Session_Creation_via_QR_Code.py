@@ -46,102 +46,83 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Correct the URL or find a valid entry point to access the system setup for fasting reminders.
+        # -> Navigate to the correct login page or dashboard URL to start the login process.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to proceed to the login page.
+        # -> Click on the login link to go to the user login page.
         frame = context.pages[-1]
         # Click on the 'دخول' (Login) link to go to the login page
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input username and password, then click login button.
+        # -> Input username and password, then click the login button to log in.
         frame = context.pages[-1]
-        # Input the username/email
+        # Input username/email
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input the password
+        # Input password
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit credentials
+        # Click login button to submit credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'الإعدادات' (Settings) tab to access system setup for fasting reminders.
+        # -> Click on the 'جلساتي' (My Sessions) section to navigate to WhatsApp sessions management.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) tab to open system setup
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
+        # Click on 'جلساتي' (My Sessions) to go to WhatsApp sessions management
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[2]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'النظام' (System) tab to check for fasting reminder schedule settings.
+        # -> Click on 'إضافة جلسة' (Add Session) button to initiate a new WhatsApp session creation request and display the QR code.
         frame = context.pages[-1]
-        # Click on 'النظام' (System) tab to access system configuration including fasting reminders
-        elem = frame.locator('xpath=html/body/div/main/div[2]/button[3]').nth(0)
+        # Click on 'إضافة جلسة' (Add Session) to start creating a new WhatsApp session
+        elem = frame.locator('xpath=html/body/div[2]/main/div[8]/div[2]/div/button[2]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab to check fasting reminder schedule settings.
+        # -> Fill in the session name, country code, and phone number fields, then click the 'إنشاء وربط الجلسة' (Create and Link Session) button to generate the QR code for scanning.
         frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Input session name
+        elem = frame.locator('xpath=html/body/div[2]/main/div[18]/div/form/div/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('Test Session 2')
+        
+
+        frame = context.pages[-1]
+        # Input phone number
+        elem = frame.locator('xpath=html/body/div[2]/main/div[18]/div/form/div[2]/div/div[2]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('123456789')
+        
+
+        frame = context.pages[-1]
+        # Click 'إنشاء وربط الجلسة' (Create and Link Session) button to generate QR code
+        elem = frame.locator('xpath=html/body/div[2]/main/div[18]/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Scroll down to search for fasting reminder schedule or related settings on this page.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Scroll further down to continue searching for fasting reminder schedule or related settings.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or any settings button that might open fasting reminder configuration.
-        await page.mouse.wheel(0, 200)
-        
-
-        # -> Click on the 'الإعدادات' (Settings) button (index 10) to check if fasting reminder schedule is configured there.
+        # -> Verify the existing session can be linked by clicking the 'ربط' (Link) button and check if QR code is displayed for scanning.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) button to check fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
-        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
-        
-
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab on the right sidebar (index 8) to check fasting reminder schedule.
-        frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Click 'ربط' (Link) button for the existing session to display QR code for scanning
+        elem = frame.locator('xpath=html/body/div[2]/main/div[8]/table/tbody/tr/td[6]/div/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
-        try:
-            await expect(frame.locator('text=Fasting Reminder Sent Successfully').first).to_be_visible(timeout=1000)
-        except AssertionError:
-            raise AssertionError('Test case failed: Fasting reminders are not automatically sent on Mondays, Thursdays, and white days at 8 PM as per the test plan.')
+        await expect(frame.locator('text=Test Session 2').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=ربط الجلسة').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=مسح QR').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=رمز الربط').first).to_be_visible(timeout=30000)
         await asyncio.sleep(5)
     
     finally:

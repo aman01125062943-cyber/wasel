@@ -1,7 +1,6 @@
 import os
-import re
 
-target_dir = r"c:/Users/amin/Desktop/wasel/testsprite_tests"
+target_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "testsprite_tests"))
 
 def fix_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -11,14 +10,6 @@ def fix_file(filepath):
     
     # Fix double URL
     content = content.replace("http://localhost:3001/http://localhost:3001/", "http://localhost:3001/")
-    
-    # Increase timeouts
-    # Replace timeout=10000 with timeout=60000
-    content = re.sub(r'timeout=10000\)', 'timeout=60000)', content)
-    # Replace timeout=5000 with timeout=30000
-    content = re.sub(r'timeout=5000\)', 'timeout=30000)', content)
-    # Replace timeout=3000 with timeout=15000
-    content = re.sub(r'timeout=3000\)', 'timeout=15000)', content)
 
     if content != original_content:
         with open(filepath, 'w', encoding='utf-8') as f:

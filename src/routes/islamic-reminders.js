@@ -106,6 +106,69 @@ const validateSessionConnected = async (req, res, next) => {
     }
 };
 
+router.get('/', async (req, res) => {
+    try {
+        const user = req.user;
+        const userFeatures = await getUserFeatures(user);
+
+        let subscription = null;
+        let maxSessions = user.role === 'admin' ? 999 : 1;
+
+        const row = await db.get(`
+            SELECT s.*, p.name as plan_name, p.max_sessions
+            FROM subscriptions s
+            JOIN plans p ON s.plan_id = p.id
+            WHERE s.user_id = ?
+            ORDER BY s.created_at DESC LIMIT 1
+        `, [user.id]);
+
+        if (row) {
+            let daysRemaining = null;
+            let percentRemaining = null;
+
+            if (row.start_date && row.end_date) {
+                const now = new Date();
+                const start = new Date(row.start_date);
+                const end = new Date(row.end_date);
+                const totalMs = end.getTime() - start.getTime();
+                const remainingMs = end.getTime() - now.getTime();
+
+                if (totalMs > 0) {
+                    const dayMs = 1000 * 60 * 60 * 24;
+                    daysRemaining = Math.max(0, Math.ceil(remainingMs / dayMs));
+                    const ratio = remainingMs / totalMs;
+                    percentRemaining = Math.max(0, Math.min(100, Math.round(ratio * 100)));
+                }
+            }
+
+            subscription = {
+                id: row.id,
+                plan_id: row.plan_id,
+                plan_name: row.plan_name,
+                status: row.status,
+                start_date: row.start_date,
+                end_date: row.end_date,
+                days_remaining: daysRemaining,
+                percent_remaining: percentRemaining
+            };
+
+            if (typeof row.max_sessions === 'number') {
+                maxSessions = row.max_sessions;
+            }
+        }
+
+        res.render('dashboard/user', {
+            user,
+            userFeatures,
+            subscription,
+            maxSessions
+        });
+    } catch (error) {
+        console.error('User Dashboard Error:', error);
+        res.status(500).send('Error loading page: ' + error.message);
+    }
+});
+
 /**
  * GET /dashboard/islamic-reminders
  * Main Islamic Reminders page (accessible to all authenticated users)

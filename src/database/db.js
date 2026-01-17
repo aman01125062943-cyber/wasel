@@ -611,19 +611,28 @@ async function init() {
         }
     }
 
-    // Seed Default Plans
     const checkPlans = await dbAsync.get('SELECT count(*) as count FROM plans');
     if (checkPlans.count === 0) {
         console.log('Seeding default plans...');
         const insertPlan = 'INSERT INTO plans (name, duration_days, price, is_trial, features, max_sessions) VALUES (?, ?, ?, ?, ?, ?)';
 
         await dbAsync.run(insertPlan, ['باقة تجريبية', 7, 0, 1, JSON.stringify({ prayer_times: true, adhkar: true }), 1]);
-        await dbAsync.run(insertPlan, ['باقة شهرية', 30, 299, 0, JSON.stringify({ prayer_times: true, adhkar: true, support: true }), 1]);
-        await dbAsync.run(insertPlan, ['باقة سنوية', 365, 1999, 0, JSON.stringify({ prayer_times: true, adhkar: true, support: true }), 1]);
+        await dbAsync.run(insertPlan, ['باقة شهرية', 30, 299, 0, JSON.stringify({ prayer_times: true, adhkar: true, support: true }), 3]);
+        await dbAsync.run(insertPlan, ['باقة سنوية', 365, 1999, 0, JSON.stringify({ prayer_times: true, adhkar: true, support: true }), 5]);
     } else {
-        // Update existing plans with new default limits (Enforcing 1 session as per user request)
-        console.log('Enforcing 1 session limit across all plans...');
-        await dbAsync.run("UPDATE plans SET max_sessions = 1");
+        console.log('Updating max_sessions for existing plans based on plan names...');
+        await dbAsync.run(`
+            UPDATE plans
+            SET max_sessions = CASE
+                WHEN name LIKE '%تجريبية%' THEN 1
+                WHEN name LIKE '%أساسية%' THEN 1
+                WHEN name LIKE '%شهرية%' THEN 3
+                WHEN name LIKE '%متقدمة%' THEN 3
+                WHEN name LIKE '%سنوية%' THEN 5
+                WHEN name LIKE '%احترافية%' THEN 999
+                ELSE max_sessions
+            END
+        `);
     }
 
     // Seed Default Admin Tabs

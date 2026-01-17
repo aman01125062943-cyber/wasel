@@ -63,11 +63,17 @@ db.serialize(() => {
         }
         console.log("Cleared existing plans.");
 
-        // Insert new plans
-        const stmt = db.prepare("INSERT INTO plans (name, price, duration_days, is_trial, features) VALUES (?, ?, ?, ?, ?)");
+        const stmt = db.prepare("INSERT INTO plans (name, price, duration_days, is_trial, features, max_sessions) VALUES (?, ?, ?, ?, ?, ?)");
 
         plans.forEach(plan => {
-            stmt.run(plan.name, plan.price, plan.duration_days, plan.is_trial, plan.features, (err) => {
+            let maxSessions = 1;
+            if (plan.name.includes('المتقدمة')) {
+                maxSessions = 3;
+            } else if (plan.name.includes('الاحترافية')) {
+                maxSessions = 999;
+            }
+
+            stmt.run(plan.name, plan.price, plan.duration_days, plan.is_trial, plan.features, maxSessions, (err) => {
                 if (err) console.error("Error inserting plan:", plan.name, err);
                 else console.log("Inserted plan:", plan.name);
             });

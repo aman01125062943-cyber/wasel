@@ -46,102 +46,88 @@ async def run_test():
                 pass
         
         # Interact with the page elements to simulate user flow
-        # -> Correct the URL or find a valid entry point to access the system setup for fasting reminders.
+        # -> Navigate to the correct login page or admin dashboard page to start the task.
         await page.goto('http://localhost:3001/', timeout=10000)
         await asyncio.sleep(3)
         
 
-        # -> Click on the login link to proceed to the login page.
+        # -> Click on the login link to access the login page.
         frame = context.pages[-1]
         # Click on the 'دخول' (Login) link to go to the login page
         elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Input username and password, then click login button.
+        # -> Input username and password, then click login button to access the admin dashboard.
         frame = context.pages[-1]
-        # Input the username/email
+        # Input username/email
         elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
         
 
         frame = context.pages[-1]
-        # Input the password
+        # Input password
         elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
         await page.wait_for_timeout(3000); await elem.fill('1994')
         
 
         frame = context.pages[-1]
-        # Click the login button to submit credentials
+        # Click login button to submit credentials
         elem = frame.locator('xpath=html/body/div/form/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'الإعدادات' (Settings) tab to access system setup for fasting reminders.
+        # -> Perform a critical action by clicking on 'إدارة الباقات' (Manage Subscriptions) to change a subscription.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) tab to open system setup
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
+        # Click on 'إدارة الباقات' (Manage Subscriptions) to perform a critical action
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[6]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'النظام' (System) tab to check for fasting reminder schedule settings.
+        # -> Click the 'تعديل' (Edit) button on the first subscription package to perform a critical action.
         frame = context.pages[-1]
-        # Click on 'النظام' (System) tab to access system configuration including fasting reminders
-        elem = frame.locator('xpath=html/body/div/main/div[2]/button[3]').nth(0)
+        # Click 'تعديل' (Edit) on the first subscription package to perform a critical action
+        elem = frame.locator('xpath=html/body/div[2]/main/div[5]/div/div/div[2]/div[4]/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab to check fasting reminder schedule settings.
+        # -> Modify the subscription price field and save changes to trigger an audit log entry.
         frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Change the subscription price from 20 to 25 to perform a critical action
+        elem = frame.locator('xpath=html/body/div[2]/main/div[16]/div/div[2]/form/div[2]/div[2]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('25')
+        
+
+        frame = context.pages[-1]
+        # Click 'حفظ التغييرات' (Save Changes) to save the subscription edit and trigger audit log
+        elem = frame.locator('xpath=html/body/div[2]/main/div[16]/div/div[2]/form/div[6]/button[2]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Scroll down to search for fasting reminder schedule or related settings on this page.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 300)
-        
-
-        # -> Scroll further down to continue searching for fasting reminder schedule or related settings.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or scroll further if needed.
-        await page.mouse.wheel(0, 400)
-        
-
-        # -> Search for any button or tab related to fasting reminders or schedules, or any settings button that might open fasting reminder configuration.
-        await page.mouse.wheel(0, 200)
-        
-
-        # -> Click on the 'الإعدادات' (Settings) button (index 10) to check if fasting reminder schedule is configured there.
+        # -> Navigate to the 'سجل النشاط' (Audit Log) section to verify the recorded audit log entry.
         frame = context.pages[-1]
-        # Click on 'الإعدادات' (Settings) button to check fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[9]').nth(0)
+        # Click on 'سجل النشاط' (Audit Log) to access audit logs
+        elem = frame.locator('xpath=html/body/div[2]/aside/nav/div[7]').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
         
 
-        # -> Click on the 'التذكيرات الإسلامية' (Islamic reminders) tab on the right sidebar (index 8) to check fasting reminder schedule.
+        # -> Click the 'تحديث' (Refresh) button to reload the audit logs and check if the subscription edit action appears.
         frame = context.pages[-1]
-        # Click on 'التذكيرات الإسلامية' (Islamic reminders) tab to access fasting reminder schedule
-        elem = frame.locator('xpath=html/body/div/aside/nav/div[8]').nth(0)
+        # Click 'تحديث' (Refresh) button to reload audit logs
+        elem = frame.locator('xpath=html/body/div[2]/main/div[6]/div/button').nth(0)
         await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Scroll down the audit log page to check if the subscription edit action is recorded further down the list.
+        await page.mouse.wheel(0, 1000)
         
 
         # --> Assertions to verify final state
         frame = context.pages[-1]
         try:
-            await expect(frame.locator('text=Fasting Reminder Sent Successfully').first).to_be_visible(timeout=1000)
+            await expect(frame.locator('text=Subscription Edit Successful').first).to_be_visible(timeout=1000)
         except AssertionError:
-            raise AssertionError('Test case failed: Fasting reminders are not automatically sent on Mondays, Thursdays, and white days at 8 PM as per the test plan.')
+            raise AssertionError("Test failed: Critical user and admin actions were not recorded in audit logs as expected. The subscription edit action is missing from the audit log entries.")
         await asyncio.sleep(5)
     
     finally:

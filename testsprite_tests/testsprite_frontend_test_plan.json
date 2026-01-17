@@ -1,8 +1,8 @@
 [
   {
     "id": "TC001",
-    "title": "User Registration with Valid Data",
-    "description": "Verify that a new user can register successfully with valid information and receives a confirmation",
+    "title": "User Registration Success",
+    "description": "Verify that a new user can successfully register with valid inputs and receives a confirmation.",
     "category": "functional",
     "priority": "High",
     "steps": [
@@ -12,7 +12,7 @@
       },
       {
         "type": "action",
-        "description": "Fill in valid user details including username, email, and password"
+        "description": "Input valid username, email, and password"
       },
       {
         "type": "action",
@@ -20,16 +20,16 @@
       },
       {
         "type": "assertion",
-        "description": "Check the user is successfully registered and redirected to login or dashboard page"
+        "description": "Verify the registration is successful and user is redirected to login or dashboard"
       }
     ]
   },
   {
     "id": "TC002",
-    "title": "User Registration with Invalid Data",
-    "description": "Verify registration fails with invalid input such as incomplete fields, invalid email, or weak password",
+    "title": "User Registration with Invalid Email",
+    "description": "Check that registration fails when the email format is invalid and proper error messages are shown.",
     "category": "error handling",
-    "priority": "High",
+    "priority": "Medium",
     "steps": [
       {
         "type": "action",
@@ -37,7 +37,7 @@
       },
       {
         "type": "action",
-        "description": "Input invalid or incomplete registration details"
+        "description": "Input username and password with an invalid email format"
       },
       {
         "type": "action",
@@ -45,14 +45,14 @@
       },
       {
         "type": "assertion",
-        "description": "Verify appropriate validation error messages are shown and registration is blocked"
+        "description": "Verify registration fails with appropriate email format validation error"
       }
     ]
   },
   {
     "id": "TC003",
-    "title": "User Login with Correct Credentials",
-    "description": "Check that the user can login successfully using valid credentials and JWT authentication is issued",
+    "title": "User Login Success",
+    "description": "Ensure that a registered user can login successfully using valid credentials and JWT authentication is issued.",
     "category": "functional",
     "priority": "High",
     "steps": [
@@ -62,22 +62,22 @@
       },
       {
         "type": "action",
-        "description": "Input valid username/email and password"
+        "description": "Enter valid username/email and password"
       },
       {
         "type": "action",
-        "description": "Submit login form"
+        "description": "Click login button"
       },
       {
         "type": "assertion",
-        "description": "Verify user is authenticated and JWT token is generated and stored"
+        "description": "Confirm successful login with JWT token set and user redirected to dashboard"
       }
     ]
   },
   {
     "id": "TC004",
-    "title": "User Login with Incorrect Credentials",
-    "description": "Verify login fails with invalid username or password and appropriate error is displayed",
+    "title": "User Login Failure with Incorrect Password",
+    "description": "Verify that login fails with incorrect password and error message is shown without revealing sensitive info.",
     "category": "error handling",
     "priority": "High",
     "steps": [
@@ -87,306 +87,22 @@
       },
       {
         "type": "action",
-        "description": "Input incorrect username/email or password"
+        "description": "Enter valid username/email with wrong password"
       },
       {
         "type": "action",
-        "description": "Attempt to login"
+        "description": "Click login button"
       },
       {
         "type": "assertion",
-        "description": "Verify login is rejected and error message is displayed"
+        "description": "Verify login fails and a generic invalid credentials message is displayed"
       }
     ]
   },
   {
     "id": "TC005",
-    "title": "Subscription Activation Flow",
-    "description": "Verify user can select a subscription plan, complete payment process, and subscription is activated accordingly",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Login as a registered user"
-      },
-      {
-        "type": "action",
-        "description": "Navigate to subscription plans page"
-      },
-      {
-        "type": "action",
-        "description": "Select a subscription plan"
-      },
-      {
-        "type": "action",
-        "description": "Complete payment using Vodafone Cash or Instapay options"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify subscription status updates to active and user receives confirmation"
-      }
-    ]
-  },
-  {
-    "id": "TC006",
-    "title": "Subscription Payment Failure Handling",
-    "description": "Verify that payment failure is properly handled and user informed with retry options",
-    "category": "error handling",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Begin subscription purchase"
-      },
-      {
-        "type": "action",
-        "description": "Simulate payment failure or cancellation"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify user is notified of payment failure and subscription is not activated"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify user can retry payment or cancel"
-      }
-    ]
-  },
-  {
-    "id": "TC007",
-    "title": "Add Multiple WhatsApp Sessions with QR Code",
-    "description": "Validate user can onboard multiple WhatsApp sessions by scanning QR codes and monitor their connection status",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Login and navigate to WhatsApp sessions management"
-      },
-      {
-        "type": "action",
-        "description": "Create new WhatsApp session and generate QR code"
-      },
-      {
-        "type": "action",
-        "description": "Scan QR code with WhatsApp app"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify session is connected and status is displayed correctly"
-      }
-    ]
-  },
-  {
-    "id": "TC008",
-    "title": "WhatsApp Session Connection Failure Handling",
-    "description": "Verify that the system detects WhatsApp session disconnections and notifies the user appropriately",
-    "category": "error handling",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Create a WhatsApp session and connect it"
-      },
-      {
-        "type": "action",
-        "description": "Simulate session disconnect or timeout"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify user dashboard shows disconnected status and suggests reconnection"
-      }
-    ]
-  },
-  {
-    "id": "TC009",
-    "title": "Configure Location and Verify Prayer Time Calculation",
-    "description": "Check that user can set their location and prayer times are accurately calculated via the AlAdhan API",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Login to user dashboard"
-      },
-      {
-        "type": "action",
-        "description": "Set location parameters (city, coordinates)"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify prayer times are calculated correctly and displayed"
-      }
-    ]
-  },
-  {
-    "id": "TC010",
-    "title": "Customizable Prayer Reminder Timing",
-    "description": "Verify users can customize advance notification times before prayer and reminders are sent accordingly",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Set custom notification time preferences in dashboard"
-      },
-      {
-        "type": "assertion",
-        "description": "Ensure reminders are sent at the customized times before prayer"
-      }
-    ]
-  },
-  {
-    "id": "TC011",
-    "title": "Automated Fasting Day Reminders",
-    "description": "Confirm fasting reminders are automatically sent on Mondays, Thursdays, and white days at 8 PM",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Check fasting reminder schedule in system setup"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify fasting reminders are dispatched by scheduler exactly at 8 PM on correct days"
-      }
-    ]
-  },
-  {
-    "id": "TC012",
-    "title": "Scheduled Adhkar and Hadith Content Delivery",
-    "description": "Validate that adhkar and hadith messages are correctly scheduled and sent at morning, noon, and evening times",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Check current adhkar and hadith content schedules"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify messages are sent on time per schedule via notification engine"
-      }
-    ]
-  },
-  {
-    "id": "TC013",
-    "title": "Admin Adds, Edits and Deletes Islamic Content",
-    "description": "Check admin dashboard allows managing Islamic content including adding, editing, and deleting adhkar and hadith entries",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Login as admin and access content management section"
-      },
-      {
-        "type": "action",
-        "description": "Add new content entry"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify content is saved and appears in the library"
-      },
-      {
-        "type": "action",
-        "description": "Edit an existing content entry"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify changes are saved and reflected"
-      },
-      {
-        "type": "action",
-        "description": "Delete a content entry"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify content is removed from the library"
-      }
-    ]
-  },
-  {
-    "id": "TC014",
-    "title": "Multi-Recipient and Group Messaging Activation Control",
-    "description": "Verify users can add multiple WhatsApp recipients and activate or deactivate message delivery per recipient or group",
-    "category": "functional",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Add multiple WhatsApp recipients in user dashboard"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify recipients appear in list and can be toggled active/inactive"
-      },
-      {
-        "type": "action",
-        "description": "Send test group message"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify only activated recipients receive messages"
-      }
-    ]
-  },
-  {
-    "id": "TC015",
-    "title": "Background Scheduler Service Reliability",
-    "description": "Verify that the background scheduling engine using node-cron dispatches all notifications reliably and on time",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Monitor scheduled jobs for prayer, fasting, adhkar and hadith reminders"
-      },
-      {
-        "type": "assertion",
-        "description": "Confirm notifications are sent at expected cron scheduled times without failures"
-      }
-    ]
-  },
-  {
-    "id": "TC016",
-    "title": "System Health and Readiness Checks",
-    "description": "Check health (/api/health), readiness (/api/ready), and stability endpoints respond correctly with expected statuses under normal and degraded conditions",
-    "category": "functional",
-    "priority": "High",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Request /api/health endpoint"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify response indicates healthy system status"
-      },
-      {
-        "type": "action",
-        "description": "Request /api/ready endpoint"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify readiness status confirms server is ready"
-      },
-      {
-        "type": "action",
-        "description": "Simulate resource issues or service downtime"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify endpoints report degraded or not ready status accordingly"
-      }
-    ]
-  },
-  {
-    "id": "TC017",
-    "title": "Password Encryption and Security Verification",
-    "description": "Verify that user passwords are encrypted using bcrypt and cannot be retrieved in plaintext from the database",
+    "title": "Password Hashing and Security",
+    "description": "Confirm that user passwords are stored securely using bcrypt hashing and cannot be retrieved in plain text.",
     "category": "security",
     "priority": "High",
     "steps": [
@@ -396,99 +112,461 @@
       },
       {
         "type": "action",
-        "description": "Query user password data in backend store"
+        "description": "Access the user record from the database"
       },
       {
         "type": "assertion",
-        "description": "Verify stored password is hashed with bcrypt and plaintext password is not stored"
+        "description": "Verify the stored password hash does not match the plain text password and bcrypt format is used"
       }
     ]
   },
   {
-    "id": "TC018",
-    "title": "JWT Authentication and Authorization Validation",
-    "description": "Confirm JWT tokens are issued on login, required for protected resources, and expire correctly",
-    "category": "security",
+    "id": "TC006",
+    "title": "Subscription Plan Selection and Payment Integration",
+    "description": "Verify users can select subscription plans (trial, monthly, annual) and complete payments successfully via Vodafone Cash and Instapay.",
+    "category": "functional",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Login and obtain JWT token"
+        "description": "Login as a valid user"
       },
       {
         "type": "action",
-        "description": "Access protected endpoint with valid token"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify access is granted"
+        "description": "Navigate to subscription plans page"
       },
       {
         "type": "action",
-        "description": "Access protected endpoint with expired or invalid token"
+        "description": "Select a subscription plan (trial, monthly, or annual)"
+      },
+      {
+        "type": "action",
+        "description": "Initiate payment using Vodafone Cash"
       },
       {
         "type": "assertion",
-        "description": "Verify access is denied with appropriate error"
+        "description": "Verify payment success message and subscription status updated accordingly"
+      },
+      {
+        "type": "action",
+        "description": "Repeat the process using Instapay payment method"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify payment success and subscription status update"
       }
     ]
   },
   {
-    "id": "TC019",
-    "title": "API Rate Limiting Enforcement",
-    "description": "Verify that API rate limiting is enforced and excessive requests get blocked with proper response codes",
-    "category": "security",
-    "priority": "Medium",
-    "steps": [
-      {
-        "type": "action",
-        "description": "Send a high volume of requests to API endpoints within a short time"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify API responds with rate limit exceeded errors (e.g., HTTP 429)"
-      }
-    ]
-  },
-  {
-    "id": "TC020",
-    "title": "CSRF Protection Validation",
-    "description": "Ensure that forms and state-changing requests have valid CSRF tokens and invalid requests are rejected",
-    "category": "security",
+    "id": "TC007",
+    "title": "Subscription Status Update on Payment Failure",
+    "description": "Ensure subscription status does not change and appropriate error is shown if payment fails or is cancelled.",
+    "category": "error handling",
     "priority": "High",
     "steps": [
       {
         "type": "action",
-        "description": "Submit a form or API request with a valid CSRF token"
-      },
-      {
-        "type": "assertion",
-        "description": "Verify request is processed successfully"
+        "description": "Select a subscription plan and initiate payment"
       },
       {
         "type": "action",
-        "description": "Submit a form or API request without CSRF token or with invalid token"
+        "description": "Simulate payment failure or cancellation"
       },
       {
         "type": "assertion",
-        "description": "Verify request is rejected due to CSRF validation failure"
+        "description": "Verify subscription status remains unchanged and user receives a failure notification"
       }
     ]
   },
   {
-    "id": "TC021",
-    "title": "Audit Logging Completeness",
-    "description": "Verify that all critical user and admin actions such as login, subscription changes, content edits, and notifications are logged appropriately",
+    "id": "TC008",
+    "title": "Manage Multiple WhatsApp Sessions with QR Code Onboarding",
+    "description": "Verify that users can add multiple WhatsApp sessions by scanning QR codes and the sessions show correct connection status.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login and navigate to WhatsApp session management page"
+      },
+      {
+        "type": "action",
+        "description": "Add a new WhatsApp session by generating a QR code"
+      },
+      {
+        "type": "action",
+        "description": "Scan the QR code with WhatsApp mobile app"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm the session is linked successfully and connection status shows 'Connected'"
+      },
+      {
+        "type": "action",
+        "description": "Repeat to add multiple sessions"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify all sessions display accurate connection statuses"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Send Test WhatsApp Message via Active Session",
+    "description": "Ensure that users can send a test WhatsApp message through any active linked session to verify messaging functionality.",
     "category": "functional",
     "priority": "Medium",
     "steps": [
       {
         "type": "action",
-        "description": "Perform key actions including login, subscription update, content addition, and notification sending"
+        "description": "Select an active WhatsApp session from the session list"
+      },
+      {
+        "type": "action",
+        "description": "Trigger sending a test message to a predefined phone number"
       },
       {
         "type": "assertion",
-        "description": "Check audit logs contain records with correct user, action type, timestamp, and outcome"
+        "description": "Confirm the test message is sent successfully and delivered status is received"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Failed WhatsApp Session QR Code Linkage",
+    "description": "Verify that the system handles QR code scanning failures or timeouts gracefully and prompts user for retries.",
+    "category": "error handling",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Initiate QR code generation for WhatsApp session linking"
+      },
+      {
+        "type": "action",
+        "description": "Simulate expiration or failure to scan QR code within allowed time"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user receives a timeout or error message with option to regenerate QR code"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Prayer Time Calculations Accuracy",
+    "description": "Validate that prayer times are calculated correctly using AlAdhan API considering different calculation methods and location parameters.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Set location via country and city in settings"
+      },
+      {
+        "type": "action",
+        "description": "Set different prayer time calculation methods (e.g., MuslimWorldLeague, UmmAlQura)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify retrieved prayer times match expected values from AlAdhan API for given settings"
+      },
+      {
+        "type": "action",
+        "description": "Set location using GPS coordinates"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify prayer times update accordingly and remain accurate"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Enable and Receive Prayer Time Notifications",
+    "description": "Ensure users can enable prayer time notifications and receive reminders sent at correct scheduled times via WhatsApp.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Enable prayer time notifications in user settings"
+      },
+      {
+        "type": "action",
+        "description": "Confirm WhatsApp sessions are linked for message delivery"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that prayer reminders are sent on the correct prayer times daily to user recipients"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Automated Fasting Reminders for Specific Days",
+    "description": "Validate the system correctly identifies Mondays, Thursdays, and White Days and sends fasting reminders daily at 8 PM via WhatsApp.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Configure fasting reminders enabled in user settings"
+      },
+      {
+        "type": "action",
+        "description": "Simulate scheduler execution on Monday, Thursday and White Days (13th, 14th, 15th Hijri)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify fasting reminders are sent daily at 8 PM via WhatsApp only on those specified days"
+      },
+      {
+        "type": "action",
+        "description": "Simulate scheduler execution on non-specified days"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm no fasting reminders are sent on non-Monday/Thursday/White Days"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Admin CRUD Operations on Islamic Content Library",
+    "description": "Verify that administrators can create, read, update, and delete Islamic content (Adhkar, Hadiths) and that changes reflect correctly in scheduling.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as admin and navigate to Islamic content management dashboard"
+      },
+      {
+        "type": "action",
+        "description": "Add new adhkar and hadith content with scheduling details"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify content is saved and visible in content list"
+      },
+      {
+        "type": "action",
+        "description": "Modify an existing content item"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm updates are persisted and reflected in scheduled deliveries"
+      },
+      {
+        "type": "action",
+        "description": "Delete a content item"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify content is removed and no longer scheduled for sending"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Scheduled Delivery of Daily Adhkar and Hadiths",
+    "description": "Ensure scheduled background jobs send Islamic content (morning and evening adhkar, daily hadiths) via WhatsApp on configured times.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Verify that scheduler service is running"
+      },
+      {
+        "type": "action",
+        "description": "Simulate scheduler triggering adhkar and hadith delivery at configured times"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm messages are sent successfully and logged in the audit service"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Recipient Management for Multiple Recipients and Groups",
+    "description": "Verify users can add multiple recipients, create custom groups, toggle activation status, and send messages to specific groups or all active recipients.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Add multiple individual recipients with different phone numbers"
+      },
+      {
+        "type": "action",
+        "description": "Create custom recipient groups and add recipients to groups"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify groups and recipients are listed with correct associations"
+      },
+      {
+        "type": "action",
+        "description": "Toggle activation status of individual recipients and groups"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm inactive recipients/groups do not receive reminders"
+      },
+      {
+        "type": "action",
+        "description": "Trigger manual message send to a specific group and to all active recipients"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify messages are sent only to the designated recipients"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "Admin Dashboard Access and User Management",
+    "description": "Check that administrators can securely access dashboards to manage user accounts, subscriptions, and view audit logs.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as an admin user"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to admin dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify admin sees user list, subscription statuses, and audit logs"
+      },
+      {
+        "type": "action",
+        "description": "Perform user management actions such as activating/deactivating users and modifying subscriptions"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm changes are saved and reflected correctly"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Background Scheduler Audit Logging",
+    "description": "Ensure the background scheduler logs all reminder deliveries and failures in audit logs for administrator review.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Trigger scheduled deliveries manually or wait for automatic scheduler invocation"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to audit logs in admin dashboard"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that each notification delivery attempt (success or failure) is logged with timestamps and status details"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Health Check Endpoint Response",
+    "description": "Verify that the system health check endpoints respond correctly indicating server readiness and stability.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Send HTTP request to health check endpoint"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify response status is 200 OK with expected JSON body indicating server is healthy"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Rate Limiting Enforced on Authentication APIs",
+    "description": "Confirm that rate limiting middleware effectively prevents brute force attacks by limiting rapid repeated login attempts.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Attempt multiple rapid login requests with invalid credentials exceeding allowed limit"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify further requests are blocked with HTTP 429 Too Many Requests response"
+      }
+    ]
+  },
+  {
+    "id": "TC021",
+    "title": "CSRF Protection on Form Submissions",
+    "description": "Ensure that CSRF tokens are required and validated on all sensitive form submissions, rejecting requests with missing or invalid tokens.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit a protected form (e.g., content creation or subscription update) with a valid CSRF token"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the form submission is accepted and processed correctly"
+      },
+      {
+        "type": "action",
+        "description": "Submit the same form without CSRF token or with an invalid token"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify the server rejects the request with appropriate error indicating missing or invalid CSRF token"
+      }
+    ]
+  },
+  {
+    "id": "TC022",
+    "title": "XSS Protection in User Input Displays",
+    "description": "Verify that user inputs (e.g., subscription names, Islamic content titles) are sanitized to prevent Cross-Site Scripting attacks in the UI.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Add content or input containing script tags or malicious HTML"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that the content is sanitized and any HTML tags are escaped in the rendered UI"
+      }
+    ]
+  },
+  {
+    "id": "TC023",
+    "title": "SQL Injection Prevention on User Input",
+    "description": "Ensure that all user inputs used in database queries are properly parameterized or escaped to prevent SQL injection attacks.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Submit inputs containing SQL injection patterns in forms such as login, content creation, or subscription updates"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify that inputs do not cause unauthorized data access or errors and the application handles input safely"
       }
     ]
   }
