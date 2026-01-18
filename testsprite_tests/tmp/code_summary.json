@@ -1,127 +1,28 @@
 {
   "tech_stack": [
+    "JavaScript",
     "Node.js",
     "Express",
-    "EJS templates",
-    "SQLite (sqlite3)",
+    "EJS",
+    "SQLite",
     "Jest",
-    "Supertest",
-    "Socket.IO",
-    "Vanilla JS",
-    "Bootstrap"
+    "Supertest"
   ],
   "features": [
     {
-      "name": "Landing Page & Marketing",
-      "description": "Public home page describing the WhatsApp SaaS platform, features and pricing.",
+      "name": "Islamic reminders experience mode toggle",
+      "description": "In the Islamic reminders dashboard, admins can switch between manual reading mode and visual media mode for adhkar and hadith content via buttons that trigger setExperienceMode, which updates UI state and persists sources (morning, evening, hadith) in the database.",
       "files": [
-        "src/views/landing.ejs",
-        "public/css/style.css"
+        "src/views/dashboard/islamic-reminders.ejs"
       ]
     },
     {
-      "name": "User Authentication",
-      "description": "User login and registration flows including JWT-based auth and session handling.",
+      "name": "User dashboard mobile sidebar behavior",
+      "description": "On the user dashboard, the sidebar becomes a fixed off-canvas panel on smaller screens, and the floating sidebar toggle button is disabled in mobile view to avoid overlay issues while keeping the main content scrollable with adjusted padding.",
       "files": [
-        "src/views/login.ejs",
-        "src/views/register.ejs",
-        "src/routes/auth.js",
-        "src/middleware/auth.js",
-        "src/services/auth.js"
-      ]
-    },
-    {
-      "name": "User Dashboard",
-      "description": "Main dashboard for regular users showing subscription status and quick actions.",
-      "files": [
-        "src/views/dashboard/user.ejs",
-        "src/routes/admin.js"
-      ]
-    },
-    {
-      "name": "Admin Dashboard & Management",
-      "description": "Admin dashboard for managing users, subscriptions, audit logs and advanced settings.",
-      "files": [
-        "src/views/dashboard/admin.ejs",
-        "src/views/dashboard/settings.ejs",
-        "src/routes/admin.js",
-        "src/services/settings.js",
-        "src/services/AuditService.js"
-      ]
-    },
-    {
-      "name": "Islamic Reminders Management",
-      "description": "UI and services to configure, schedule and deliver Islamic reminders via WhatsApp.",
-      "files": [
-        "src/views/dashboard/islamic-reminders.ejs",
-        "src/routes/islamic-reminders.js",
-        "src/services/IslamicRemindersService.js",
-        "src/services/FastingService.js",
-        "src/services/IslamicBackgroundService.js",
-        "src/services/IslamicVideoService.js"
-      ]
-    },
-    {
-      "name": "Adhkar & Daily Content",
-      "description": "Services and APIs for Adhkar content, hadiths and other Islamic materials.",
-      "files": [
-        "src/routes/adhkar.js",
-        "src/routes/hadith.js",
-        "src/services/AdhkarService.js",
-        "src/services/HadithService.js",
-        "src/services/ContentService.js",
-        "src/services/ExternalContentService.js"
-      ]
-    },
-    {
-      "name": "Prayer Times & Calendar",
-      "description": "Calculates prayer times, fasting information and related calendar logic.",
-      "files": [
-        "src/services/PrayerTimesService.js",
-        "src/services/FastingService.js"
-      ]
-    },
-    {
-      "name": "Payment & Subscription Plans",
-      "description": "Subscription plans, checkout flows and payment status handling.",
-      "files": [
-        "src/views/payment.ejs",
-        "src/views/payment_pending.ejs",
-        "src/views/payment_success.ejs",
-        "src/routes/payment.js",
-        "src/services/PaymentService.js",
-        "src/services/plans.js"
-      ]
-    },
-    {
-      "name": "WhatsApp Messaging & Sessions",
-      "description": "Session management, QR onboarding and sending WhatsApp messages to users.",
-      "files": [
-        "src/routes/whatsapp.js",
-        "src/services/baileys/SessionManager.js",
-        "src/services/baileys/MessageService.js",
-        "src/services/NotificationService.js",
-        "src/services/NotificationTemplates.js"
-      ]
-    },
-    {
-      "name": "Scheduling & Notification Engine",
-      "description": "Background scheduler for reminders and audit-friendly notification delivery.",
-      "files": [
-        "src/services/SchedulerService.js",
-        "src/services/NotificationService.js",
-        "src/services/AuditService.js"
-      ]
-    },
-    {
-      "name": "Health Checks & Monitoring",
-      "description": "Health and readiness endpoints plus server optimization and stability middleware.",
-      "files": [
-        "server.js",
-        "health-check.js",
-        "src/middleware/connectionStability.js",
-        "src/services/ServerOptimizer.js"
+        "src/views/dashboard/user.ejs"
       ]
     }
   ]
 }
+

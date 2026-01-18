@@ -176,6 +176,10 @@
             font-size: 1.2rem;
         }
 
+        body.sidebar-open {
+            overflow: hidden;
+        }
+
         @media (max-width: 1024px) {
             .admin-sidebar {
                 position: fixed;
@@ -195,8 +199,12 @@
 
             .sidebar-toggle {
                 display: flex;
-                align-items: center;
-                justify-content: center;
+                position: static;
+                margin: 0.75rem 1rem 0.25rem;
+                width: 42px;
+                height: 42px;
+                border-radius: 10px;
+                box-shadow: none;
             }
 
             .admin-content {
@@ -1269,12 +1277,18 @@
                 return;
             }
 
-            sidebar.classList.toggle('open');
+            const isOpen = sidebar.classList.toggle('open');
 
             if (overlay) {
-                overlay.style.display = sidebar.classList.contains('open') ? 'block' : 'none';
+                overlay.style.display = isOpen ? 'block' : 'none';
             } else {
                 console.warn('Sidebar overlay not found');
+            }
+
+            if (isOpen) {
+                document.body.classList.add('sidebar-open');
+            } else {
+                document.body.classList.remove('sidebar-open');
             }
         }
 
@@ -1304,6 +1318,7 @@
                 const overlay = document.getElementById('sidebar-overlay');
                 if (sidebar) sidebar.classList.remove('open');
                 if (overlay) overlay.style.display = 'none';
+                document.body.classList.remove('sidebar-open');
             }
         }
 

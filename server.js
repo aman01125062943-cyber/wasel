@@ -189,6 +189,16 @@ app.get('/dashboard/whatsapp', authenticateToken, (req, res) => {
     res.redirect('/dashboard#whatsapp');
 });
 
+// Backwards-compatible admin dashboard route
+app.get('/admin/dashboard', authenticateToken, (req, res) => {
+    res.redirect('/dashboard');
+});
+
+// Backwards-compatible Islamic reminders dashboard route
+app.get('/islamic-reminders', authenticateToken, (req, res) => {
+    res.redirect('/dashboard/islamic-reminders');
+});
+
 app.get('/', async (req, res) => {
     if (app.initializationError) {
         return res.status(500).send(`

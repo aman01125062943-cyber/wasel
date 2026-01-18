@@ -1,0 +1,123 @@
+import asyncio
+from playwright import async_api
+from playwright.async_api import expect
+
+async def run_test():
+    pw = None
+    browser = None
+    context = None
+    
+    try:
+        # Start a Playwright session in asynchronous mode
+        pw = await async_api.async_playwright().start()
+        
+        # Launch a Chromium browser in headless mode with custom arguments
+        browser = await pw.chromium.launch(
+            headless=True,
+            args=[
+                "--window-size=1280,720",         # Set the browser window size
+                "--disable-dev-shm-usage",        # Avoid using /dev/shm which can cause issues in containers
+                "--ipc=host",                     # Use host-level IPC for better stability
+                "--single-process"                # Run the browser in a single process mode
+            ],
+        )
+        
+        # Create a new browser context (like an incognito window)
+        context = await browser.new_context()
+        context.set_default_timeout(5000)
+        
+        # Open a new page in the browser context
+        page = await context.new_page()
+        
+        # Navigate to your target URL and wait until the network request is committed
+        await page.goto("http://localhost:3001", wait_until="commit", timeout=10000)
+        
+        # Wait for the main page to reach DOMContentLoaded state (optional for stability)
+        try:
+            await page.wait_for_load_state("domcontentloaded", timeout=3000)
+        except async_api.Error:
+            pass
+        
+        # Iterate through all iframes and wait for them to load as well
+        for frame in page.frames:
+            try:
+                await frame.wait_for_load_state("domcontentloaded", timeout=3000)
+            except async_api.Error:
+                pass
+        
+        # Interact with the page elements to simulate user flow
+        # -> Simulate a mobile device or small screen size to test the floating sidebar toggle button behavior.
+        await page.mouse.wheel(0, await page.evaluate('() => window.innerHeight'))
+        
+
+        frame = context.pages[-1]
+        # Click on 'دخول' (Login) to navigate to login page for user dashboard access
+        elem = frame.locator('xpath=html/body/header/div/nav/a[4]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Input username and password, then click login button to access user dashboard.
+        frame = context.pages[-1]
+        # Input username/email
+        elem = frame.locator('xpath=html/body/div/form/div/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('aman01125062943@gmail.com')
+        
+
+        frame = context.pages[-1]
+        # Input password
+        elem = frame.locator('xpath=html/body/div/form/div[2]/input').nth(0)
+        await page.wait_for_timeout(3000); await elem.fill('1994')
+        
+
+        frame = context.pages[-1]
+        # Click login button to submit credentials
+        elem = frame.locator('xpath=html/body/div/form/button').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Simulate a mobile device or small screen size to verify if the floating sidebar toggle button is disabled, hidden, or non-interactive in mobile view.
+        await page.goto('http://localhost:3001/dashboard?tab=dashboard&mobile=true', timeout=10000)
+        await asyncio.sleep(3)
+        
+
+        # -> Verify if the floating sidebar toggle button (index 1) is disabled, hidden, or non-interactive in mobile view.
+        frame = context.pages[-1]
+        # Attempt to click the floating sidebar toggle button to check if it is interactive or disabled
+        elem = frame.locator('xpath=html/body/div[2]/aside/div/div/div/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # -> Check if the floating sidebar toggle button is disabled or hidden in mobile view to prevent overlay issues by verifying its state and behavior further.
+        frame = context.pages[-1]
+        # Click the floating sidebar toggle button again to toggle sidebar back and verify consistent behavior
+        elem = frame.locator('xpath=html/body/div[2]/aside/div/div/div/button[2]').nth(0)
+        await page.wait_for_timeout(3000); await elem.click(timeout=5000)
+        
+
+        # --> Assertions to verify final state
+        frame = context.pages[-1]
+        # Assert that the page contains the expected dashboard text indicating successful navigation and login
+        await expect(frame.locator('text=لوحة الإدارة').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=مرحباً، Admin مدير').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=لوحة المعلومات').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=جلساتي').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=منتظرين التفعيل').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=طلبات التفعيل').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=إدارة المستخدمين').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=إدارة الباقات').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=سجل النشاط').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=التذكيرات الإسلامية').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=الإعدادات').first).to_be_visible(timeout=30000)
+        await expect(frame.locator('text=تسجيل الخروج').first).to_be_visible(timeout=30000)
+        await asyncio.sleep(5)
+    
+    finally:
+        if context:
+            await context.close()
+        if browser:
+            await browser.close()
+        if pw:
+            await pw.stop()
+            
+asyncio.run(run_test())
+    

@@ -1,20 +1,18 @@
 {
   "status": "commited",
   "type": "frontend",
-  "scope": "codebase",
+  "scope": "diff",
   "localEndpoint": "http://localhost:3001",
   "loginUser": "aman01125062943@gmail.com",
   "loginPassword": "1994",
   "executionArgs": {
     "projectName": "wasel",
-    "projectPath": "c:\\Users\\amin\\Desktop\\wasel",
-    "testIds": [
-      "TC015"
-    ],
-    "additionalInstruction": "Run only test TC015. Confirm audit log shows subscription edit entry and that logs are retrievable via /api/admin/logs.",
+    "projectPath": "C:\\Users\\amin\\Desktop\\wasel",
+    "testIds": [],
+    "additionalInstruction": "",
     "envs": {
       "API_KEY": "sk-user-cbK6kARUTfYunAgokvj1KVXApnmeBmgbA9YYXVx4AKitCQKJ5aTlzHpPy1019IZj8wvSSuoOlITXf6tOF5fJpuI9yIPgFmKp7b_hsnC98Qr2wFXjD3AZsRatjVQUAmQ4UVs"
     }
   },
-  "proxy": "http://074fa2b1-d1a2-47b0-8b65-14f85e9050dd:E120poFnbCkFR6Km6Sh2Ff7E24Tf38Uw@tun.testsprite.com:8080"
+  "proxy": "http://427a3c83-8c5d-4697-8a2e-3160c4990ed7:7nLy1u9Z4MGXKUDt6nNdY23jcaw6sLqJ@tun.testsprite.com:8080"
 }

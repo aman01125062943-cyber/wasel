@@ -5,28 +5,59 @@
 
 ## 1️⃣ Document Metadata
 - **Project Name:** wasel
-- **Date:** 2026-01-17
+- **Date:** 2026-01-18
 - **Prepared by:** TestSprite AI Team
 
 ---
 
 ## 2️⃣ Requirement Validation Summary
 
-#### Test TC015 Scheduled Delivery of Daily Adhkar and Hadiths
-- **Test Code:** [TC015_Scheduled_Delivery_of_Daily_Adhkar_and_Hadiths.py](./TC015_Scheduled_Delivery_of_Daily_Adhkar_and_Hadiths.py)
-- **Test Error:** The task to ensure scheduled background jobs send Islamic content via WhatsApp was partially completed. We successfully logged into the admin panel, simulated sending morning adhkar, evening adhkar, and daily hadith messages with confirmation of successful sending. However, audit logs did not show subscription edit or message sending entries as expected, even after refreshing and scrolling. Additionally, the scheduler service status could not be verified through the UI due to the absence of a system or scheduler status tab. Therefore, full verification of the scheduler service and audit logging could not be completed. Further backend access or developer support is needed to confirm scheduler operation and audit log functionality.
-Browser Console Logs:
-[ERROR] Error loading sessions: TypeError: Failed to fetch
-    at loadSessions (http://localhost:3001/dashboard?tab=logs:4054:35) (at http://localhost:3001/dashboard?tab=logs:4128:24)
-- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/ffe7df93-3928-48a3-a9c8-66fcc20c6afb/ee886db9-26f1-4852-8104-032942510c58
-- **Status:** ❌ Failed
+#### Test TC001 Switch Islamic reminders experience mode to manual reading
+- **Test Code:** [TC001_Switch_Islamic_reminders_experience_mode_to_manual_reading.py](./TC001_Switch_Islamic_reminders_experience_mode_to_manual_reading.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/53bbca12-a2d7-40b6-961e-78324af1e9a3
+- **Status:** ✅ Passed
+- **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
+---
+
+#### Test TC002 Switch Islamic reminders experience mode to visual media mode
+- **Test Code:** [TC002_Switch_Islamic_reminders_experience_mode_to_visual_media_mode.py](./TC002_Switch_Islamic_reminders_experience_mode_to_visual_media_mode.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/c6ce17e2-ed9e-482b-b2b3-b5f21ac667b9
+- **Status:** ✅ Passed
+- **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
+---
+
+#### Test TC003 Retain Islamic reminders experience mode after page reload
+- **Test Code:** [TC003_Retain_Islamic_reminders_experience_mode_after_page_reload.py](./TC003_Retain_Islamic_reminders_experience_mode_after_page_reload.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/d6a8906b-374e-45d4-8ff5-f8b9931153cd
+- **Status:** ✅ Passed
+- **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
+---
+
+#### Test TC004 User dashboard mobile sidebar becomes fixed off-canvas panel
+- **Test Code:** [TC004_User_dashboard_mobile_sidebar_becomes_fixed_off_canvas_panel.py](./TC004_User_dashboard_mobile_sidebar_becomes_fixed_off_canvas_panel.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/0bcd10e9-c598-49e0-b9cb-b4820cf2f7ea
+- **Status:** ✅ Passed
+- **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
+---
+
+#### Test TC005 Floating sidebar toggle button disabled in mobile view
+- **Test Code:** [TC005_Floating_sidebar_toggle_button_disabled_in_mobile_view.py](./TC005_Floating_sidebar_toggle_button_disabled_in_mobile_view.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/1d9cff77-4b0b-4832-abb7-b99f7905f862
+- **Status:** ✅ Passed
+- **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
+---
+
+#### Test TC006 User dashboard sidebar toggles on mobile correctly
+- **Test Code:** [TC006_User_dashboard_sidebar_toggles_on_mobile_correctly.py](./TC006_User_dashboard_sidebar_toggles_on_mobile_correctly.py)
+- **Test Visualization and Result:** https://www.testsprite.com/dashboard/mcp/tests/5740380b-eda9-4f14-ba31-2f3135a08bd2/06d1c0da-1096-4231-86cc-a951e8d09fcb
+- **Status:** ✅ Passed
 - **Analysis / Findings:** {{TODO:AI_ANALYSIS}}.
 ---
 
 
 ## 3️⃣ Coverage & Matching Metrics
 
-- **0.00** of tests passed
+- **100.00** of tests passed
 
 | Requirement        | Total Tests | ✅ Passed | ❌ Failed  |
 |--------------------|-------------|-----------|------------|

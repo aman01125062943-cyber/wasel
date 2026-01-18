@@ -8,6 +8,7 @@ const fs = require('fs');
 const NotificationService = require('../services/NotificationService');
 const AuthService = require('../services/auth');
 const sessionManager = require('../services/baileys/SessionManager');
+const IslamicRemindersService = require('../services/IslamicRemindersService');
 
 // Middleware to check admin role
 const requireAdmin = (req, res, next) => {
@@ -86,6 +87,29 @@ router.get('/users', requireAdmin, async (req, res) => {
 
         res.json(processedUsers);
     } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ==================== ISLAMIC REMINDERS (ADMIN) ====================
+
+// Backwards-compatible endpoint for TestSprite and legacy admin tools
+router.get('/islamic-reminders/settings', requireAdmin, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const config = await IslamicRemindersService.getOrCreateConfig(userId);
+        const prayerSettings = await IslamicRemindersService.getPrayerSettings(config.id);
+        const fastingSettings = await IslamicRemindersService.getFastingSettings(config.id);
+        const adhkarSettings = await IslamicRemindersService.getAdhkarSettings(config.id);
+
+        res.json({
+            config,
+            prayerSettings,
+            fastingSettings,
+            adhkarSettings
+        });
+    } catch (error) {
+        console.error('[AdminAPI] Islamic Reminders Settings Error:', error);
         res.status(500).json({ error: error.message });
     }
 });

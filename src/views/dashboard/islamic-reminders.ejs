@@ -240,9 +240,7 @@
             }
 
             .sidebar-toggle {
-                display: flex;
-                align-items: center;
-                justify-content: center;
+                display: none;
             }
 
             .admin-content {
@@ -4254,25 +4252,38 @@
             const btnManual = document.getElementById('btn-mode-manual');
             const btnAuto = document.getElementById('btn-mode-auto');
             const mediaContainer = document.getElementById('media-pref-container');
-            // Visual Feedback First
+
+            // Visual Feedback First (optional if elements exist)
             if (mode === 'manual') {
-                btnManual.classList.remove('mode-btn-inactive');
-                btnManual.classList.add('mode-btn-active');
-                btnAuto.classList.remove('mode-btn-active');
-                btnAuto.classList.add('mode-btn-inactive');
-                // Use class for hiding
-                mediaContainer.classList.add('hidden');
+                if (btnManual) {
+                    btnManual.classList.remove('mode-btn-inactive');
+                    btnManual.classList.add('mode-btn-active');
+                }
+                if (btnAuto) {
+                    btnAuto.classList.remove('mode-btn-active');
+                    btnAuto.classList.add('mode-btn-inactive');
+                }
+                if (mediaContainer) {
+                    mediaContainer.classList.add('hidden');
+                }
+
                 // Set Logic: Manual Source (Reading Mode)
                 await updateAdhkar('morning_source', 'manual');
                 await updateAdhkar('evening_source', 'manual');
                 await updateAdhkar('hadith_source', 'manual');
             } else {
-                btnManual.classList.remove('mode-btn-active');
-                btnManual.classList.add('mode-btn-inactive');
-                btnAuto.classList.remove('mode-btn-inactive');
-                btnAuto.classList.add('mode-btn-active');
-                // Use class for showing
-                mediaContainer.classList.remove('hidden');
+                if (btnManual) {
+                    btnManual.classList.remove('mode-btn-active');
+                    btnManual.classList.add('mode-btn-inactive');
+                }
+                if (btnAuto) {
+                    btnAuto.classList.remove('mode-btn-inactive');
+                    btnAuto.classList.add('mode-btn-active');
+                }
+                if (mediaContainer) {
+                    mediaContainer.classList.remove('hidden');
+                }
+
                 // Set Logic: Auto Source (Visual Mode)
                 await updateAdhkar('morning_source', 'auto');
                 await updateAdhkar('evening_source', 'auto');
