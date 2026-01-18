@@ -8,6 +8,7 @@ class PrayerTimesService {
      * Get cached prayer times or calculate fresh
      */
     static async getPrayerTimes(config) {
+        config = config || {};
         let times = null;
         const date = new Date().toISOString().split('T')[0];
         let hijriDate = '';
@@ -20,7 +21,6 @@ class PrayerTimesService {
             hijriDate = new Date().toLocaleDateString('ar-SA');
         }
 
-        // Default base times
         times = {
             fajr: '05:00',
             sunrise: '06:30',
@@ -33,30 +33,6 @@ class PrayerTimesService {
             is_manual: true
         };
 
-        if (!config.latitude && !config.longitude) {
-            return times;
-        }
-
-        // Try to get automatic times if location is available
-        if (config.latitude && config.longitude) {
-            const locationKey = `${config.latitude}_${config.longitude}_${config.prayer_calculation_method || 'Egypt'}`;
-            
-            // Check cache
-            let cached = await db.get(
-                'SELECT * FROM prayer_times_cache WHERE location_key = ? AND prayer_date = ?',
-                [locationKey, date]
-            );
-
-            if (!cached) {
-                cached = await this.calculateAndCachePrayerTimes(config, date, locationKey);
-            }
-
-            if (cached) {
-                times = { ...cached, is_manual: false };
-            }
-        }
-
-        // If explicitly set to manual mode, apply manual overrides
         if (config.prayer_time_mode === 'manual') {
             console.log(`[PrayerTimesService-Debug] Applying manual overrides for config ${config.id}:`, {
                 fajr: config.manual_fajr,
@@ -71,6 +47,28 @@ class PrayerTimesService {
             if (config.manual_maghrib) times.maghrib = config.manual_maghrib;
             if (config.manual_isha) times.isha = config.manual_isha;
             times.is_manual = true;
+            return times;
+        }
+
+        if (!config.latitude && !config.longitude) {
+            return times;
+        }
+
+        if (config.latitude && config.longitude) {
+            const locationKey = `${config.latitude}_${config.longitude}_${config.prayer_calculation_method || 'Egypt'}`;
+            
+            let cached = await db.get(
+                'SELECT * FROM prayer_times_cache WHERE location_key = ? AND prayer_date = ?',
+                [locationKey, date]
+            );
+
+            if (!cached) {
+                cached = await this.calculateAndCachePrayerTimes(config, date, locationKey);
+            }
+
+            if (cached) {
+                times = { ...cached, is_manual: false };
+            }
         }
 
         return times;
